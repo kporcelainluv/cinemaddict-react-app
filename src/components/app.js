@@ -1,99 +1,48 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&amp;subset=cyrillic-ext"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      media="screen"
-      href="./css/normalize.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      media="screen"
-      href="./css/main.css"
-    />
-    <title>Cinemaddict</title>
-  </head>
-  <body>
-    <header class="header">
-      <h1 class="header__logo logo">Cinemaddict</h1>
+import React from "react";
 
-      <form class="header__search search">
-        <input
-          type="text"
-          name="search"
-          class="search__field"
-          placeholder="Search movies"
-        />
-        <svg
-          fill="#7171D8"
-          class="search__film-icon"
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="19"
-          viewBox="0 0 20 19"
-        >
-          <path
-            fill-rule="nonzero"
-            d="M2 0v4.524h2.833V0h11.334v4.524H19V0h1v19h-1v-4.524h-2.833V19H4.833v-4.524H2V19H0V0h2zm0 7.238v4.524h2.833V7.238H2zm14.167 0v4.524H19V7.238h-2.833z"
-          />
-        </svg>
-        <button type="submit" class="visually-hidden">Search</button>
-        <button class="search__reset" type="reset">Reset</button>
-      </form>
-      <section class="header__profile profile">
-        <p class="profile__rating">Movie Buff</p>
-        <img
-          class="profile__avatar"
-          src="images/bitmap@2x.png"
-          alt="Avatar"
-          width="35"
-          height="35"
-        />
-      </section>
-    </header>
-
-    <main class="main">
+export const App = () => {
+  return (
+    <div>
       <nav class="main-navigation">
         <a
           href="#all"
           class="main-navigation__item main-navigation__item--active"
-          >All movies</a
         >
-        <a href="#watchlist" class="main-navigation__item"
-          >Watchlist <span class="main-navigation__item-count">13</span></a
-        >
-        <a href="#history" class="main-navigation__item"
-          >History <span class="main-navigation__item-count">4</span></a
-        >
-        <a href="#favorites" class="main-navigation__item"
-          >Favorites <span class="main-navigation__item-count">8</span></a
-        >
+          All movies
+        </a>
+        <a href="#watchlist" class="main-navigation__item">
+          Watchlist <span class="main-navigation__item-count">13</span>
+        </a>
+        <a href="#history" class="main-navigation__item">
+          History <span class="main-navigation__item-count">4</span>
+        </a>
+        <a href="#favorites" class="main-navigation__item">
+          Favorites <span class="main-navigation__item-count">8</span>
+        </a>
         <a
           href="#stats"
           class="main-navigation__item main-navigation__item--additional"
-          >Stats</a
         >
-      </nav>
-
+          Stats
+        </a>
+      </nav>{" "}
       <ul class="sort">
         <li>
-          <a href="#" class="sort__button sort__button--active"
-            >Sort by default</a
-          >
+          <a href="#" class="sort__button sort__button--active">
+            Sort by default
+          </a>
         </li>
-        <li><a href="#" class="sort__button">Sort by date</a></li>
-        <li><a href="#" class="sort__button">Sort by rating</a></li>
-      </ul>
-
+        <li>
+          <a href="#" class="sort__button">
+            Sort by date
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sort__button">
+            Sort by rating
+          </a>
+        </li>
+      </ul>{" "}
       <section class="films">
         <section class="films-list">
           <h2 class="films-list__title visually-hidden">
@@ -121,19 +70,13 @@
               </p>
               <a class="film-card__comments">5 comments</a>
               <form class="film-card__controls">
-                <button
-                  class="film-card__controls-item button film-card__controls-item--add-to-watchlist"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">
                   Add to watchlist
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--mark-as-watched"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">
                   Mark as watched
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--favorite"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--favorite">
                   Mark as favorite
                 </button>
               </form>
@@ -159,19 +102,13 @@
               </p>
               <a class="film-card__comments">89 comments</a>
               <form class="film-card__controls">
-                <button
-                  class="film-card__controls-item button film-card__controls-item--add-to-watchlist film-card__controls-item--active"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist film-card__controls-item--active">
                   Add to watchlist
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--mark-as-watched"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">
                   Mark as watched
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--favorite"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--favorite">
                   Mark as favorite
                 </button>
               </form>
@@ -197,19 +134,13 @@
               </p>
               <a class="film-card__comments">18 comments</a>
               <form class="film-card__controls">
-                <button
-                  class="film-card__controls-item button film-card__controls-item--add-to-watchlist"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">
                   Add to watchlist
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--mark-as-watched film-card__controls-item--active"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--mark-as-watched film-card__controls-item--active">
                   Mark as watched
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--favorite"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--favorite">
                   Mark as favorite
                 </button>
               </form>
@@ -237,19 +168,13 @@
               </p>
               <a class="film-card__comments">465 comments</a>
               <form class="film-card__controls">
-                <button
-                  class="film-card__controls-item button film-card__controls-item--add-to-watchlist"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">
                   Add to watchlist
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--mark-as-watched"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">
                   Mark as watched
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item--active"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item--active">
                   Mark as favorite
                 </button>
               </form>
@@ -277,19 +202,13 @@
               </p>
               <a class="film-card__comments">0 comments</a>
               <form class="film-card__controls">
-                <button
-                  class="film-card__controls-item button film-card__controls-item--add-to-watchlist film-card__controls-item--active"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist film-card__controls-item--active">
                   Add to watchlist
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--mark-as-watched film-card__controls-item--active"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--mark-as-watched film-card__controls-item--active">
                   Mark as watched
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item--active"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item--active">
                   Mark as favorite
                 </button>
               </form>
@@ -323,19 +242,13 @@
               </p>
               <a class="film-card__comments">18 comments</a>
               <form class="film-card__controls">
-                <button
-                  class="film-card__controls-item button film-card__controls-item--add-to-watchlist"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">
                   Add to watchlist
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--mark-as-watched  film-card__controls-item--active"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--mark-as-watched  film-card__controls-item--active">
                   Mark as watched
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--favorite"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--favorite">
                   Mark as favorite
                 </button>
               </form>
@@ -361,19 +274,13 @@
               </p>
               <a class="film-card__comments">12 comments</a>
               <form class="film-card__controls">
-                <button
-                  class="film-card__controls-item button film-card__controls-item--add-to-watchlist"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">
                   Add to watchlist
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--mark-as-watched"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">
                   Mark as watched
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--favorite"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--favorite">
                   Mark as favorite
                 </button>
               </form>
@@ -407,19 +314,13 @@
               </p>
               <a class="film-card__comments">465 comments</a>
               <form class="film-card__controls">
-                <button
-                  class="film-card__controls-item button film-card__controls-item--add-to-watchlist"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">
                   Add to watchlist
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--mark-as-watched"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">
                   Mark as watched
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item--active"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item--active">
                   Mark as favorite
                 </button>
               </form>
@@ -445,19 +346,13 @@
               </p>
               <a class="film-card__comments">56 comments</a>
               <form class="film-card__controls">
-                <button
-                  class="film-card__controls-item button film-card__controls-item--add-to-watchlist"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">
                   Add to watchlist
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--mark-as-watched"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">
                   Mark as watched
                 </button>
-                <button
-                  class="film-card__controls-item button film-card__controls-item--favorite"
-                >
+                <button class="film-card__controls-item button film-card__controls-item--favorite">
                   Mark as favorite
                 </button>
               </form>
@@ -465,13 +360,6 @@
           </div>
         </section>
       </section>
-    </main>
-
-    <footer class="footer">
-      <section class="footer__logo logo logo--smaller">Cinemaddict</section>
-      <section class="footer__statistics">
-        <p>130 291 movies inside</p>
-      </section>
-    </footer>
-  </body>
-</html>
+    </div>
+  );
+};
