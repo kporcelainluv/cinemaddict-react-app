@@ -51,60 +51,66 @@ export const Popup = ({ film }) => {
               </div>
 
               <table className="film-details__table">
-                <tr className="film-details__row">
-                  <td className="film-details__term">Director</td>
-                  <td className="film-details__cell">
-                    {film.film_info.director}
-                  </td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Writers</td>
-                  <td className="film-details__cell">
-                    {film.film_info.writers.reduce((str, elm) => {
-                      str += `${elm}, `;
-                      return str;
-                    }, ``)}
-                  </td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Actors</td>
-                  <td className="film-details__cell">
-                    {film.film_info.actors.reduce((str, elm) => {
-                      str += `${elm}, `;
-                      return str;
-                    }, ``)}
-                  </td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Release Date</td>
-                  <td className="film-details__cell">
-                    {moment(film.film_info.release.date).format(`DD MMMM YYYY`)}
-                  </td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Runtime</td>
-                  <td className="film-details__cell">
-                    {hours}h {minutes}m
-                  </td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">Country</td>
-                  <td className="film-details__cell">
-                    {film.film_info.release.release_country}
-                  </td>
-                </tr>
-                <tr className="film-details__row">
-                  <td className="film-details__term">
-                    {getGenreHeading(film.film_info.genre)}
-                  </td>
-                  <td className="film-details__cell">
-                    {film.film_info.genre.map(genre => {
-                      return (
-                        <span className="film-details__genre">{genre}</span>
-                      );
-                    })}
-                  </td>
-                </tr>
+                <tbody>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Director</td>
+                    <td className="film-details__cell">
+                      {film.film_info.director}
+                    </td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Writers</td>
+                    <td className="film-details__cell">
+                      {film.film_info.writers.reduce((str, elm) => {
+                        str += `${elm}, `;
+                        return str;
+                      }, ``)}
+                    </td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Actors</td>
+                    <td className="film-details__cell">
+                      {film.film_info.actors.reduce((str, elm) => {
+                        str += `${elm}, `;
+                        return str;
+                      }, ``)}
+                    </td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Release Date</td>
+                    <td className="film-details__cell">
+                      {moment(film.film_info.release.date).format(
+                        `DD MMMM YYYY`
+                      )}
+                    </td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Runtime</td>
+                    <td className="film-details__cell">
+                      {hours}h {minutes}m
+                    </td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">Country</td>
+                    <td className="film-details__cell">
+                      {film.film_info.release.release_country}
+                    </td>
+                  </tr>
+                  <tr className="film-details__row">
+                    <td className="film-details__term">
+                      {getGenreHeading(film.film_info.genre)}
+                    </td>
+                    <td className="film-details__cell">
+                      {film.film_info.genre.map(genre => {
+                        return (
+                          <span className="film-details__genre" key={genre}>
+                            {genre}
+                          </span>
+                        );
+                      })}
+                    </td>
+                  </tr>
+                </tbody>
               </table>
 
               <p className="film-details__film-description">
