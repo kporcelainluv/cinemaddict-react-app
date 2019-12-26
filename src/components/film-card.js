@@ -22,6 +22,10 @@ export class FilmCard extends React.Component {
     const props = this.props.film;
     const year = moment(props.film_info.release.date).format("YYYY");
     const [hours, minutes] = countHoursAndMins(props.film_info.runtime);
+    const description =
+      props.film_info.description.length > 139
+        ? props.film_info.description.slice(0, 139) + `...`
+        : props.film_info.description;
     return (
       <article className="film-card">
         <h3
@@ -52,7 +56,7 @@ export class FilmCard extends React.Component {
             this.onHandleTitleClick(props);
           }}
         />
-        <p className="film-card__description">{props.film_info.description}</p>
+        <p className="film-card__description">{description}</p>
         <a
           className="film-card__comments"
           onClick={event => {
