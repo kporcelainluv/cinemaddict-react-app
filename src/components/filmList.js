@@ -2,7 +2,6 @@ import React from "react";
 import { FilmCard } from "./film-card";
 
 export const FilmList = ({ type, text, films }) => {
-  console.log(films);
   if (type === "extra") {
     return (
       <section className="films-list--extra">
