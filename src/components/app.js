@@ -7,18 +7,18 @@ import { Sorting } from "./sorting";
 import { ShowMoreButton } from "./showMoreButton";
 import { FilmsSection } from "./filmsSection";
 import { FilmsList } from "./filmsListSection";
+import { ExtraFilmList } from "./filmListExtra";
 
 export class App extends React.Component {
+  // pass children
   render() {
     return (
       <div>
         <Tabs />
         <Sorting />
-        <FilmsSection>
+        <section className="films-list">
           <FilmsList>
-            <h2 className="films-list__title visually-hidden">
-              All movies. Upcoming
-            </h2>
+
 
             <div className="films-list__container">
               {mockFilms.map(film => {
@@ -29,26 +29,22 @@ export class App extends React.Component {
             <ShowMoreButton />
           </FilmsList>
 
-          <section className="films-list--extra">
-            <h2 className="films-list__title">Top rated</h2>
+          {/*  <ExtraFilmList name={"Top rated"}>*/}
+          {/*    <div className="films-list__container">*/}
+          {/*      {mockFilms.slice(0, 2).map(film => {*/}
+          {/*        return <FilmCard props={film} key={film.id} />;*/}
+          {/*      })}*/}
+          {/*    </div>*/}
+          {/*  </ExtraFilmList>*/}
 
-            <div className="films-list__container">
-              {mockFilms.slice(0, 2).map(film => {
-                return <FilmCard props={film} key={film.id} />;
-              })}
-            </div>
-          </section>
-
-          <section className="films-list--extra">
-            <h2 className="films-list__title">Most commented</h2>
-
-            <div className="films-list__container">
-              {mockFilms.slice(0, 2).map(film => {
-                return <FilmCard props={film} key={film.id} />;
-              })}
-            </div>
-          </section>
-        </FilmsSection>
+          {/*  <ExtraFilmList name={"Most commented"}>*/}
+          {/*    <div className="films-list__container">*/}
+          {/*      {mockFilms.slice(0, 2).map(film => {*/}
+          {/*        return <FilmCard props={film} key={film.id} />;*/}
+          {/*      })}*/}
+          {/*    </div>*/}
+          {/*  </ExtraFilmList>*/}
+        </section>
       </div>
     );
   }
