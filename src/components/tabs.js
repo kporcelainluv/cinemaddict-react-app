@@ -17,8 +17,14 @@ export class Tabs extends React.Component {
 
   getTabActive(type) {
     if (this.state.type === type) {
+      if (type === `stats`) {
+        return `main-navigation__item main-navigation__item--additional main-navigation__item--active`;
+      }
       return `main-navigation__item main-navigation__item--active`;
     } else {
+      if (type === `stats`) {
+        return `main-navigation__item main-navigation__item--additional`;
+      }
       return `main-navigation__item`;
     }
   }
@@ -69,14 +75,19 @@ export class Tabs extends React.Component {
             this.onTabClick(`favorites`);
           }}
         >
-          Favorites{" "}
+          Favorites
           <span className="main-navigation__item-count">
             {this.favoritesLength}
           </span>
         </a>
         <a
           href="#stats"
-          className="main-navigation__item main-navigation__item--additional"
+          className={this.getTabActive(`stats`)}
+          onClick={event => {
+            console.log("clicked on stats");
+            event.preventDefault();
+            this.onTabClick(`stats`);
+          }}
         >
           Stats
         </a>

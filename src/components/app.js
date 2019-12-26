@@ -14,6 +14,7 @@ import {
   getWatched
 } from "../utils";
 import { NavTab } from "../consts";
+import { Stats } from "./stats";
 
 export class App extends React.Component {
   state = {
@@ -21,7 +22,8 @@ export class App extends React.Component {
     isPopupOpened: false,
     filmId: null,
     sortingType: "default",
-    tabType: `all`
+    tabType: `all`,
+    statsOpened: false
   };
 
   onFilmClick = (id, isOpened) => {
@@ -50,6 +52,8 @@ export class App extends React.Component {
       this.setState({ tabType: "history" });
     } else if (type === "favorites") {
       this.setState({ tabType: "favorites" });
+    } else if (type === "stats") {
+      this.setState({ tabType: "stats", statsOpened: true });
     }
   };
 
@@ -80,8 +84,9 @@ export class App extends React.Component {
       return getWatched(films);
     } else if (tabType === NavTab.FAVORITES) {
       return getFavorite(films);
+    } else if (tabType === NavTab.STATS) {
+      return films;
     }
-    // else if (tabType === NavTab.STATS)
   };
   getTabsFilmsLength = (tabType, films) => {
     const tabedFilms = this.tabFilms(tabType, films);
@@ -113,6 +118,7 @@ export class App extends React.Component {
             onPopupClose={this.onPopupClose}
           />
         )}
+        {this.state.statsOpened && <Stats films={this.state.films} />}
       </div>
     );
   }
