@@ -15,7 +15,6 @@ export class FilmCard extends React.Component {
     this.setState({ isOpen: true });
     // TODO: ask why I can't pass this.state.isOpen instead of true
     this.onFilmClick(film.id, true);
-    console.log("in filmcard", film.id, true);
   };
 
   render() {

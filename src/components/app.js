@@ -10,8 +10,11 @@ export class App extends React.Component {
   state = { isPopupOpened: false, filmId: null };
 
   onFilmClick = (id, isOpened) => {
-    console.log({ id, isOpened });
     this.setState({ filmId: id, isPopupOpened: isOpened });
+  };
+
+  onPopupClose = () => {
+    this.setState({ filmId: null, isPopupOpened: false });
   };
 
   getFilmById = (id, films) => {
@@ -25,7 +28,10 @@ export class App extends React.Component {
         <Sorting />
         <FilmsSection films={mockFilms} onFilmClick={this.onFilmClick} />
         {this.state.isPopupOpened && (
-          <Popup film={this.getFilmById(this.state.filmId, mockFilms)} />
+          <Popup
+            film={this.getFilmById(this.state.filmId, mockFilms)}
+            onPopupClose={this.onPopupClose}
+          />
         )}
       </div>
     );

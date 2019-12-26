@@ -1,7 +1,6 @@
 import React from "react";
 import { ShowMoreButton } from "./showMoreButton";
 import { FilmList } from "./filmList";
-import { Popup } from "./Popup";
 
 export const FilmsSection = ({ films, onFilmClick }) => {
   return (
