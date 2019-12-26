@@ -1,45 +1,65 @@
 import React from "react";
 
-export const Sorting = ({ onSortingTypeChange }) => {
-  const onSortButtonClick = type => {
-    onSortingTypeChange(type);
+export class Sorting extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onSortingTypeChange = props.onSortingTypeChange;
+  }
+  state = { type: "default" };
+
+  onSortButtonClick = type => {
+    this.onSortingTypeChange(type);
+    this.setState({ type });
   };
 
-  return (
-    <ul className="sort">
-      <li>
-        <a
-          href="#"
-          className="sort__button sort__button--active"
-          onClick={() => {
-            onSortButtonClick("default");
-          }}
-        >
-          Sort by default
-        </a>
-      </li>
-      <li>
-        <a
-          href="#"
-          className="sort__button"
-          onClick={() => {
-            onSortButtonClick("date");
-          }}
-        >
-          Sort by date
-        </a>
-      </li>
-      <li>
-        <a
-          href="#"
-          className="sort__button"
-          onClick={() => {
-            onSortButtonClick("rating");
-          }}
-        >
-          Sort by rating
-        </a>
-      </li>
-    </ul>
-  );
-};
+  getActiveButton(type) {
+    if (this.state.type === type) {
+      return `sort__button sort__button--active`;
+    } else {
+      return `sort__button`;
+    }
+  }
+
+  render() {
+    return (
+      <ul className="sort">
+        <li>
+          <a
+            href="#"
+            className={this.getActiveButton("default")}
+            onClick={event => {
+              event.preventDefault();
+              this.onSortButtonClick("default");
+            }}
+          >
+            Sort by default
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            className={this.getActiveButton("date")}
+            onClick={event => {
+              event.preventDefault();
+              this.onSortButtonClick("date");
+            }}
+          >
+            Sort by date
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            className={this.getActiveButton("rating")}
+            onClick={event => {
+              event.preventDefault();
+              this.onSortButtonClick("rating");
+            }}
+          >
+            Sort by rating
+          </a>
+        </li>
+      </ul>
+    );
+  }
+}

@@ -23,7 +23,6 @@ export class App extends React.Component {
   };
 
   onSortingTypeChange = type => {
-    console.log({ type });
     if (type === "default") {
       this.setState({ sortingType: "default" });
     } else if (type === "date") {
@@ -43,7 +42,6 @@ export class App extends React.Component {
   };
   render() {
     const sortedFilms = (type, films) => {
-      console.log({ type, films });
       if (type === "default") {
         const a = sortByDefault(films);
         return sortByDefault(films);
