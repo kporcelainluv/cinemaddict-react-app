@@ -4,6 +4,9 @@ export class Tabs extends React.Component {
   constructor(props) {
     super(props);
     this.onTabChange = props.onTabChange;
+    this.watchlistLength = props.watchlist;
+    this.watchedLength = props.watched;
+    this.favoritesLength = props.favorites;
   }
   state = { type: `all` };
 
@@ -40,7 +43,10 @@ export class Tabs extends React.Component {
             this.onTabClick(`watchlist`);
           }}
         >
-          Watchlist <span className="main-navigation__item-count">13</span>
+          Watchlist{" "}
+          <span className="main-navigation__item-count">
+            {this.watchlistLength}
+          </span>
         </a>
         <a
           href="#history"
@@ -50,7 +56,10 @@ export class Tabs extends React.Component {
             this.onTabClick(`history`);
           }}
         >
-          History <span className="main-navigation__item-count">4</span>
+          History{" "}
+          <span className="main-navigation__item-count">
+            {this.watchedLength}
+          </span>
         </a>
         <a
           href="#favorites"
@@ -60,7 +69,10 @@ export class Tabs extends React.Component {
             this.onTabClick(`favorites`);
           }}
         >
-          Favorites <span className="main-navigation__item-count">8</span>
+          Favorites{" "}
+          <span className="main-navigation__item-count">
+            {this.favoritesLength}
+          </span>
         </a>
         <a
           href="#stats"

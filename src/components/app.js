@@ -83,6 +83,10 @@ export class App extends React.Component {
     }
     // else if (tabType === NavTab.STATS)
   };
+  getTabsFilmsLength = (tabType, films) => {
+    const tabedFilms = this.tabFilms(tabType, films);
+    return tabedFilms.length;
+  };
   getSortedFilms = (sortType, tabType, films) => {
     return this.tabFilms(tabType, this.sortedFilms(sortType, films));
   };
@@ -95,7 +99,12 @@ export class App extends React.Component {
 
     return (
       <div>
-        <Tabs onTabChange={this.onTabChange} />
+        <Tabs
+          onTabChange={this.onTabChange}
+          watchlist={this.getTabsFilmsLength(`watchlist`, this.state.films)}
+          watched={this.getTabsFilmsLength(`history`, this.state.films)}
+          favorites={this.getTabsFilmsLength(`favorites`, this.state.films)}
+        />
         <Sorting onSortingTypeChange={this.onSortingTypeChange} />
         <FilmsSection films={films} onFilmClick={this.onFilmClick} />
         {this.state.isPopupOpened && (
