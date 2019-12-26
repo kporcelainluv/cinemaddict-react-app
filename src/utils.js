@@ -146,29 +146,38 @@ export const getMostCommentedFilms = films => {
 };
 
 export const sortByDefault = films => {
-  return films.sort((a, b) => {
-    if (parseInt(a.id) > parseInt(b.id)) {
-      return 1;
-    } else if (parseInt(a.id) < parseInt(b.id)) {
-      return -1;
-    }
-    return 0;
-  });
+  return films
+    .sort((a, b) => {
+      if (parseInt(a.id) > parseInt(b.id)) {
+        return 1;
+      } else if (parseInt(a.id) < parseInt(b.id)) {
+        return -1;
+      }
+      return 0;
+    })
+    .slice(0);
 };
 
 export const sortByDate = films => {
-  return films.sort((a, b) => {
-    return (
-      parseInt(Movie.getReleaseDate(a), 10) -
-      parseInt(Movie.getReleaseDate(b), 10)
-    );
-  });
+  return films
+    .sort((a, b) => {
+      return (
+        parseInt(b.film_info.release.date, 10) -
+        parseInt(a.film_info.release.date, 10)
+      );
+    })
+    .slice(0);
 };
 
 export const sortByRating = films => {
-  return films.sort((a, b) => {
-    return parseInt(Movie.getRating(a), 10) - parseInt(Movie.getRating(b), 10);
-  });
+  return films
+    .sort((a, b) => {
+      return (
+        parseInt(b.film_info.total_rating, 10) -
+        parseInt(a.film_info.total_rating, 10)
+      );
+    })
+    .slice(0);
 };
 
 export const filterFilms = (films, query) => {
