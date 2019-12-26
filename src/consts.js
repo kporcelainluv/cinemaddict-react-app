@@ -12,11 +12,11 @@ export const RATING_LENGTH = 9;
 export const DEBOUNCE_TIMEOUT = 500;
 
 export const NavTab = {
-  ALL: `#all`,
-  HISTORY: `#history`,
-  WATCHLIST: `#watchlist`,
-  FAVORITES: `#favorites`,
-  STATS: `#stats`
+  ALL: `all`,
+  HISTORY: `history`,
+  WATCHLIST: `watchlist`,
+  FAVORITES: `favorites`,
+  STATS: `stats`
 };
 
 export const SortType = {

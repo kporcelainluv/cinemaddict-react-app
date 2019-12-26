@@ -226,11 +226,15 @@ export const countWatchedFilms = films => {
   return films.filter(film => Movie.getWatched(film) === true).length;
 };
 
-export const getWatched = films => films.filter(film => Movie.getWatched(film));
-export const getWatchlist = films =>
-  films.filter(film => Movie.getWatchlist(film));
-export const getFavorite = films =>
-  films.filter(film => Movie.getFavorite(film));
+export const getWatched = films => {
+  return films.filter(film => film.user_details.already_watched).slice(0);
+};
+export const getWatchlist = films => {
+  return films.filter(film => film.user_details.watchlist).slice(0);
+};
+export const getFavorite = films => {
+  return films.filter(film => film.user_details.favorite).slice(0);
+};
 
 export const getDistanceInWords = (dateLeft, dateRight) => {
   const differenceinSeconds = differenceInSeconds(dateRight, dateLeft);

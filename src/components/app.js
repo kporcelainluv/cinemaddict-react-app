@@ -5,14 +5,23 @@ import { Sorting } from "./sorting";
 import { FilmsSection } from "./filmsSection";
 import { mockFilms } from "../mockData";
 import { Popup } from "./Popup";
-import { sortByDefault, sortByDate, sortByRating } from "../utils";
+import {
+  sortByDefault,
+  sortByDate,
+  sortByRating,
+  getWatchlist,
+  getFavorite,
+  getWatched
+} from "../utils";
+import { NavTab } from "../consts";
 
 export class App extends React.Component {
   state = {
+    films: mockFilms,
     isPopupOpened: false,
     filmId: null,
     sortingType: "default",
-    films: mockFilms
+    tabType: `all`
   };
 
   onFilmClick = (id, isOpened) => {
@@ -32,6 +41,18 @@ export class App extends React.Component {
     }
   };
 
+  onTabChange = type => {
+    if (type === "all") {
+      this.setState({ tabType: "all" });
+    } else if (type === "watchlist") {
+      this.setState({ tabType: "watchlist" });
+    } else if (type === "history") {
+      this.setState({ tabType: "history" });
+    } else if (type === "favorites") {
+      this.setState({ tabType: "favorites" });
+    }
+  };
+
   onPopupClose = () => {
     this.setState({ filmId: null, isPopupOpened: false });
   };
@@ -40,31 +61,46 @@ export class App extends React.Component {
     const film = films.filter(elm => elm.id === id)[0];
     return film;
   };
+
+  sortedFilms = (type, films) => {
+    if (type === "default") {
+      return sortByDefault(films);
+    } else if (type === "date") {
+      return sortByDate(films);
+    } else if (type === "rating") {
+      return sortByRating(films);
+    }
+  };
+  tabFilms = (tabType, films) => {
+    if (tabType === NavTab.ALL) {
+      return films;
+    } else if (tabType === NavTab.WATCHLIST) {
+      return getWatchlist(films);
+    } else if (tabType === NavTab.HISTORY) {
+      return getWatched(films);
+    } else if (tabType === NavTab.FAVORITES) {
+      return getFavorite(films);
+    }
+    // else if (tabType === NavTab.STATS)
+  };
+  getSortedFilms = (sortType, tabType, films) => {
+    return this.tabFilms(tabType, this.sortedFilms(sortType, films));
+  };
   render() {
-    const sortedFilms = (type, films) => {
-      if (type === "default") {
-        const a = sortByDefault(films);
-        return sortByDefault(films);
-      } else if (type === "date") {
-        return sortByDate(films);
-      } else if (type === "rating") {
-        return sortByRating(films);
-      }
-    };
+    const films = this.getSortedFilms(
+      this.state.sortingType,
+      this.state.tabType,
+      this.state.films
+    );
+
     return (
       <div>
-        <Tabs />
+        <Tabs onTabChange={this.onTabChange} />
         <Sorting onSortingTypeChange={this.onSortingTypeChange} />
-        <FilmsSection
-          films={sortedFilms(this.state.sortingType, this.state.films)}
-          onFilmClick={this.onFilmClick}
-        />
+        <FilmsSection films={films} onFilmClick={this.onFilmClick} />
         {this.state.isPopupOpened && (
           <Popup
-            film={this.getFilmById(
-              this.state.filmId,
-              sortedFilms(this.state.sortingType, this.state.films)
-            )}
+            film={this.getFilmById(this.state.filmId, films)}
             onPopupClose={this.onPopupClose}
           />
         )}
