@@ -61,7 +61,7 @@ export const getDateByFilterType = filterType => {
 export const getFilmsByFilter = (films, filterType) => {
   const date = getDateByFilterType(filterType);
   return films.filter(film => {
-    const watchDate = Movie.getWatchingDate(film);
+    const watchDate = film.user_details.watching_date;
     return isAfter(watchDate, date);
   });
 };
@@ -72,7 +72,7 @@ export const getWatchedFilms = films => {
 
 export const getHoursAndMins = films => {
   const duration = films.reduce((acc, elm) => {
-    return acc + Movie.getRuntime(elm);
+    return acc + elm.film_info.runtime;
   }, 0);
   const [hours, minutes] = countHoursAndMins(duration);
   return [hours, minutes];
@@ -80,7 +80,7 @@ export const getHoursAndMins = films => {
 
 const getSortedGenres = films => {
   const genres = films.reduce((acc, elm) => {
-    const genresList = Movie.getGenres(elm);
+    const genresList = elm.film_info.genre;
     genresList.forEach(genre => {
       if (genre in acc) {
         acc[genre] += 1;
@@ -112,6 +112,10 @@ export const getGenresByKeysVals = films => {
 
 export const getTopGenre = films => {
   const genres = getSortedGenres(films);
+  // TODO: ADD ON CURRENT PROPJECT
+  if (genres.length === 0) {
+    return " ";
+  }
   return genres[0][0];
 };
 
