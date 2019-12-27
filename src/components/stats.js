@@ -30,7 +30,6 @@ export class Stats extends React.Component {
 
     return (
       <section className="statistic">
-        // TODO: add active (checked) to filter tabs
         <StatsRank rank={statsRank} />
         <StatsFilters onChangeFilter={this.onChangeFilter} />
         {

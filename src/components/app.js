@@ -111,14 +111,15 @@ export class App extends React.Component {
           favorites={this.getTabsFilmsLength(`favorites`, this.state.films)}
         />
         <Sorting onSortingTypeChange={this.onSortingTypeChange} />
-        <FilmsSection films={films} onFilmClick={this.onFilmClick} />
-        {this.state.isPopupOpened && (
-          <Popup
-            film={this.getFilmById(this.state.filmId, films)}
-            onPopupClose={this.onPopupClose}
-          />
-        )}
-        {this.state.statsOpened && <Stats films={this.state.films} />}
+        <Stats films={this.state.films} />
+        {/*<FilmsSection films={films} onFilmClick={this.onFilmClick} />*/}
+        {/*{this.state.isPopupOpened && (*/}
+        {/*  <Popup*/}
+        {/*    film={this.getFilmById(this.state.filmId, films)}*/}
+        {/*    onPopupClose={this.onPopupClose}*/}
+        {/*  />*/}
+        {/*)}*/}
+        {/*{this.state.statsOpened && <Stats films={this.state.films} />}*/}
       </div>
     );
   }
