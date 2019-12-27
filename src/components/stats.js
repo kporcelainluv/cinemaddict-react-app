@@ -2,12 +2,14 @@ import React from "react";
 import { StatsSummary } from "./statsComponents/statsSummary";
 import { StatsRank } from "./statsComponents/statsRank";
 import { StatsFilters } from "./statsComponents/statsFilters";
+import { StatsChart } from "./statsComponents/statsChart";
 import {
   getTopGenre,
   getWatchedFilms,
   getHoursAndMins,
   getStatsRank,
-  getFilmsByFilter
+  getFilmsByFilter,
+  getGenresByKeysVals
 } from "../utils";
 
 export class Stats extends React.Component {
@@ -40,6 +42,7 @@ export class Stats extends React.Component {
             topGenre={topGenre}
           />
         }
+        // TODO: add stats chart
       </section>
     );
   }
