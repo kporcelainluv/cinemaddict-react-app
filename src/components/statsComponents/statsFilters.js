@@ -8,13 +8,7 @@ export class StatsFilters extends React.Component {
   state = {
     filterType: "all-time"
   };
-  onFilterClick = filterType => {
-    console.log(filterType);
-    this.setState({ filterType });
-    this.onChangeFilter(filterType);
-  };
-  // TODO: add active (checked) to filter tabs
-  getFilterChecked = type => {};
+
   render() {
     return (
       <form
@@ -25,16 +19,18 @@ export class StatsFilters extends React.Component {
         <p className="statistic__filters-description">Show stats:</p>
 
         <input
+          onChange={() =>
+            this.setState(
+              { filterType: "all-time" },
+              this.onChangeFilter("all-time")
+            )
+          }
           type="radio"
           className="statistic__filters-input visually-hidden"
           name="statistic-filter"
           id="statistic-all-time"
           value="all-time"
           checked={this.state.filterType === "all-time"}
-          onClick={event => {
-            event.preventDefault();
-            this.onFilterClick(`all-time`);
-          }}
         />
         <label
           htmlFor="statistic-all-time"
@@ -50,10 +46,9 @@ export class StatsFilters extends React.Component {
           id="statistic-today"
           value="today"
           checked={this.state.filterType === "today"}
-          onClick={event => {
-            event.preventDefault();
-            this.onFilterClick(`today`);
-          }}
+          onChange={() =>
+            this.setState({ filterType: "today" }, this.onChangeFilter("today"))
+          }
         />
         <label htmlFor="statistic-today" className="statistic__filters-label">
           Today
@@ -66,10 +61,9 @@ export class StatsFilters extends React.Component {
           id="statistic-week"
           value="week"
           checked={this.state.filterType === "week"}
-          onClick={event => {
-            event.preventDefault();
-            this.onFilterClick(`week`);
-          }}
+          onChange={() =>
+            this.setState({ filterType: "week" }, this.onChangeFilter("week"))
+          }
         />
         <label htmlFor="statistic-week" className="statistic__filters-label">
           Week
@@ -82,10 +76,9 @@ export class StatsFilters extends React.Component {
           id="statistic-month"
           value="month"
           checked={this.state.filterType === "month"}
-          onClick={event => {
-            event.preventDefault();
-            this.onFilterClick(`month`);
-          }}
+          onChange={() =>
+            this.setState({ filterType: "month" }, this.onChangeFilter("month"))
+          }
         />
         <label htmlFor="statistic-month" className="statistic__filters-label">
           Month
@@ -98,10 +91,9 @@ export class StatsFilters extends React.Component {
           id="statistic-year"
           value="year"
           checked={this.state.filterType === "year"}
-          onClick={event => {
-            event.preventDefault();
-            this.onFilterClick(`year`);
-          }}
+          onChange={() =>
+            this.setState({ filterType: "year" }, this.onChangeFilter("year"))
+          }
         />
         <label htmlFor="statistic-year" className="statistic__filters-label">
           Year
