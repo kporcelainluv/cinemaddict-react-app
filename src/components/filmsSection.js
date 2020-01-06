@@ -2,7 +2,7 @@ import React from "react";
 import { ShowMoreButton } from "./showMoreButton";
 import { FilmList } from "./filmList";
 
-export const FilmsSection = ({ films, onFilmClick }) => {
+export const FilmsSection = ({ films, onFilmClick, updateFilmHandler }) => {
   return (
     <section className="films">
       <FilmList
@@ -10,6 +10,7 @@ export const FilmsSection = ({ films, onFilmClick }) => {
         text={"All movies. Upcoming"}
         films={films}
         onFilmClick={onFilmClick}
+        updateFilmHandler={updateFilmHandler}
       />
       <ShowMoreButton />
 

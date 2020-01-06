@@ -11,7 +11,6 @@ export class FilmCard extends React.Component {
     this.updateFilmHandler = props.updateFilmHandler;
   }
   state = { isOpen: false, watched: false, watchlist: false, favorite: false };
-  //film-card__controls-item--active
   onHandleTitleClick = film => {
     this.setState({ isOpen: true });
     // TODO: ask why I can't pass this.state.isOpen instead of true
