@@ -2,17 +2,17 @@ import React from "react";
 
 import { Tabs } from "./tabs";
 import { Sorting } from "./sorting";
-import { FilmsSection } from "./filmsSection";
+import { FilmList } from "./filmList";
 import { mockFilms } from "../mockData";
+import { ShowMoreButton } from "./showMoreButton";
 import { Popup } from "./Popup";
 import {
-  sortByDefault,
-  sortByDate,
-  sortByRating,
-  getWatchlist,
   getFavorite,
   getWatched,
-  updateFilms
+  getWatchlist,
+  sortByDate,
+  sortByDefault,
+  sortByRating
 } from "../utils";
 import { NavTab } from "../consts";
 import { Stats } from "./stats";
@@ -27,16 +27,64 @@ export class App extends React.Component {
     statsOpened: false
   };
 
-  updateFilmHandler = updatedFilm => {
-    const updatedFilms = updateFilms(this.state.films, updatedFilm);
-    this.setState({ films: updatedFilms });
-  };
-
   onFilmClick = (id, isOpened) => {
     this.setState({
       filmId: id,
       isPopupOpened: isOpened
     });
+  };
+
+  handleClickWatchlist = filmId => {
+    this.setState(state => ({
+      ...state,
+      films: state.films.map(film => {
+        if (film.id === filmId) {
+          return {
+            ...film,
+            user_details: {
+              ...film.user_details,
+              watchlist: !film.user_details.watchlist
+            }
+          };
+        }
+        return film;
+      })
+    }));
+  };
+
+  handleClickWatched = filmId => {
+    this.setState(state => ({
+      ...state,
+      films: state.films.map(film => {
+        if (film.id === filmId) {
+          return {
+            ...film,
+            user_details: {
+              ...film.user_details,
+              already_watched: !film.user_details.already_watched
+            }
+          };
+        }
+        return film;
+      })
+    }));
+  };
+  handleClickFavorite = filmId => {
+    this.setState(state => ({
+      ...state,
+      films: state.films.map(film => {
+        if (film.id === filmId) {
+          return {
+            ...film,
+            user_details: {
+              ...film.user_details,
+              favorite: !film.user_details.favorite
+            }
+          };
+        }
+        return film;
+      })
+    }));
   };
 
   onSortingTypeChange = type => {
@@ -68,8 +116,7 @@ export class App extends React.Component {
   };
 
   getFilmById = (id, films) => {
-    const film = films.filter(elm => elm.id === id)[0];
-    return film;
+    return films.filter(elm => elm.id === id)[0];
   };
 
   sortedFilms = (type, films) => {
@@ -117,11 +164,23 @@ export class App extends React.Component {
           favorites={this.getTabsFilmsLength(`favorites`, this.state.films)}
         />
         <Sorting onSortingTypeChange={this.onSortingTypeChange} />
-        <FilmsSection
-          films={films}
-          onFilmClick={this.onFilmClick}
-          updateFilmHandler={this.updateFilmHandler}
-        />
+
+        <section className="films">
+          <FilmList
+            type={"regular"}
+            text={"All movies. Upcoming"}
+            films={films}
+            onFilmClick={this.onFilmClick}
+            handleClickWatchlist={this.handleClickWatchlist}
+            handleClickWatched={this.handleClickWatched}
+            handleClickFavorite={this.handleClickFavorite}
+          />
+          <ShowMoreButton />
+
+          {/*<FilmList type={"extra"} text={"Top rated"} films={props.films} />*/}
+          {/*<FilmList type={"extra"} text={"Most commented"} films={props.films} />*/}
+        </section>
+
         {this.state.isPopupOpened && (
           <Popup
             film={this.getFilmById(this.state.filmId, films)}

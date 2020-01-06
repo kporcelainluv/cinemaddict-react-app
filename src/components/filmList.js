@@ -6,7 +6,10 @@ export const FilmList = ({
   text,
   films,
   onFilmClick,
-  updateFilmHandler
+  updateFilmHandler,
+  handleClickWatchlist,
+  handleClickWatched,
+  handleClickFavorite
 }) => {
   if (type === "extra") {
     return (
@@ -37,6 +40,9 @@ export const FilmList = ({
                 key={film.id}
                 onFilmClick={onFilmClick}
                 updateFilmHandler={updateFilmHandler}
+                handleClickWatchlist={handleClickWatchlist}
+                handleClickWatched={handleClickWatched}
+                handleClickFavorite={handleClickFavorite}
               />
             );
           })}
