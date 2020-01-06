@@ -1,14 +1,26 @@
 import React from "react";
 import { FilmCard } from "./film-card";
 
-export const FilmList = ({ type, text, films, onFilmClick }) => {
+export const FilmList = ({
+  type,
+  text,
+  films,
+  onFilmClick,
+  updateFilmHandler
+}) => {
   if (type === "extra") {
     return (
       <section className="films-list--extra">
         <h2 className="films-list__title">{text}</h2>
         <div className="films-list__container">
           {films.slice(0, 2).map(film => {
-            return <FilmCard props={film} key={film.id} />;
+            return (
+              <FilmCard
+                props={film}
+                key={film.id}
+                updateFilmHandler={updateFilmHandler}
+              />
+            );
           })}
         </div>
       </section>
@@ -20,7 +32,12 @@ export const FilmList = ({ type, text, films, onFilmClick }) => {
         <div className="films-list__container">
           {films.map(film => {
             return (
-              <FilmCard film={film} key={film.id} onFilmClick={onFilmClick} />
+              <FilmCard
+                film={film}
+                key={film.id}
+                onFilmClick={onFilmClick}
+                updateFilmHandler={updateFilmHandler}
+              />
             );
           })}
         </div>
