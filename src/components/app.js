@@ -11,7 +11,8 @@ import {
   sortByRating,
   getWatchlist,
   getFavorite,
-  getWatched
+  getWatched,
+  updateFilms
 } from "../utils";
 import { NavTab } from "../consts";
 import { Stats } from "./stats";
@@ -24,6 +25,11 @@ export class App extends React.Component {
     sortingType: "default",
     tabType: `all`,
     statsOpened: false
+  };
+
+  updateFilmHandler = updatedFilm => {
+    const updatedFilms = updateFilms(this.state.films, updatedFilm);
+    this.setState({ films: updatedFilms });
   };
 
   onFilmClick = (id, isOpened) => {
@@ -111,7 +117,11 @@ export class App extends React.Component {
           favorites={this.getTabsFilmsLength(`favorites`, this.state.films)}
         />
         <Sorting onSortingTypeChange={this.onSortingTypeChange} />
-        <FilmsSection films={films} onFilmClick={this.onFilmClick} />
+        <FilmsSection
+          films={films}
+          onFilmClick={this.onFilmClick}
+          updateFilmHandler={this.updateFilmHandler}
+        />
         {this.state.isPopupOpened && (
           <Popup
             film={this.getFilmById(this.state.filmId, films)}
