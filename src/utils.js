@@ -289,12 +289,11 @@ export const getreleaseDate = film => {
 };
 
 export const getGenresTemplate = film => {
-  film.film_info.genre.map(genre => {
+  return film.film_info.genre.map(genre => {
     return (
       <span className="film-details__genre" key={genre}>
-      {genre}
-    </span>
+        {genre}
+      </span>
     );
+  });
 };
-
-
