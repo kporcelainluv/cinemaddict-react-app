@@ -27,6 +27,10 @@ export class Popup extends React.Component {
     console.log({ stateName });
     if (stateName === `watchlist`) {
       this.setState({ watchlist: !this.state.watchlist });
+    } else if (stateName === `watched`) {
+      this.setState({ watched: !this.state.watched });
+    } else if (stateName === `favorite`) {
+      this.setState({ favorite: !this.state.favorite });
     }
 
     console.log({ state: this.state });
@@ -166,18 +170,16 @@ export class Popup extends React.Component {
             >
               <Controls
                 film={film}
-                name={`watched`}
+                name={`watchlist`}
                 updateState={this.updateState}
                 handleClick={this.handleClickWatchlist}
-                classname={`watchlist`}
                 checked={this.state.watchlist}
               />
               <Controls
                 film={film}
-                name={`watchlist`}
+                name={`watched`}
                 updateState={this.updateState}
                 handleClick={this.handleClickWatched}
-                classname={`watched`}
                 checked={this.state.watched}
               />
               <Controls
@@ -185,7 +187,6 @@ export class Popup extends React.Component {
                 name={`favorite`}
                 updateState={this.updateState}
                 handleClick={this.handleClickFavorite}
-                classname={`favorite`}
                 checked={this.state.favorite}
               />
             </section>

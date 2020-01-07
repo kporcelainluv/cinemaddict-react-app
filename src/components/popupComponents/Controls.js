@@ -22,8 +22,8 @@ export const Controls = ({
         }}
       />
       <label
-        htmlFor="watchlist"
-        className={`film-details__control-label film-details__control-label--${classname}`}
+        htmlFor={name}
+        className={`film-details__control-label film-details__control-label--${name}`}
       >
         Add to watchlist
       </label>
