@@ -154,7 +154,7 @@ export class Popup extends React.Component {
             </section>
           </div>
 
-          <Comments amount={film.comments.length} />
+          <Comments film={film} />
         </form>
       </section>
     );
