@@ -1,10 +1,10 @@
 import React from "react";
 
-import { Tabs } from "./tabs";
-import { Sorting } from "./sorting";
-import { FilmList } from "./filmList";
+import { Tabs } from "./Tabs";
+import { Sorting } from "./Sorting";
+import { FilmList } from "./FilmList";
 import { mockFilms } from "../mockData";
-import { ShowMoreButton } from "./showMoreButton";
+import { ShowMoreButton } from "./ShowMoreButton";
 import { Popup } from "./Popup";
 import {
   getFavorite,
@@ -15,7 +15,7 @@ import {
   sortByRating
 } from "../utils";
 import { NavTab } from "../consts";
-import { Stats } from "./stats";
+import { Stats } from "./Stats";
 
 export class App extends React.Component {
   state = {

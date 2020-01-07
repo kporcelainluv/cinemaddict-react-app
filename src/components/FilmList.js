@@ -1,5 +1,5 @@
 import React from "react";
-import { FilmCard } from "./film-card";
+import { FilmCard } from "./FilmCard";
 
 export const FilmList = ({
   type,
