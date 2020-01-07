@@ -1,16 +1,15 @@
 import React from "react";
-import moment from "moment";
-import { countHoursAndMins } from "../utils";
-import { Comments } from "./popupComponents/Comments";
+import {
+  countHoursAndMins,
+  getGenreHeading,
+  getActors,
+  getWriters,
+  getreleaseDate,
+  getGenresTemplate
+} from "../utils";
 import { Controls } from "./popupComponents/Controls";
-
-const getGenreHeading = genres => {
-  if (genres.length > 1) {
-    return "Genres";
-  } else {
-    return "Genre";
-  }
-};
+import { Comments } from "./popupComponents/Comments";
+import { FilmDetails } from "./popupComponents/FilmDetails";
 
 export class Popup extends React.Component {
   constructor(props) {
@@ -23,8 +22,7 @@ export class Popup extends React.Component {
   }
   state = { watched: false, favorite: false, watchlist: false };
 
-  updateState = stateName => {
-    console.log({ stateName });
+  updatePopupState = stateName => {
     if (stateName === `watchlist`) {
       this.setState({ watchlist: !this.state.watchlist });
     } else if (stateName === `watched`) {
@@ -32,8 +30,6 @@ export class Popup extends React.Component {
     } else if (stateName === `favorite`) {
       this.setState({ favorite: !this.state.favorite });
     }
-
-    console.log({ state: this.state });
   };
   componentDidMount() {
     window.addEventListener("keydown", evt => {
@@ -51,6 +47,11 @@ export class Popup extends React.Component {
   render() {
     const film = this.film;
     const [hours, minutes] = countHoursAndMins(film.film_info.runtime);
+    const actors = getActors(film);
+    const writers = getWriters(film);
+    const releaseDate = getreleaseDate(film);
+    const genres = getGenresTemplate(film);
+
     return (
       <section className="film-details">
         <form className="film-details__inner" action="" method="get">
@@ -97,64 +98,25 @@ export class Popup extends React.Component {
 
                 <table className="film-details__table">
                   <tbody>
-                    <tr className="film-details__row">
-                      <td className="film-details__term">Director</td>
-                      <td className="film-details__cell">
-                        {film.film_info.director}
-                      </td>
-                    </tr>
-                    <tr className="film-details__row">
-                      <td className="film-details__term">Writers</td>
-                      <td className="film-details__cell">
-                        {film.film_info.writers.reduce((str, elm) => {
-                          str += `${elm}, `;
-                          return str;
-                        }, ``)}
-                      </td>
-                    </tr>
-                    <tr className="film-details__row">
-                      <td className="film-details__term">Actors</td>
-                      <td className="film-details__cell">
-                        {film.film_info.actors.reduce((str, elm) => {
-                          str += `${elm}, `;
-                          return str;
-                        }, ``)}
-                      </td>
-                    </tr>
-                    <tr className="film-details__row">
-                      <td className="film-details__term">Release Date</td>
-                      <td className="film-details__cell">
-                        {moment(film.film_info.release.date).format(
-                          `DD MMMM YYYY`
-                        )}
-                      </td>
-                    </tr>
-                    <tr className="film-details__row">
-                      <td className="film-details__term">Runtime</td>
-                      <td className="film-details__cell">
-                        {hours}h {minutes}m
-                      </td>
-                    </tr>
-                    <tr className="film-details__row">
-                      <td className="film-details__term">Country</td>
-                      <td className="film-details__cell">
-                        {film.film_info.release.release_country}
-                      </td>
-                    </tr>
-                    <tr className="film-details__row">
-                      <td className="film-details__term">
-                        {getGenreHeading(film.film_info.genre)}
-                      </td>
-                      <td className="film-details__cell">
-                        {film.film_info.genre.map(genre => {
-                          return (
-                            <span className="film-details__genre" key={genre}>
-                              {genre}
-                            </span>
-                          );
-                        })}
-                      </td>
-                    </tr>
+                    <FilmDetails
+                      heading={`Director`}
+                      text={film.film_info.director}
+                    />
+                    <FilmDetails heading={`Writers`} text={writers} />
+                    <FilmDetails heading={`Actors`} text={actors} />
+                    <FilmDetails heading={`Release Date`} text={releaseDate} />
+                    <FilmDetails
+                      heading={`Runtime`}
+                      text={`${hours}h ${minutes}m}`}
+                    />
+                    <FilmDetails
+                      heading={`Country`}
+                      text={film.film_info.release.release_country}
+                    />
+                    <FilmDetails
+                      heading={getGenreHeading(film.film_info.genre)}
+                      text={genres}
+                    />
                   </tbody>
                 </table>
 
@@ -171,113 +133,28 @@ export class Popup extends React.Component {
               <Controls
                 film={film}
                 name={`watchlist`}
-                updateState={this.updateState}
+                updateState={this.updatePopupState}
                 handleClick={this.handleClickWatchlist}
                 checked={this.state.watchlist}
               />
               <Controls
                 film={film}
                 name={`watched`}
-                updateState={this.updateState}
+                updateState={this.updatePopupState}
                 handleClick={this.handleClickWatched}
                 checked={this.state.watched}
               />
               <Controls
                 film={film}
                 name={`favorite`}
-                updateState={this.updateState}
+                updateState={this.updatePopupState}
                 handleClick={this.handleClickFavorite}
                 checked={this.state.favorite}
               />
             </section>
           </div>
 
-          <div className="form-details__bottom-container">
-            <section className="film-details__comments-wrap">
-              <h3 className="film-details__comments-title">
-                Comments{" "}
-                <span className="film-details__comments-count">
-                  {film.comments.length}
-                </span>
-              </h3>
-
-              <Comments />
-
-              <div className="film-details__new-comment">
-                <div
-                  htmlFor="add-emoji"
-                  className="film-details__add-emoji-label"
-                ></div>
-
-                <label className="film-details__comment-label">
-                  <textarea
-                    className="film-details__comment-input"
-                    placeholder="Select reaction below and write comment here"
-                    name="comment"
-                  ></textarea>
-                </label>
-
-                <div className="film-details__emoji-list">
-                  <input
-                    className="film-details__emoji-item visually-hidden"
-                    name="comment-emoji"
-                    type="radio"
-                    id="emoji-smile"
-                    value="sleeping"
-                  />
-                  <label
-                    className="film-details__emoji-label"
-                    htmlFor="emoji-smile"
-                  >
-                    <img
-                      src="./images/emoji/smile.png"
-                      width="30"
-                      height="30"
-                      alt="emoji"
-                    />
-                  </label>
-
-                  <input
-                    className="film-details__emoji-item visually-hidden"
-                    name="comment-emoji"
-                    type="radio"
-                    id="emoji-sleeping"
-                    value="neutral-face"
-                  />
-                  <label
-                    className="film-details__emoji-label"
-                    htmlFor="emoji-sleeping"
-                  >
-                    <img
-                      src="./images/emoji/sleeping.png"
-                      width="30"
-                      height="30"
-                      alt="emoji"
-                    />
-                  </label>
-
-                  <input
-                    className="film-details__emoji-item visually-hidden"
-                    name="comment-emoji"
-                    type="radio"
-                    id="emoji-gpuke"
-                    value="grinning"
-                  />
-                  <label
-                    className="film-details__emoji-label"
-                    htmlFor="emoji-gpuke"
-                  >
-                    <img
-                      src="./images/emoji/puke.png"
-                      width="30"
-                      height="30"
-                      alt="emoji"
-                    />
-                  </label>
-                </div>
-              </div>
-            </section>
-          </div>
+          <Comments amount={film.comments.length} />
         </form>
       </section>
     );

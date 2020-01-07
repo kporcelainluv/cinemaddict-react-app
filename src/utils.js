@@ -7,6 +7,8 @@ import {
   differenceInHours,
   differenceInDays
 } from "date-fns";
+import moment from "moment";
+import React from "react";
 const Movie = undefined;
 
 export const createElement = template => {
@@ -260,3 +262,39 @@ export const getDistanceInWords = (dateLeft, dateRight) => {
     return `now`;
   }
 };
+
+export const getGenreHeading = genres => {
+  if (genres.length > 1) {
+    return "Genres";
+  } else {
+    return "Genre";
+  }
+};
+
+export const getActors = film => {
+  film.film_info.actors.reduce((str, elm) => {
+    str += `${elm}, `;
+    return str;
+  }, ``);
+};
+export const getWriters = film => {
+  film.film_info.writers.reduce((str, elm) => {
+    str += `${elm}, `;
+    return str;
+  }, ``);
+};
+
+export const getreleaseDate = film => {
+  return moment(film.film_info.release.date).format(`DD MMMM YYYY`);
+};
+
+export const getGenresTemplate = film => {
+  film.film_info.genre.map(genre => {
+    return (
+      <span className="film-details__genre" key={genre}>
+      {genre}
+    </span>
+    );
+};
+
+
