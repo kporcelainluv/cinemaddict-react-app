@@ -1,6 +1,8 @@
 import React from "react";
 import moment from "moment";
 import { countHoursAndMins } from "../utils";
+import { Comments } from "./popupComponents/Comments";
+import { Controls } from "./popupComponents/Controls";
 
 const getGenreHeading = genres => {
   if (genres.length > 1) {
@@ -20,6 +22,15 @@ export class Popup extends React.Component {
     this.handleClickFavorite = props.handleClickFavorite;
   }
   state = { watched: false, favorite: false, watchlist: false };
+
+  updateState = stateName => {
+    console.log({ stateName });
+    if (stateName === `watchlist`) {
+      this.setState({ watchlist: !this.state.watchlist });
+    }
+
+    console.log({ state: this.state });
+  };
   componentDidMount() {
     window.addEventListener("keydown", evt => {
       if (evt.key === `Escape` || evt.key === `Esc`) {
@@ -149,60 +160,34 @@ export class Popup extends React.Component {
               </div>
             </div>
 
-            <section className="film-details__controls">
-              <input
-                type="checkbox"
-                className="film-details__control-input visually-hidden"
-                id="watchlist"
-                name="watchlist"
+            <section
+              className="film-details__controls"
+              style={{ justifyContent: `space-between` }}
+            >
+              <Controls
+                film={film}
+                name={`watched`}
+                updateState={this.updateState}
+                handleClick={this.handleClickWatchlist}
+                classname={`watchlist`}
                 checked={this.state.watchlist}
-                onChange={() => {
-                  this.handleClickWatchlist(film.id);
-                  this.setState({ watchlist: !this.state.watchlist });
-                }}
               />
-              <label
-                htmlFor="watchlist"
-                className="film-details__control-label film-details__control-label--watchlist"
-              >
-                Add to watchlist
-              </label>
-
-              <input
-                type="checkbox"
-                className="film-details__control-input visually-hidden"
-                id="watched"
-                name="watched"
+              <Controls
+                film={film}
+                name={`watchlist`}
+                updateState={this.updateState}
+                handleClick={this.handleClickWatched}
+                classname={`watched`}
                 checked={this.state.watched}
-                onChange={() => {
-                  this.handleClickWatched(film.id);
-                  this.setState({ watched: !this.state.watched });
-                }}
               />
-              <label
-                htmlFor="watched"
-                className="film-details__control-label film-details__control-label--watched"
-              >
-                Already watched
-              </label>
-
-              <input
-                type="checkbox"
-                className="film-details__control-input visually-hidden"
-                id="favorite"
-                name="favorite"
+              <Controls
+                film={film}
+                name={`favorite`}
+                updateState={this.updateState}
+                handleClick={this.handleClickFavorite}
+                classname={`favorite`}
                 checked={this.state.favorite}
-                onChange={() => {
-                  this.handleClickFavorite(film.id);
-                  this.setState({ favorite: !this.state.favorite });
-                }}
               />
-              <label
-                htmlFor="favorite"
-                className="film-details__control-label film-details__control-label--favorite"
-              >
-                Add to favorites
-              </label>
             </section>
           </div>
 
@@ -215,110 +200,7 @@ export class Popup extends React.Component {
                 </span>
               </h3>
 
-              <ul className="film-details__comments-list">
-                <li className="film-details__comment">
-                  <span className="film-details__comment-emoji">
-                    <img
-                      src="./images/emoji/smile.png"
-                      width="55"
-                      height="55"
-                      alt="emoji"
-                    />
-                  </span>
-                  <div>
-                    <p className="film-details__comment-text">
-                      Interesting setting and a good cast
-                    </p>
-                    <p className="film-details__comment-info">
-                      <span className="film-details__comment-author">
-                        Tim Macoveev
-                      </span>
-                      <span className="film-details__comment-day">
-                        3 days ago
-                      </span>
-                      <button className="film-details__comment-delete">
-                        Delete
-                      </button>
-                    </p>
-                  </div>
-                </li>
-                <li className="film-details__comment">
-                  <span className="film-details__comment-emoji">
-                    <img
-                      src="./images/emoji/sleeping.png"
-                      width="55"
-                      height="55"
-                      alt="emoji"
-                    />
-                  </span>
-                  <div>
-                    <p className="film-details__comment-text">
-                      Booooooooooring
-                    </p>
-                    <p className="film-details__comment-info">
-                      <span className="film-details__comment-author">
-                        John Doe
-                      </span>
-                      <span className="film-details__comment-day">
-                        2 days ago
-                      </span>
-                      <button className="film-details__comment-delete">
-                        Delete
-                      </button>
-                    </p>
-                  </div>
-                </li>
-                <li className="film-details__comment">
-                  <span className="film-details__comment-emoji">
-                    <img
-                      src="./images/emoji/puke.png"
-                      width="55"
-                      height="55"
-                      alt="emoji"
-                    />
-                  </span>
-                  <div>
-                    <p className="film-details__comment-text">
-                      Very very old. Meh
-                    </p>
-                    <p className="film-details__comment-info">
-                      <span className="film-details__comment-author">
-                        John Doe
-                      </span>
-                      <span className="film-details__comment-day">
-                        2 days ago
-                      </span>
-                      <button className="film-details__comment-delete">
-                        Delete
-                      </button>
-                    </p>
-                  </div>
-                </li>
-                <li className="film-details__comment">
-                  <span className="film-details__comment-emoji">
-                    <img
-                      src="./images/emoji/angry.png"
-                      width="55"
-                      height="55"
-                      alt="emoji"
-                    />
-                  </span>
-                  <div>
-                    <p className="film-details__comment-text">
-                      Almost two hours? Seriously?
-                    </p>
-                    <p className="film-details__comment-info">
-                      <span className="film-details__comment-author">
-                        John Doe
-                      </span>
-                      <span className="film-details__comment-day">Today</span>
-                      <button className="film-details__comment-delete">
-                        Delete
-                      </button>
-                    </p>
-                  </div>
-                </li>
-              </ul>
+              <Comments />
 
               <div className="film-details__new-comment">
                 <div
