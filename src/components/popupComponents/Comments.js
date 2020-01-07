@@ -2,7 +2,7 @@ import React from "react";
 import { CommentsList } from "./CommentsList";
 import { AddComment } from "./AddComment";
 
-export const Comments = ({ film }) => {
+export const Comments = ({ film, handleCommentDeleting }) => {
   return (
     <div className="form-details__bottom-container">
       <section className="film-details__comments-wrap">
@@ -11,7 +11,10 @@ export const Comments = ({ film }) => {
           <span className="film-details__comments-count">{` ${film.comments.length}`}</span>
         </h3>
 
-        <CommentsList comments={film.comments} />
+        <CommentsList
+          film={film}
+          handleCommentDeleting={handleCommentDeleting}
+        />
         <AddComment />
       </section>
     </div>

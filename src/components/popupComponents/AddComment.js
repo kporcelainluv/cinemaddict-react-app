@@ -1,10 +1,22 @@
 import React from "react";
+import { EXIT_KEY } from "../../consts";
 
 export class AddComment extends React.Component {
   constructor() {
     super();
   }
-  state = { currentEmoji: `smile` };
+  componentDidMount() {
+    window.addEventListener("keydown", evt => {
+      if (
+        (evt.ctrlKey && evt.key === `Enter`) ||
+        (evt.key === `Enter` && evt.metaKey)
+      ) {
+        console.log("pressed");
+      }
+    });
+  }
+
+  state = { currentEmoji: `smile`, comment: `` };
   render() {
     return (
       <div className="film-details__new-comment">
@@ -22,6 +34,9 @@ export class AddComment extends React.Component {
             className="film-details__comment-input"
             placeholder="Select reaction below and write comment here"
             name="comment"
+            onChange={event => {
+              this.setState({ comment: event.target.value });
+            }}
           />
         </label>
 

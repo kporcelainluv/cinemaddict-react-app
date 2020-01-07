@@ -34,6 +34,22 @@ export class App extends React.Component {
     });
   };
 
+  handleCommentDeleting = (filmId, commentId) => {
+    console.log("deleting in App");
+    this.setState(state => ({
+      ...state,
+      films: state.films.map(film => {
+        if (film.id === filmId) {
+          return {
+            ...film,
+            comments: film.comments.filter(comment => comment.id !== commentId)
+          };
+        }
+        return film;
+      })
+    }));
+  };
+
   handleClickWatchlist = filmId => {
     this.setState(state => ({
       ...state,
@@ -155,6 +171,10 @@ export class App extends React.Component {
       this.state.films
     );
 
+    const b = this.state.films.map(elm => elm.comments);
+    console.log("comments");
+    console.log(b[0]);
+
     return (
       <div>
         <Tabs
@@ -188,6 +208,7 @@ export class App extends React.Component {
             handleClickWatchlist={this.handleClickWatchlist}
             handleClickWatched={this.handleClickWatched}
             handleClickFavorite={this.handleClickFavorite}
+            handleCommentDeleting={this.handleCommentDeleting}
           />
         )}
         {/*TODO: hide filmsSection */}

@@ -14,11 +14,11 @@ import { FilmDetails } from "./popupComponents/FilmDetails";
 export class Popup extends React.Component {
   constructor(props) {
     super(props);
-    this.film = props.film;
     this.onPopupClose = props.onPopupClose;
     this.handleClickWatchlist = props.handleClickWatchlist;
     this.handleClickWatched = props.handleClickWatched;
     this.handleClickFavorite = props.handleClickFavorite;
+    this.handleCommentDeleting = props.handleCommentDeleting;
   }
   state = { watched: false, favorite: false, watchlist: false };
 
@@ -38,14 +38,14 @@ export class Popup extends React.Component {
       }
     });
     this.setState({
-      watched: this.film.user_details.already_watched,
-      favorite: this.film.user_details.favorite,
-      watchlist: this.film.user_details.watchlist
+      watched: this.props.film.user_details.already_watched,
+      favorite: this.props.film.user_details.favorite,
+      watchlist: this.props.film.user_details.watchlist
     });
   }
 
   render() {
-    const film = this.film;
+    const film = this.props.film;
     const [hours, minutes] = countHoursAndMins(film.film_info.runtime);
     const actors = getActors(film);
     const writers = getWriters(film);
@@ -154,7 +154,10 @@ export class Popup extends React.Component {
             </section>
           </div>
 
-          <Comments film={film} />
+          <Comments
+            film={film}
+            handleCommentDeleting={this.handleCommentDeleting}
+          />
         </form>
       </section>
     );
