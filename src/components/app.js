@@ -185,6 +185,9 @@ export class App extends React.Component {
           <Popup
             film={this.getFilmById(this.state.filmId, films)}
             onPopupClose={this.onPopupClose}
+            handleClickWatchlist={this.handleClickWatchlist}
+            handleClickWatched={this.handleClickWatched}
+            handleClickFavorite={this.handleClickFavorite}
           />
         )}
         {/*TODO: hide filmsSection */}

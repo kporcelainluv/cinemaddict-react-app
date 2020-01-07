@@ -15,12 +15,21 @@ export class Popup extends React.Component {
     super(props);
     this.film = props.film;
     this.onPopupClose = props.onPopupClose;
+    this.handleClickWatchlist = props.handleClickWatchlist;
+    this.handleClickWatched = props.handleClickWatched;
+    this.handleClickFavorite = props.handleClickFavorite;
   }
+  state = { watched: false, favorite: false, watchlist: false };
   componentDidMount() {
     window.addEventListener("keydown", evt => {
       if (evt.key === `Escape` || evt.key === `Esc`) {
         this.onPopupClose();
       }
+    });
+    this.setState({
+      watched: this.film.user_details.already_watched,
+      favorite: this.film.user_details.favorite,
+      watchlist: this.film.user_details.watchlist
     });
   }
 
@@ -146,6 +155,11 @@ export class Popup extends React.Component {
                 className="film-details__control-input visually-hidden"
                 id="watchlist"
                 name="watchlist"
+                checked={this.state.watchlist}
+                onChange={() => {
+                  this.handleClickWatchlist(film.id);
+                  this.setState({ watchlist: !this.state.watchlist });
+                }}
               />
               <label
                 htmlFor="watchlist"
@@ -159,6 +173,11 @@ export class Popup extends React.Component {
                 className="film-details__control-input visually-hidden"
                 id="watched"
                 name="watched"
+                checked={this.state.watched}
+                onChange={() => {
+                  this.handleClickWatched(film.id);
+                  this.setState({ watched: !this.state.watched });
+                }}
               />
               <label
                 htmlFor="watched"
@@ -172,6 +191,11 @@ export class Popup extends React.Component {
                 className="film-details__control-input visually-hidden"
                 id="favorite"
                 name="favorite"
+                checked={this.state.favorite}
+                onChange={() => {
+                  this.handleClickFavorite(film.id);
+                  this.setState({ favorite: !this.state.favorite });
+                }}
               />
               <label
                 htmlFor="favorite"
