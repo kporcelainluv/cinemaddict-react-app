@@ -7,12 +7,12 @@ import { mockFilms } from "../mockData";
 import { ShowMoreButton } from "./ShowMoreButton";
 import { Popup } from "./Popup";
 import {
-  getFavorite,
-  getWatched,
-  getWatchlist,
   sortByDate,
   sortByDefault,
-  sortByRating
+  sortByRating,
+  getTabsFilmsLength,
+  getSortedFilms,
+  getFilmById
 } from "../utils";
 import { NavTab } from "../consts";
 import { Stats } from "./Stats";
@@ -34,8 +34,23 @@ export class App extends React.Component {
     });
   };
 
+  handleCommentAdding = (filmId, newComment) => {
+    this.setState(state => ({
+      ...state,
+      films: state.films.map(film => {
+        if (film.id === filmId) {
+          return {
+            ...film,
+            comments: [...film.comments, newComment]
+          };
+        }
+        console.log({ film });
+        return film;
+      })
+    }));
+    console.log(this.state.films);
+  };
   handleCommentDeleting = (filmId, commentId) => {
-    console.log("deleting in App");
     this.setState(state => ({
       ...state,
       films: state.films.map(film => {
@@ -131,57 +146,20 @@ export class App extends React.Component {
     this.setState({ filmId: null, isPopupOpened: false });
   };
 
-  getFilmById = (id, films) => {
-    return films.filter(elm => elm.id === id)[0];
-  };
-
-  sortedFilms = (type, films) => {
-    if (type === "default") {
-      return sortByDefault(films);
-    } else if (type === "date") {
-      return sortByDate(films);
-    } else if (type === "rating") {
-      return sortByRating(films);
-    }
-  };
-  tabFilms = (tabType, films) => {
-    if (tabType === NavTab.ALL) {
-      return films;
-    } else if (tabType === NavTab.WATCHLIST) {
-      return getWatchlist(films);
-    } else if (tabType === NavTab.HISTORY) {
-      return getWatched(films);
-    } else if (tabType === NavTab.FAVORITES) {
-      return getFavorite(films);
-    } else if (tabType === NavTab.STATS) {
-      return films;
-    }
-  };
-  getTabsFilmsLength = (tabType, films) => {
-    const tabedFilms = this.tabFilms(tabType, films);
-    return tabedFilms.length;
-  };
-  getSortedFilms = (sortType, tabType, films) => {
-    return this.tabFilms(tabType, this.sortedFilms(sortType, films));
-  };
   render() {
-    const films = this.getSortedFilms(
+    const films = getSortedFilms(
       this.state.sortingType,
       this.state.tabType,
       this.state.films
     );
 
-    const b = this.state.films.map(elm => elm.comments);
-    console.log("comments");
-    console.log(b[0]);
-
     return (
       <div>
         <Tabs
           onTabChange={this.onTabChange}
-          watchlist={this.getTabsFilmsLength(`watchlist`, this.state.films)}
-          watched={this.getTabsFilmsLength(`history`, this.state.films)}
-          favorites={this.getTabsFilmsLength(`favorites`, this.state.films)}
+          watchlist={getTabsFilmsLength(`watchlist`, this.state.films)}
+          watched={getTabsFilmsLength(`history`, this.state.films)}
+          favorites={getTabsFilmsLength(`favorites`, this.state.films)}
         />
         <Sorting onSortingTypeChange={this.onSortingTypeChange} />
 
@@ -203,12 +181,13 @@ export class App extends React.Component {
 
         {this.state.isPopupOpened && (
           <Popup
-            film={this.getFilmById(this.state.filmId, films)}
+            film={getFilmById(this.state.filmId, films)}
             onPopupClose={this.onPopupClose}
             handleClickWatchlist={this.handleClickWatchlist}
             handleClickWatched={this.handleClickWatched}
             handleClickFavorite={this.handleClickFavorite}
             handleCommentDeleting={this.handleCommentDeleting}
+            handleCommentAdding={this.handleCommentAdding}
           />
         )}
         {/*TODO: hide filmsSection */}

@@ -297,3 +297,35 @@ export const getGenresTemplate = film => {
     );
   });
 };
+export const tabFilms = (tabType, films) => {
+  if (tabType === NavTab.ALL) {
+    return films;
+  } else if (tabType === NavTab.WATCHLIST) {
+    return getWatchlist(films);
+  } else if (tabType === NavTab.HISTORY) {
+    return getWatched(films);
+  } else if (tabType === NavTab.FAVORITES) {
+    return getFavorite(films);
+  } else if (tabType === NavTab.STATS) {
+    return films;
+  }
+};
+export const getTabsFilmsLength = (tabType, films) => {
+  const tabbedFilms = tabFilms(tabType, films);
+  return tabbedFilms.length;
+};
+export const getSortedFilms = (sortType, tabType, films) => {
+  return tabFilms(tabType, getSortedFilmsByType(sortType, films));
+};
+export const getFilmById = (id, films) => {
+  return films.filter(elm => elm.id === id)[0];
+};
+export const getSortedFilmsByType = (type, films) => {
+  if (type === "default") {
+    return sortByDefault(films);
+  } else if (type === "date") {
+    return sortByDate(films);
+  } else if (type === "rating") {
+    return sortByRating(films);
+  }
+};
