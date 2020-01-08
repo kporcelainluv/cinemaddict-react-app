@@ -62,7 +62,7 @@ export class FilmCard extends React.Component {
   onHandleTitleClick = film => {
     this.setState({ isOpen: true });
     // TODO: ask why I can't pass this.state.isOpen instead of true
-    this.props.onFilmClick(film.id, true);
+    this.props.onFilmClick(film.id);
   };
 
   render() {

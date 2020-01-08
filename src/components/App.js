@@ -22,19 +22,17 @@ export class App extends React.Component {
     amountOfFilmsShown: 5,
     allFilms: mockFilms,
     films: mockFilms,
-    isPopupOpened: false,
-    filmId: null,
+    openedFilmId: null,
     sortingType: "default",
     tabType: `all`,
+    query: undefined,
     isStatsOpened: false,
-    isSearchInit: false,
     searchFilms: []
   };
 
   onFilmClick = (id, isOpened) => {
     this.setState({
-      filmId: id,
-      isPopupOpened: isOpened
+      openedFilmId: id
     });
   };
 
@@ -132,62 +130,74 @@ export class App extends React.Component {
   };
 
   onTabChange = type => {
+    // TODO: handle doble clicking before rerendering
     if (type === "all") {
       this.setState({
+        ...this.state,
         tabType: "all",
         isStatsOpened: false,
-        amountOfFilmsShown: 5
+        amountOfFilmsShown: 5,
+        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
     } else if (type === "watchlist") {
       this.setState({
+        ...this.state,
         tabType: "watchlist",
         isStatsOpened: false,
-        amountOfFilmsShown: 5
+        amountOfFilmsShown: 5,
+        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
     } else if (type === "history") {
       this.setState({
+        ...this.state,
         tabType: "history",
         isStatsOpened: false,
-        amountOfFilmsShown: 5
+        amountOfFilmsShown: 5,
+        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
     } else if (type === "favorites") {
       this.setState({
+        ...this.state,
         tabType: "favorites",
         isStatsOpened: false,
-        amountOfFilmsShown: 5
+        amountOfFilmsShown: 5,
+        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
     } else if (type === "stats") {
       this.setState({
+        ...this.state,
         tabType: "stats",
         isStatsOpened: true,
-        amountOfFilmsShown: 5
+        amountOfFilmsShown: 5,
+        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
     }
   };
 
   onPopupClose = () => {
-    this.setState({ filmId: null, isPopupOpened: false });
+    this.setState({ openedFilmId: null });
   };
 
   getSearchQuery = query => {
     // TODO: fix late coming of query by 1 letter
     if (query.length > 2) {
-      this.setState({ isSearchInit: true });
-      const searchFilms = filterFilms(this.state.films, query);
+      this.setState({ query });
+      const searchFilms = filterFilms(this.state.allFilms, query);
       this.setState({ searchFilms });
     } else {
-      this.setState({ isSearchInit: false });
+      this.setState({ query: undefined });
     }
   };
 
   handleCancelSearchButton = () => {
-    this.setState({ isSearchInit: false });
+    this.setState({ query: undefined });
   };
 
   onClickShowMore = () => {
     console.log("amount", this.state.amountOfFilmsShown);
     // TODO: FIX DOUBLE PRESSING BTN BEFORE FIRST RENDER
-    if (this.state.amountOfFilmsShown < this.state.allFilms.length) {
+
+    if (this.state.amountOfFilmsShown <= this.state.allFilms.length) {
       this.setState({ amountOfFilmsShown: this.state.amountOfFilmsShown + 5 });
       this.setState({
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
@@ -215,15 +225,15 @@ export class App extends React.Component {
           getSearchQuery={this.getSearchQuery}
           handleCancelSearchButton={this.handleCancelSearchButton}
         />
-        {!this.state.isSearchInit && (
+        {!this.state.query && (
           <Tabs
             onTabChange={this.onTabChange}
-            watchlist={getTabsFilmsLength(`watchlist`, this.state.films)}
-            watched={getTabsFilmsLength(`history`, this.state.films)}
-            favorites={getTabsFilmsLength(`favorites`, this.state.films)}
+            watchlist={getTabsFilmsLength(`watchlist`, this.state.allFilms)}
+            watched={getTabsFilmsLength(`history`, this.state.allFilms)}
+            favorites={getTabsFilmsLength(`favorites`, this.state.allFilms)}
           />
         )}
-        {!this.state.isStatsOpened && !this.state.isSearchInit && (
+        {!this.state.isStatsOpened && !this.state.query && (
           <div>
             <Sorting onSortingTypeChange={this.onSortingTypeChange} />
             <section className="films">
@@ -236,7 +246,11 @@ export class App extends React.Component {
                 handleClickWatched={this.handleClickWatched}
                 handleClickFavorite={this.handleClickFavorite}
               />
-              <ShowMoreButton onClickShowMore={this.onClickShowMore} />
+              {this.state.amountOfFilmsShown <= this.state.allFilms.length ? (
+                <ShowMoreButton onClickShowMore={this.onClickShowMore} />
+              ) : (
+                ``
+              )}
 
               {/*<FilmList type={"extra"} text={"Top rated"} films={props.films} />*/}
               {/*<FilmList type={"extra"} text={"Most commented"} films={props.films} />*/}
@@ -244,9 +258,9 @@ export class App extends React.Component {
           </div>
         )}
 
-        {this.state.isPopupOpened && (
+        {this.state.openedFilmId && (
           <Popup
-            film={getFilmById(this.state.filmId, films)}
+            film={getFilmById(this.state.openedFilmId, films)}
             onPopupClose={this.onPopupClose}
             handleClickWatchlist={this.handleClickWatchlist}
             handleClickWatched={this.handleClickWatched}
@@ -256,7 +270,7 @@ export class App extends React.Component {
           />
         )}
 
-        {this.state.isSearchInit && (
+        {this.state.query && (
           <SearchResultContainer
             films={this.state.searchFilms}
             onFilmClick={this.onFilmClick}

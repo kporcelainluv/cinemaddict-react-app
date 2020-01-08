@@ -32,7 +32,6 @@ export const HeaderSearch = ({ getSearchQuery, handleCancelSearchButton }) => {
         className="search__reset"
         type="reset"
         onClick={() => {
-          console.log("clicked");
           handleCancelSearchButton();
         }}
       >
