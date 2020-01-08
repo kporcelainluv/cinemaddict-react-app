@@ -15,6 +15,7 @@ import {
 import { Stats } from "./Stats";
 import { Header } from "./Header";
 import { SearchResultContainer } from "./SearchResultContainer";
+import { Footer } from "./statsComponents/Footer";
 
 export class App extends React.Component {
   state = {
@@ -225,6 +226,7 @@ export class App extends React.Component {
           />
         )}
         {this.state.isStatsOpened && <Stats films={this.state.films} />}
+        <Footer amount={this.state.films.length} />
       </div>
     );
   }
