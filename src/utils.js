@@ -229,7 +229,8 @@ export const getStatsRank = watchedAmount => {
   }
 };
 export const countWatchedFilms = films => {
-  return films.filter(film => Movie.getWatched(film) === true).length;
+  return films.filter(film => film.user_details.already_watched === true)
+    .length;
 };
 
 export const getWatched = films => {
