@@ -19,6 +19,8 @@ import { Footer } from "./statsComponents/Footer";
 
 export class App extends React.Component {
   state = {
+    amountOfFilmsShown: 5,
+    allFilms: mockFilms,
     films: mockFilms,
     isPopupOpened: false,
     filmId: null,
@@ -131,15 +133,35 @@ export class App extends React.Component {
 
   onTabChange = type => {
     if (type === "all") {
-      this.setState({ tabType: "all", isStatsOpened: false });
+      this.setState({
+        tabType: "all",
+        isStatsOpened: false,
+        amountOfFilmsShown: 5
+      });
     } else if (type === "watchlist") {
-      this.setState({ tabType: "watchlist", isStatsOpened: false });
+      this.setState({
+        tabType: "watchlist",
+        isStatsOpened: false,
+        amountOfFilmsShown: 5
+      });
     } else if (type === "history") {
-      this.setState({ tabType: "history", isStatsOpened: false });
+      this.setState({
+        tabType: "history",
+        isStatsOpened: false,
+        amountOfFilmsShown: 5
+      });
     } else if (type === "favorites") {
-      this.setState({ tabType: "favorites", isStatsOpened: false });
+      this.setState({
+        tabType: "favorites",
+        isStatsOpened: false,
+        amountOfFilmsShown: 5
+      });
     } else if (type === "stats") {
-      this.setState({ tabType: "stats", isStatsOpened: true });
+      this.setState({
+        tabType: "stats",
+        isStatsOpened: true,
+        amountOfFilmsShown: 5
+      });
     }
   };
 
@@ -161,6 +183,24 @@ export class App extends React.Component {
   handleCancelSearchButton = () => {
     this.setState({ isSearchInit: false });
   };
+
+  onClickShowMore = () => {
+    console.log("amount", this.state.amountOfFilmsShown);
+    // TODO: FIX DOUBLE PRESSING BTN BEFORE FIRST RENDER
+    if (this.state.amountOfFilmsShown < this.state.allFilms.length) {
+      this.setState({ amountOfFilmsShown: this.state.amountOfFilmsShown + 5 });
+      this.setState({
+        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
+      });
+    }
+  };
+
+  componentDidMount() {
+    this.setState({
+      films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
+    });
+  }
+
   render() {
     const films = getSortedFilms(
       this.state.sortingType,
@@ -171,7 +211,7 @@ export class App extends React.Component {
     return (
       <div>
         <Header
-          films={this.state.films}
+          films={this.state.allFilms}
           getSearchQuery={this.getSearchQuery}
           handleCancelSearchButton={this.handleCancelSearchButton}
         />
@@ -196,7 +236,7 @@ export class App extends React.Component {
                 handleClickWatched={this.handleClickWatched}
                 handleClickFavorite={this.handleClickFavorite}
               />
-              <ShowMoreButton />
+              <ShowMoreButton onClickShowMore={this.onClickShowMore} />
 
               {/*<FilmList type={"extra"} text={"Top rated"} films={props.films} />*/}
               {/*<FilmList type={"extra"} text={"Most commented"} films={props.films} />*/}
@@ -226,7 +266,7 @@ export class App extends React.Component {
           />
         )}
         {this.state.isStatsOpened && <Stats films={this.state.films} />}
-        <Footer amount={this.state.films.length} />
+        <Footer amount={this.state.allFilms.length} />
       </div>
     );
   }
