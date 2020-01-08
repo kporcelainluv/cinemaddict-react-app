@@ -1,10 +1,6 @@
 import React from "react";
-import { EXIT_KEY } from "../../consts";
 
 export class AddComment extends React.Component {
-  constructor() {
-    super();
-  }
   componentDidMount() {
     window.addEventListener("keydown", evt => {
       if (

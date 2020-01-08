@@ -1,10 +1,6 @@
 import React from "react";
 
 export class StatsFilters extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onChangeFilter = props.onChangeFilter;
-  }
   state = {
     filterType: "all-time"
   };
@@ -22,7 +18,7 @@ export class StatsFilters extends React.Component {
           onChange={() =>
             this.setState(
               { filterType: "all-time" },
-              this.onChangeFilter("all-time")
+              this.props.onChangeFilter("all-time")
             )
           }
           type="radio"
@@ -47,7 +43,10 @@ export class StatsFilters extends React.Component {
           value="today"
           checked={this.state.filterType === "today"}
           onChange={() =>
-            this.setState({ filterType: "today" }, this.onChangeFilter("today"))
+            this.setState(
+              { filterType: "today" },
+              this.props.onChangeFilter("today")
+            )
           }
         />
         <label htmlFor="statistic-today" className="statistic__filters-label">
@@ -62,7 +61,10 @@ export class StatsFilters extends React.Component {
           value="week"
           checked={this.state.filterType === "week"}
           onChange={() =>
-            this.setState({ filterType: "week" }, this.onChangeFilter("week"))
+            this.setState(
+              { filterType: "week" },
+              this.props.onChangeFilter("week")
+            )
           }
         />
         <label htmlFor="statistic-week" className="statistic__filters-label">
@@ -77,7 +79,10 @@ export class StatsFilters extends React.Component {
           value="month"
           checked={this.state.filterType === "month"}
           onChange={() =>
-            this.setState({ filterType: "month" }, this.onChangeFilter("month"))
+            this.setState(
+              { filterType: "month" },
+              this.props.onChangeFilter("month")
+            )
           }
         />
         <label htmlFor="statistic-month" className="statistic__filters-label">
@@ -92,7 +97,10 @@ export class StatsFilters extends React.Component {
           value="year"
           checked={this.state.filterType === "year"}
           onChange={() =>
-            this.setState({ filterType: "year" }, this.onChangeFilter("year"))
+            this.setState(
+              { filterType: "year" },
+              this.props.onChangeFilter("year")
+            )
           }
         />
         <label htmlFor="statistic-year" className="statistic__filters-label">

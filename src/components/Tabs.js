@@ -1,18 +1,11 @@
 import React from "react";
 
 export class Tabs extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onTabChange = props.onTabChange;
-    this.watchlistLength = props.watchlist;
-    this.watchedLength = props.watched;
-    this.favoritesLength = props.favorites;
-  }
   state = { type: `all` };
 
   onTabClick(type) {
     this.setState({ type });
-    this.onTabChange(type);
+    this.props.onTabChange(type);
   }
 
   getTabActive(type) {
@@ -49,9 +42,9 @@ export class Tabs extends React.Component {
             this.onTabClick(`watchlist`);
           }}
         >
-          Watchlist{" "}
+          Watchlist
           <span className="main-navigation__item-count">
-            {this.watchlistLength}
+            {this.props.watchlist}
           </span>
         </a>
         <a
@@ -62,9 +55,9 @@ export class Tabs extends React.Component {
             this.onTabClick(`history`);
           }}
         >
-          History{" "}
+          History
           <span className="main-navigation__item-count">
-            {this.watchedLength}
+            {this.props.watched}
           </span>
         </a>
         <a
@@ -77,14 +70,13 @@ export class Tabs extends React.Component {
         >
           Favorites
           <span className="main-navigation__item-count">
-            {this.favoritesLength}
+            {this.props.favorites}
           </span>
         </a>
         <a
           href="#stats"
           className={this.getTabActive(`stats`)}
           onClick={event => {
-            console.log("clicked on stats");
             event.preventDefault();
             this.onTabClick(`stats`);
           }}

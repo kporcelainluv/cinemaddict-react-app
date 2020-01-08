@@ -58,24 +58,14 @@ const FilmCardForm = ({
 };
 
 export class FilmCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.props = props;
-    this.film = props.film;
-    this.onFilmClick = props.onFilmClick;
-    this.handleClickWatchlist = props.handleClickWatchlist;
-    this.handleClickWatched = props.handleClickWatched;
-    this.handleClickFavorite = props.handleClickFavorite;
-  }
   state = { isOpen: false };
   onHandleTitleClick = film => {
     this.setState({ isOpen: true });
     // TODO: ask why I can't pass this.state.isOpen instead of true
-    this.onFilmClick(film.id, true);
+    this.props.onFilmClick(film.id, true);
   };
 
   render() {
-    // TODO: fix this.film
     const film = this.props.film;
     const year = moment(film.film_info.release.date).format("YYYY");
     const [hours, minutes] = countHoursAndMins(film.film_info.runtime);
@@ -125,9 +115,9 @@ export class FilmCard extends React.Component {
         </a>
         <FilmCardForm
           film={film}
-          handleClickWatchlist={this.handleClickWatchlist}
-          handleClickWatched={this.handleClickWatched}
-          handleClickFavorite={this.handleClickFavorite}
+          handleClickWatchlist={this.props.handleClickWatchlist}
+          handleClickWatched={this.props.handleClickWatched}
+          handleClickFavorite={this.props.handleClickFavorite}
         />
       </article>
     );

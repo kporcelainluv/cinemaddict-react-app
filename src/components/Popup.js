@@ -12,14 +12,6 @@ import { Comments } from "./popupComponents/Comments";
 import { FilmDetails } from "./popupComponents/FilmDetails";
 
 export class Popup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onPopupClose = props.onPopupClose;
-    this.handleClickWatchlist = props.handleClickWatchlist;
-    this.handleClickWatched = props.handleClickWatched;
-    this.handleClickFavorite = props.handleClickFavorite;
-    this.handleCommentDeleting = props.handleCommentDeleting;
-  }
   state = { watched: false, favorite: false, watchlist: false };
 
   updatePopupState = stateName => {
@@ -34,7 +26,7 @@ export class Popup extends React.Component {
   componentDidMount() {
     window.addEventListener("keydown", evt => {
       if (evt.key === `Escape` || evt.key === `Esc`) {
-        this.onPopupClose();
+        this.props.onPopupClose();
       }
     });
     this.setState({
@@ -60,7 +52,7 @@ export class Popup extends React.Component {
               <button
                 className="film-details__close-btn"
                 type="button"
-                onClick={this.onPopupClose}
+                onClick={this.props.onPopupClose}
               >
                 close
               </button>
@@ -134,21 +126,21 @@ export class Popup extends React.Component {
                 film={film}
                 name={`watchlist`}
                 updateState={this.updatePopupState}
-                handleClick={this.handleClickWatchlist}
+                handleClick={this.props.handleClickWatchlist}
                 checked={this.state.watchlist}
               />
               <Controls
                 film={film}
                 name={`watched`}
                 updateState={this.updatePopupState}
-                handleClick={this.handleClickWatched}
+                handleClick={this.props.handleClickWatched}
                 checked={this.state.watched}
               />
               <Controls
                 film={film}
                 name={`favorite`}
                 updateState={this.updatePopupState}
-                handleClick={this.handleClickFavorite}
+                handleClick={this.props.handleClickFavorite}
                 checked={this.state.favorite}
               />
             </section>
@@ -156,7 +148,7 @@ export class Popup extends React.Component {
 
           <Comments
             film={film}
-            handleCommentDeleting={this.handleCommentDeleting}
+            handleCommentDeleting={this.props.handleCommentDeleting}
           />
         </form>
       </section>

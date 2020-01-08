@@ -1,14 +1,10 @@
 import React from "react";
 
 export class Sorting extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onSortingTypeChange = props.onSortingTypeChange;
-  }
   state = { type: "default" };
 
   onSortButtonClick = type => {
-    this.onSortingTypeChange(type);
+    this.props.onSortingTypeChange(type);
     this.setState({ type });
   };
 
