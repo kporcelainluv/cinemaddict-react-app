@@ -8,7 +8,7 @@ import { ShowMoreButton } from "./ShowMoreButton";
 import { Popup } from "./Popup";
 import { getTabsFilmsLength, getSortedFilms, getFilmById } from "../utils";
 import { Stats } from "./Stats";
-import { Header } from "./header/Header";
+import { Header } from "./Header";
 
 export class App extends React.Component {
   state = {
@@ -147,7 +147,7 @@ export class App extends React.Component {
 
     return (
       <div>
-        <Header />
+        <Header films={this.state.films} />
         <Tabs
           onTabChange={this.onTabChange}
           watchlist={getTabsFilmsLength(`watchlist`, this.state.films)}
