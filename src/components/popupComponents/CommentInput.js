@@ -1,6 +1,6 @@
 import React from "react";
 
-export class AddComment extends React.Component {
+export class CommentInput extends React.Component {
   componentDidMount() {
     window.addEventListener("keydown", evt => {
       if (
@@ -8,6 +8,10 @@ export class AddComment extends React.Component {
         (evt.key === `Enter` && evt.metaKey)
       ) {
         console.log("pressed");
+        this.props.getCurrentComment(
+          this.state.comment,
+          this.state.currentEmoji
+        );
       }
     });
   }

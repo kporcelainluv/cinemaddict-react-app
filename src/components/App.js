@@ -35,6 +35,7 @@ export class App extends React.Component {
   };
 
   handleCommentAdding = (filmId, newComment) => {
+    console.log("comment adding");
     this.setState(state => ({
       ...state,
       films: state.films.map(film => {

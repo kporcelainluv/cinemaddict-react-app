@@ -1,8 +1,12 @@
 import React from "react";
 import { CommentsList } from "./CommentsList";
-import { AddComment } from "./AddComment";
+import { CommentInput } from "./CommentInput";
 
-export const Comments = ({ film, handleCommentDeleting }) => {
+export const Comments = ({
+  film,
+  handleCommentDeleting,
+  getCurrentComment
+}) => {
   return (
     <div className="form-details__bottom-container">
       <section className="film-details__comments-wrap">
@@ -15,7 +19,7 @@ export const Comments = ({ film, handleCommentDeleting }) => {
           film={film}
           handleCommentDeleting={handleCommentDeleting}
         />
-        <AddComment />
+        <CommentInput getCurrentComment={getCurrentComment} />
       </section>
     </div>
   );

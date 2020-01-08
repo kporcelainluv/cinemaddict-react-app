@@ -1,18 +1,29 @@
 import React from "react";
 import {
   countHoursAndMins,
-  getGenreHeading,
   getActors,
-  getWriters,
+  getGenreHeading,
+  getGenresTemplate,
   getreleaseDate,
-  getGenresTemplate
+  getWriters
 } from "../utils";
 import { Controls } from "./popupComponents/Controls";
 import { Comments } from "./popupComponents/Comments";
 import { FilmDetails } from "./popupComponents/FilmDetails";
 
 export class Popup extends React.Component {
-  state = { watched: false, favorite: false, watchlist: false };
+  state = { watched: false, favorite: false, watchlist: false, newComment: {} };
+
+  getCurrentComment = (comment, emoji) => {
+    const newComment = {
+      emotion: emoji,
+      comment: comment,
+      author: `X`,
+      date: new Date()
+    };
+    console.log(newComment);
+    this.setState({ newComment });
+  };
 
   updatePopupState = stateName => {
     if (stateName === `watchlist`) {
@@ -46,7 +57,15 @@ export class Popup extends React.Component {
 
     return (
       <section className="film-details">
-        <form className="film-details__inner" action="" method="get">
+        ${console.log(this.state.newComment, "newComent")}
+        <form
+          className="film-details__inner"
+          action=""
+          method="get"
+          onSubmit={() => {
+            this.props.handleCommentAdding(film.id, this.state.newComment);
+          }}
+        >
           <div className="form-details__top-container">
             <div className="film-details__close">
               <button
@@ -149,6 +168,7 @@ export class Popup extends React.Component {
           <Comments
             film={film}
             handleCommentDeleting={this.props.handleCommentDeleting}
+            getCurrentComment={this.getCurrentComment}
           />
         </form>
       </section>
