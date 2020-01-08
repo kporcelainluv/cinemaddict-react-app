@@ -6,9 +6,15 @@ import { FilmList } from "./FilmList";
 import { mockFilms } from "../mockData";
 import { ShowMoreButton } from "./ShowMoreButton";
 import { Popup } from "./Popup";
-import { getTabsFilmsLength, getSortedFilms, getFilmById } from "../utils";
+import {
+  getTabsFilmsLength,
+  getSortedFilms,
+  getFilmById,
+  filterFilms
+} from "../utils";
 import { Stats } from "./Stats";
 import { Header } from "./Header";
+import { SearchResultContainer } from "./SearchResultContainer";
 
 export class App extends React.Component {
   state = {
@@ -17,7 +23,9 @@ export class App extends React.Component {
     filmId: null,
     sortingType: "default",
     tabType: `all`,
-    isStatsOpened: false
+    isStatsOpened: false,
+    isSearchInit: false,
+    searchFilms: []
   };
 
   onFilmClick = (id, isOpened) => {
@@ -138,6 +146,20 @@ export class App extends React.Component {
     this.setState({ filmId: null, isPopupOpened: false });
   };
 
+  getSearchQuery = query => {
+    // TODO: fix late coming of query by 1 letter
+    if (query.length > 2) {
+      this.setState({ isSearchInit: true });
+      const searchFilms = filterFilms(this.state.films, query);
+      this.setState({ searchFilms });
+    } else {
+      this.setState({ isSearchInit: false });
+    }
+  };
+
+  handleCancelSearchButton = () => {
+    this.setState({ isSearchInit: false });
+  };
   render() {
     const films = getSortedFilms(
       this.state.sortingType,
@@ -147,14 +169,20 @@ export class App extends React.Component {
 
     return (
       <div>
-        <Header films={this.state.films} />
-        <Tabs
-          onTabChange={this.onTabChange}
-          watchlist={getTabsFilmsLength(`watchlist`, this.state.films)}
-          watched={getTabsFilmsLength(`history`, this.state.films)}
-          favorites={getTabsFilmsLength(`favorites`, this.state.films)}
+        <Header
+          films={this.state.films}
+          getSearchQuery={this.getSearchQuery}
+          handleCancelSearchButton={this.handleCancelSearchButton}
         />
-        {!this.state.isStatsOpened && (
+        {!this.state.isSearchInit && (
+          <Tabs
+            onTabChange={this.onTabChange}
+            watchlist={getTabsFilmsLength(`watchlist`, this.state.films)}
+            watched={getTabsFilmsLength(`history`, this.state.films)}
+            favorites={getTabsFilmsLength(`favorites`, this.state.films)}
+          />
+        )}
+        {!this.state.isStatsOpened && !this.state.isSearchInit && (
           <div>
             <Sorting onSortingTypeChange={this.onSortingTypeChange} />
             <section className="films">
@@ -174,30 +202,7 @@ export class App extends React.Component {
             </section>
           </div>
         )}
-        {/*<Tabs*/}
-        {/*  onTabChange={this.onTabChange}*/}
-        {/*  watchlist={getTabsFilmsLength(`watchlist`, this.state.films)}*/}
-        {/*  watched={getTabsFilmsLength(`history`, this.state.films)}*/}
-        {/*  favorites={getTabsFilmsLength(`favorites`, this.state.films)}*/}
-        {/*/>*/}
-        {/*<Sorting onSortingTypeChange={this.onSortingTypeChange} />*/}
-        {/*{!this.state.isStatsOpened && (*/}
-        {/*  <section className="films">*/}
-        {/*    <FilmList*/}
-        {/*      type={"regular"}*/}
-        {/*      text={"All movies. Upcoming"}*/}
-        {/*      films={films}*/}
-        {/*      onFilmClick={this.onFilmClick}*/}
-        {/*      handleClickWatchlist={this.handleClickWatchlist}*/}
-        {/*      handleClickWatched={this.handleClickWatched}*/}
-        {/*      handleClickFavorite={this.handleClickFavorite}*/}
-        {/*    />*/}
-        {/*    <ShowMoreButton />*/}
 
-        {/*    /!*<FilmList type={"extra"} text={"Top rated"} films={props.films} />*!/*/}
-        {/*    /!*<FilmList type={"extra"} text={"Most commented"} films={props.films} />*!/*/}
-        {/*  </section>*/}
-        {/*)}*/}
         {this.state.isPopupOpened && (
           <Popup
             film={getFilmById(this.state.filmId, films)}
@@ -209,7 +214,16 @@ export class App extends React.Component {
             handleCommentAdding={this.handleCommentAdding}
           />
         )}
-        {/*TODO: hide filmsSection */}
+
+        {this.state.isSearchInit && (
+          <SearchResultContainer
+            films={this.state.searchFilms}
+            onFilmClick={this.onFilmClick}
+            handleClickWatchlist={this.handleClickWatchlist}
+            handleClickWatched={this.handleClickWatched}
+            handleClickFavorite={this.handleClickFavorite}
+          />
+        )}
         {this.state.isStatsOpened && <Stats films={this.state.films} />}
       </div>
     );
