@@ -1,6 +1,6 @@
 import React from "react";
 
-export const HeaderSearch = () => {
+export const HeaderSearch = ({ getSearchQuery, handleCancelSearchButton }) => {
   return (
     <form className="header__search search">
       <input
@@ -8,6 +8,9 @@ export const HeaderSearch = () => {
         name="search"
         className="search__field"
         placeholder="Search movies"
+        onKeyDown={e => {
+          getSearchQuery(e.target.value);
+        }}
       />
       <svg
         fill="#7171D8"
@@ -25,7 +28,14 @@ export const HeaderSearch = () => {
       <button type="submit" className="visually-hidden">
         Search
       </button>
-      <button className="search__reset" type="reset">
+      <button
+        className="search__reset"
+        type="reset"
+        onClick={() => {
+          console.log("clicked");
+          handleCancelSearchButton();
+        }}
+      >
         Reset
       </button>
     </form>
