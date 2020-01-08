@@ -6,15 +6,7 @@ import { FilmList } from "./FilmList";
 import { mockFilms } from "../mockData";
 import { ShowMoreButton } from "./ShowMoreButton";
 import { Popup } from "./Popup";
-import {
-  sortByDate,
-  sortByDefault,
-  sortByRating,
-  getTabsFilmsLength,
-  getSortedFilms,
-  getFilmById
-} from "../utils";
-import { NavTab } from "../consts";
+import { getTabsFilmsLength, getSortedFilms, getFilmById } from "../utils";
 import { Stats } from "./Stats";
 
 export class App extends React.Component {
@@ -24,7 +16,7 @@ export class App extends React.Component {
     filmId: null,
     sortingType: "default",
     tabType: `all`,
-    statsOpened: false
+    isStatsOpened: false
   };
 
   onFilmClick = (id, isOpened) => {
@@ -45,11 +37,9 @@ export class App extends React.Component {
             comments: [...film.comments, newComment]
           };
         }
-        console.log({ film });
         return film;
       })
     }));
-    console.log(this.state.films);
   };
   handleCommentDeleting = (filmId, commentId) => {
     this.setState(state => ({
@@ -131,15 +121,15 @@ export class App extends React.Component {
 
   onTabChange = type => {
     if (type === "all") {
-      this.setState({ tabType: "all" });
+      this.setState({ tabType: "all", isStatsOpened: false });
     } else if (type === "watchlist") {
-      this.setState({ tabType: "watchlist" });
+      this.setState({ tabType: "watchlist", isStatsOpened: false });
     } else if (type === "history") {
-      this.setState({ tabType: "history" });
+      this.setState({ tabType: "history", isStatsOpened: false });
     } else if (type === "favorites") {
-      this.setState({ tabType: "favorites" });
+      this.setState({ tabType: "favorites", isStatsOpened: false });
     } else if (type === "stats") {
-      this.setState({ tabType: "stats", statsOpened: true });
+      this.setState({ tabType: "stats", isStatsOpened: true });
     }
   };
 
@@ -162,24 +152,50 @@ export class App extends React.Component {
           watched={getTabsFilmsLength(`history`, this.state.films)}
           favorites={getTabsFilmsLength(`favorites`, this.state.films)}
         />
-        <Sorting onSortingTypeChange={this.onSortingTypeChange} />
+        {!this.state.isStatsOpened && (
+          <div>
+            <Sorting onSortingTypeChange={this.onSortingTypeChange} />
+            <section className="films">
+              <FilmList
+                type={"regular"}
+                text={"All movies. Upcoming"}
+                films={films}
+                onFilmClick={this.onFilmClick}
+                handleClickWatchlist={this.handleClickWatchlist}
+                handleClickWatched={this.handleClickWatched}
+                handleClickFavorite={this.handleClickFavorite}
+              />
+              <ShowMoreButton />
 
-        <section className="films">
-          <FilmList
-            type={"regular"}
-            text={"All movies. Upcoming"}
-            films={films}
-            onFilmClick={this.onFilmClick}
-            handleClickWatchlist={this.handleClickWatchlist}
-            handleClickWatched={this.handleClickWatched}
-            handleClickFavorite={this.handleClickFavorite}
-          />
-          <ShowMoreButton />
+              {/*<FilmList type={"extra"} text={"Top rated"} films={props.films} />*/}
+              {/*<FilmList type={"extra"} text={"Most commented"} films={props.films} />*/}
+            </section>
+          </div>
+        )}
+        {/*<Tabs*/}
+        {/*  onTabChange={this.onTabChange}*/}
+        {/*  watchlist={getTabsFilmsLength(`watchlist`, this.state.films)}*/}
+        {/*  watched={getTabsFilmsLength(`history`, this.state.films)}*/}
+        {/*  favorites={getTabsFilmsLength(`favorites`, this.state.films)}*/}
+        {/*/>*/}
+        {/*<Sorting onSortingTypeChange={this.onSortingTypeChange} />*/}
+        {/*{!this.state.isStatsOpened && (*/}
+        {/*  <section className="films">*/}
+        {/*    <FilmList*/}
+        {/*      type={"regular"}*/}
+        {/*      text={"All movies. Upcoming"}*/}
+        {/*      films={films}*/}
+        {/*      onFilmClick={this.onFilmClick}*/}
+        {/*      handleClickWatchlist={this.handleClickWatchlist}*/}
+        {/*      handleClickWatched={this.handleClickWatched}*/}
+        {/*      handleClickFavorite={this.handleClickFavorite}*/}
+        {/*    />*/}
+        {/*    <ShowMoreButton />*/}
 
-          {/*<FilmList type={"extra"} text={"Top rated"} films={props.films} />*/}
-          {/*<FilmList type={"extra"} text={"Most commented"} films={props.films} />*/}
-        </section>
-
+        {/*    /!*<FilmList type={"extra"} text={"Top rated"} films={props.films} />*!/*/}
+        {/*    /!*<FilmList type={"extra"} text={"Most commented"} films={props.films} />*!/*/}
+        {/*  </section>*/}
+        {/*)}*/}
         {this.state.isPopupOpened && (
           <Popup
             film={getFilmById(this.state.filmId, films)}
@@ -192,7 +208,7 @@ export class App extends React.Component {
           />
         )}
         {/*TODO: hide filmsSection */}
-        {this.state.statsOpened && <Stats films={this.state.films} />}
+        {this.state.isStatsOpened && <Stats films={this.state.films} />}
       </div>
     );
   }

@@ -22,13 +22,13 @@ export class CommentInput extends React.Component {
             onChange={event => {
               this.setState({ comment: event.target.value });
             }}
-            onKeyDown={e => {
-              this.props.handleSubmit(e);
-              this.props.getCurrentComment(
-                this.state.comment,
-                this.state.emoji
-              );
-            }}
+            // onKeyDown={e => {
+            //   this.props.handleSubmit(e);
+            //   this.props.getCurrentComment(
+            //     this.state.comment,
+            //     this.state.emoji
+            //   );
+            // }}
           />
         </label>
 
