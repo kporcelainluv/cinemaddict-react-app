@@ -14,17 +14,6 @@ import { FilmDetails } from "./popupComponents/FilmDetails";
 export class Popup extends React.Component {
   state = { watched: false, favorite: false, watchlist: false, newComment: {} };
 
-  getCurrentComment = (comment, emoji) => {
-    const newComment = {
-      emotion: emoji,
-      comment: comment,
-      author: `X`,
-      date: new Date()
-    };
-    console.log(newComment);
-    this.setState({ newComment });
-  };
-
   updatePopupState = stateName => {
     if (stateName === `watchlist`) {
       this.setState({ watchlist: !this.state.watchlist });
@@ -47,6 +36,25 @@ export class Popup extends React.Component {
     });
   }
 
+  handleSubmit = e => {
+    if (e.key === "Enter") {
+      console.log("submitting");
+      e.preventDefault();
+      this.props.handleCommentAdding(this.props.film.id, this.state.newComment);
+      this.myFormRef.submit();
+    }
+  };
+
+  getCurrentComment = (comment, emoji) => {
+    const newComment = {
+      emotion: emoji,
+      comment: comment,
+      author: `X`,
+      date: new Date()
+    };
+    console.log(newComment);
+    this.setState({ newComment });
+  };
   render() {
     const film = this.props.film;
     const [hours, minutes] = countHoursAndMins(film.film_info.runtime);
@@ -57,13 +65,16 @@ export class Popup extends React.Component {
 
     return (
       <section className="film-details">
-        ${console.log(this.state.newComment, "newComent")}
         <form
           className="film-details__inner"
           action=""
           method="get"
-          onSubmit={() => {
-            this.props.handleCommentAdding(film.id, this.state.newComment);
+          // onSubmit={e => {
+          //   console.log("here");
+          //   this.handleSubmit(e);
+          // }}
+          ref={el => {
+            this.myFormRef = el;
           }}
         >
           <div className="form-details__top-container">
@@ -169,6 +180,7 @@ export class Popup extends React.Component {
             film={film}
             handleCommentDeleting={this.props.handleCommentDeleting}
             getCurrentComment={this.getCurrentComment}
+            handleSubmit={this.handleSubmit}
           />
         </form>
       </section>

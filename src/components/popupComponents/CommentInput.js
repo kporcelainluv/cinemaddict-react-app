@@ -1,21 +1,6 @@
 import React from "react";
 
 export class CommentInput extends React.Component {
-  componentDidMount() {
-    window.addEventListener("keydown", evt => {
-      if (
-        (evt.ctrlKey && evt.key === `Enter`) ||
-        (evt.key === `Enter` && evt.metaKey)
-      ) {
-        console.log("pressed");
-        this.props.getCurrentComment(
-          this.state.comment,
-          this.state.currentEmoji
-        );
-      }
-    });
-  }
-
   state = { currentEmoji: `smile`, comment: `` };
   render() {
     return (
@@ -36,6 +21,13 @@ export class CommentInput extends React.Component {
             name="comment"
             onChange={event => {
               this.setState({ comment: event.target.value });
+            }}
+            onKeyDown={e => {
+              this.props.handleSubmit(e);
+              this.props.getCurrentComment(
+                this.state.comment,
+                this.state.emoji
+              );
             }}
           />
         </label>

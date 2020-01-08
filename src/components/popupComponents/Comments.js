@@ -5,7 +5,8 @@ import { CommentInput } from "./CommentInput";
 export const Comments = ({
   film,
   handleCommentDeleting,
-  getCurrentComment
+  getCurrentComment,
+  handleSubmit
 }) => {
   return (
     <div className="form-details__bottom-container">
@@ -19,7 +20,10 @@ export const Comments = ({
           film={film}
           handleCommentDeleting={handleCommentDeleting}
         />
-        <CommentInput getCurrentComment={getCurrentComment} />
+        <CommentInput
+          getCurrentComment={getCurrentComment}
+          onEnterPress={handleSubmit}
+        />
       </section>
     </div>
   );
