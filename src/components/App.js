@@ -10,7 +10,9 @@ import {
   getTabsFilmsLength,
   getSortedFilms,
   getFilmById,
-  filterFilms
+  filterFilms,
+  getTopRatedFilms,
+  getMostCommentedFilms
 } from "../utils";
 import { Stats } from "./Stats";
 import { Header } from "./Header";
@@ -268,9 +270,24 @@ export class App extends React.Component {
               ) : (
                 ``
               )}
-
-              {/*<FilmList type={"extra"} text={FilmListHeading.RATED} films={props.films} />*/}
-              {/*<FilmList type={"extra"} text={FilmListHeading.COMMENTED} films={props.films} />*/}
+              <FilmList
+                type={"extra"}
+                text={FilmListHeading.RATED}
+                films={getTopRatedFilms(this.state.allFilms)}
+                onFilmClick={this.onFilmClick}
+                handleClickWatchlist={this.handleClickWatchlist}
+                handleClickWatched={this.handleClickWatched}
+                handleClickFavorite={this.handleClickFavorite}
+              />
+              <FilmList
+                type={"extra"}
+                text={FilmListHeading.COMMENTED}
+                films={getMostCommentedFilms(this.state.allFilms)}
+                onFilmClick={this.onFilmClick}
+                handleClickWatchlist={this.handleClickWatchlist}
+                handleClickWatched={this.handleClickWatched}
+                handleClickFavorite={this.handleClickFavorite}
+              />
             </section>
           </div>
         )}

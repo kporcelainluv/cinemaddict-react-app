@@ -122,33 +122,33 @@ export const getTopGenre = films => {
 };
 
 export const getTopRatedFilms = films => {
-  if (films.every(film => Movie.getRating(film) === 0)) {
+  if (films.every(film => film.film_info.total_rating === 0)) {
     return 0;
   }
-  return sort((a, b) => {
-    if (Movie.getRating(a) > Movie.getRating(b)) {
+  return films.sort((a, b) => {
+    if (a.film_info.total_rating > b.film_info.total_rating) {
       return -1;
     }
-    if (Movie.getRating(a) < Movie.getRating(b)) {
+    if (a.film_info.total_rating < b.film_info.total_rating) {
       return 1;
     }
     return 0;
-  }, films);
+  });
 };
 
 export const getMostCommentedFilms = films => {
-  if (films.every(film => Movie.getCommentsLength(film) === 0)) {
+  if (films.every(film => film.comments.length === 0)) {
     return false;
   }
-  return sort((a, b) => {
-    if (Movie.getCommentsLength(a) > Movie.getCommentsLength(b)) {
+  return films.sort((a, b) => {
+    if (a.comments.length > b.comments.length) {
       return -1;
     }
-    if (Movie.getCommentsLength(a) < Movie.getCommentsLength(b)) {
+    if (a.comments.length < b.comments.length) {
       return 1;
     }
     return 0;
-  }, films);
+  });
 };
 
 export const sortByDefault = films => {

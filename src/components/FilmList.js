@@ -20,9 +20,13 @@ export const FilmList = ({
           {films.slice(0, DEFAULT_AMOUNT_DISPLAYED).map(film => {
             return (
               <FilmCard
-                props={film}
+                film={film}
                 key={film.id}
+                onFilmClick={onFilmClick}
                 updateFilmHandler={updateFilmHandler}
+                handleClickWatchlist={handleClickWatchlist}
+                handleClickWatched={handleClickWatched}
+                handleClickFavorite={handleClickFavorite}
               />
             );
           })}
