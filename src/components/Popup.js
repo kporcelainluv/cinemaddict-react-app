@@ -28,6 +28,10 @@ export class Popup extends React.Component {
         return ``;
     }
   };
+  handlePersonalRatingOpening = filmId => {
+    this.setState({ watched: false });
+    this.props.handleClickWatched(filmId);
+  };
   componentDidMount() {
     window.addEventListener("keydown", evt => {
       if (evt.key === `Escape` || evt.key === `Esc`) {
@@ -126,6 +130,7 @@ export class Popup extends React.Component {
               poster={film.film_info.poster}
               title={film.film_info.title}
               handlePersonalRating={this.props.handlePersonalRating}
+              handlePersonalRatingOpening={this.handlePersonalRatingOpening}
             />
           </div>
           <Comments

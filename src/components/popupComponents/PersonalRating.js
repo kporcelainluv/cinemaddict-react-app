@@ -7,12 +7,20 @@ export const PersonalRating = ({
   title,
   personalRating,
   handlePersonalRating,
-  filmId
+  filmId,
+  handlePersonalRatingOpening
 }) => {
   return (
     <section className="film-details__user-rating-wrap">
       <div className="film-details__user-rating-controls">
-        <button className="film-details__watched-reset" type="button">
+        <button
+          className="film-details__watched-reset"
+          type="button"
+          onClick={() => {
+            handlePersonalRating(filmId, null);
+            handlePersonalRatingOpening(filmId);
+          }}
+        >
           Undo
         </button>
       </div>
