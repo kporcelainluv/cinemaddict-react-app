@@ -3,6 +3,7 @@ import React from "react";
 import { Controls } from "./popupComponents/Controls";
 import { Comments } from "./popupComponents/Comments";
 import { FilmInfo } from "./popupComponents/FilmInfo";
+import { PersonalRating } from "./popupComponents/PersonalRating";
 
 export class Popup extends React.Component {
   state = {
@@ -114,7 +115,17 @@ export class Popup extends React.Component {
               />
             </section>
           </div>
-
+          <div
+            className={`form-details__middle-container ${
+              this.state.watched ? `` : `visually-hidden`
+            }`}
+          >
+            <PersonalRating
+              personalRating={film.film_info.personal_rating}
+              poster={film.film_info.poster}
+              title={film.film_info.title}
+            />
+          </div>
           <Comments
             film={film}
             handleCommentDeleting={this.props.handleCommentDeleting}
