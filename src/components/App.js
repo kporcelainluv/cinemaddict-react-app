@@ -191,8 +191,7 @@ export class App extends React.Component {
   };
 
   getSearchQuery = query => {
-    // TODO: fix late coming of query by 1 letter
-    if (query.length > SEARCH_QUERY_LENGTH) {
+    if (query.length >= SEARCH_QUERY_LENGTH) {
       this.setState({ query });
     } else {
       this.setState({ query: undefined });
@@ -204,9 +203,6 @@ export class App extends React.Component {
   };
 
   onClickShowMore = () => {
-    console.log("amount", this.state.amountOfFilmsShown);
-    // TODO: FIX DOUBLE PRESSING BTN BEFORE FIRST RENDER
-
     if (this.state.amountOfFilmsShown <= this.state.films.length) {
       this.setState({
         amountOfFilmsShown: this.state.amountOfFilmsShown + PER_PAGE
@@ -249,7 +245,7 @@ export class App extends React.Component {
                 handleClickWatched={this.handleClickWatched}
                 handleClickFavorite={this.handleClickFavorite}
               />
-              {this.state.amountOfFilmsShown <= this.state.films.length ? (
+              {this.state.amountOfFilmsShown < this.state.films.length ? (
                 <ShowMoreButton onClickShowMore={this.onClickShowMore} />
               ) : (
                 ``
