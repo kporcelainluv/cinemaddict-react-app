@@ -328,3 +328,128 @@ export const getSortedFilmsByType = (type, films) => {
     return sortByRating(films);
   }
 };
+
+// export const handlePersonalRatingState = (state, filmId, newPersonalRating) => {
+//   return {
+//     ...state,
+//     films: state.films.map(film => {
+//       if (film.id === filmId) {
+//         return {
+//           ...film,
+//           user_details: {
+//             ...film.user_details,
+//             personal_rating: newPersonalRating
+//           }
+//         };
+//       }
+//       return film;
+//     })
+//   };
+// };
+export const handleWatchlistState = (state, filmId) => {
+  return {
+    ...state,
+    films: state.films.map(film => {
+      if (film.id === filmId) {
+        return {
+          ...film,
+          user_details: {
+            ...film.user_details,
+            watchlist: !film.user_details.watchlist
+          }
+        };
+      }
+      return film;
+    })
+  };
+};
+export const handleWatchedState = (state, filmId) => {
+  return {
+    ...state,
+    films: state.films.map(film => {
+      if (film.id === filmId) {
+        return {
+          ...film,
+          user_details: {
+            ...film.user_details,
+            already_watched: !film.user_details.already_watched
+          }
+        };
+      }
+      return film;
+    })
+  };
+};
+
+export const handleFavoriteState = (state, filmId) => {
+  return {
+    ...state,
+    films: state.films.map(film => {
+      if (film.id === filmId) {
+        return {
+          ...film,
+          user_details: {
+            ...film.user_details,
+            favorite: !film.user_details.favorite
+          }
+        };
+      }
+      return film;
+    })
+  };
+};
+
+export const handleCommentDeletingState = (state, filmId, commentId) => {
+  return {
+    ...state,
+    films: state.films.map(film => {
+      if (film.id === filmId) {
+        return {
+          ...film,
+          comments: film.comments.filter(comment => comment.id !== commentId)
+        };
+      }
+      return film;
+    })
+  };
+};
+
+export const handlePersonalRatingState = (state, filmId, personalRating) => {
+  return {
+    ...state,
+    films: state.films.map(film => {
+      if (film.id === filmId) {
+        return {
+          ...film,
+          user_details: {
+            ...film.user_details,
+            personal_rating: personalRating
+          }
+        };
+      }
+      return film;
+    })
+  };
+};
+
+export const handleCommentAddingState = (state, filmId, newComment) => {
+  return {
+    ...state,
+    films: state.films.map(film => {
+      if (film.id === filmId) {
+        return {
+          ...film,
+          comments: [...film.comments, newComment]
+        };
+      }
+      return film;
+    })
+  };
+};
+export const onTabChangeState = (state, tabType) => {
+  return {
+    ...state,
+    tabType: tabType,
+    amountOfFilmsShown: 5
+  };
+};

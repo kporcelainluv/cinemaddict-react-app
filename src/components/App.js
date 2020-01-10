@@ -12,7 +12,13 @@ import {
   getFilmById,
   filterFilms,
   getTopRatedFilms,
-  getMostCommentedFilms
+  getMostCommentedFilms,
+  handleWatchlistState,
+  handleWatchedState,
+  handleFavoriteState,
+  handlePersonalRatingState,
+  handleCommentAddingState,
+  onTabChangeState
 } from "../utils";
 import { Stats } from "./Stats";
 import { Header } from "./Header";
@@ -43,103 +49,27 @@ export class App extends React.Component {
   };
 
   handlePersonalRating = (filmId, newPersonalRating) => {
-    this.setState(state => ({
-      ...state,
-      films: state.films.map(film => {
-        if (film.id === filmId) {
-          return {
-            ...film,
-            user_details: {
-              ...film.user_details,
-              personal_rating: newPersonalRating
-            }
-          };
-        }
-        return film;
-      })
-    }));
+    this.setState(state =>
+      handlePersonalRatingState(state, filmId, newPersonalRating)
+    );
   };
 
   handleCommentAdding = (filmId, newComment) => {
-    this.setState(state => ({
-      ...state,
-      films: state.films.map(film => {
-        if (film.id === filmId) {
-          return {
-            ...film,
-            comments: [...film.comments, newComment]
-          };
-        }
-        return film;
-      })
-    }));
+    this.setState(state => handleCommentAddingState(state, filmId, newComment));
   };
   handleCommentDeleting = (filmId, commentId) => {
-    this.setState(state => ({
-      ...state,
-      films: state.films.map(film => {
-        if (film.id === filmId) {
-          return {
-            ...film,
-            comments: film.comments.filter(comment => comment.id !== commentId)
-          };
-        }
-        return film;
-      })
-    }));
+    this.setState(state => this.handleCommentAdding(state, filmId, commentId));
   };
 
   handleClickWatchlist = filmId => {
-    this.setState(state => ({
-      ...state,
-      films: state.films.map(film => {
-        if (film.id === filmId) {
-          return {
-            ...film,
-            user_details: {
-              ...film.user_details,
-              watchlist: !film.user_details.watchlist
-            }
-          };
-        }
-        return film;
-      })
-    }));
+    this.setState(state => handleWatchlistState(state, filmId));
   };
 
   handleClickWatched = filmId => {
-    this.setState(state => ({
-      ...state,
-      films: state.films.map(film => {
-        if (film.id === filmId) {
-          return {
-            ...film,
-            user_details: {
-              ...film.user_details,
-              already_watched: !film.user_details.already_watched
-            }
-          };
-        }
-        return film;
-      })
-    }));
+    this.setState(state => handleWatchedState(state, filmId));
   };
   handleClickFavorite = filmId => {
-    this.setState(state => ({
-      ...state,
-      films: state.films.map(film => {
-        if (film.id === filmId) {
-          return {
-            ...film,
-            user_details: {
-              ...film.user_details,
-              favorite: !film.user_details.favorite
-            }
-          };
-        }
-        return film;
-      })
-    }));
+    this.setState(state => handleFavoriteState(state, filmId));
   };
 
   onSortingTypeChange = type => {
@@ -154,35 +84,15 @@ export class App extends React.Component {
 
   onTabChange = type => {
     if (type === NavTab.ALL) {
-      this.setState({
-        ...this.state,
-        tabType: NavTab.ALL,
-        amountOfFilmsShown: 5
-      });
+      this.setState(state => onTabChangeState(state, NavTab.ALL));
     } else if (type === NavTab.WATCHLIST) {
-      this.setState({
-        ...this.state,
-        tabType: NavTab.WATCHLIST,
-        amountOfFilmsShown: 5
-      });
+      this.setState(state => onTabChangeState(state, NavTab.WATCHLIST));
     } else if (type === NavTab.HISTORY) {
-      this.setState({
-        ...this.state,
-        tabType: NavTab.HISTORY,
-        amountOfFilmsShown: 5
-      });
+      this.setState(state => onTabChangeState(state, NavTab.HISTORY));
     } else if (type === NavTab.FAVORITES) {
-      this.setState({
-        ...this.state,
-        tabType: NavTab.FAVORITES,
-        amountOfFilmsShown: 5
-      });
+      this.setState(state => onTabChangeState(state, NavTab.FAVORITES));
     } else if (type === NavTab.STATS) {
-      this.setState({
-        ...this.state,
-        tabType: NavTab.STATS,
-        amountOfFilmsShown: 5
-      });
+      this.setState(state => onTabChangeState(state, NavTab.STATS));
     }
   };
 
