@@ -25,18 +25,16 @@ export class App extends React.Component {
     openedFilmId: null,
     sortingType: "default",
     tabType: `all`,
-    query: undefined,
-    searchFilms: []
+    query: undefined
   };
 
-  onFilmClick = (id, isOpened) => {
+  onFilmClick = id => {
     this.setState({
       openedFilmId: id
     });
   };
 
   handleCommentAdding = (filmId, newComment) => {
-    console.log("comment adding");
     this.setState(state => ({
       ...state,
       films: state.films.map(film => {
@@ -176,8 +174,6 @@ export class App extends React.Component {
     // TODO: fix late coming of query by 1 letter
     if (query.length > 2) {
       this.setState({ query });
-      const searchFilms = filterFilms(this.state.allFilms, query);
-      this.setState({ searchFilms });
     } else {
       this.setState({ query: undefined });
     }
@@ -266,7 +262,7 @@ export class App extends React.Component {
 
         {this.state.query && (
           <SearchResultContainer
-            films={this.state.searchFilms}
+            films={filterFilms(this.state.allFilms, this.state.query)}
             onFilmClick={this.onFilmClick}
             handleClickWatchlist={this.handleClickWatchlist}
             handleClickWatched={this.handleClickWatched}
