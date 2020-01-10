@@ -1,6 +1,11 @@
 import React from "react";
 
-export const PersonalRatingInput = ({ v, personalRating }) => {
+export const PersonalRatingInput = ({
+  v,
+  personalRating,
+  handlePersonalRating,
+  filmId
+}) => {
   return (
     <div style={{ display: `flex`, marginLeft: `5px`, marginRight: `5px` }}>
       <input
@@ -10,6 +15,9 @@ export const PersonalRatingInput = ({ v, personalRating }) => {
         checked={v === personalRating}
         value={v}
         id={`rating-${v}`}
+        onChange={() => {
+          handlePersonalRating(filmId, v);
+        }}
       />
       <label
         className="film-details__user-rating-label"

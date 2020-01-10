@@ -2,7 +2,13 @@ import React from "react";
 import { RATING_LENGTH } from "../../consts";
 import { PersonalRatingInput } from "./PersonalRatingInput";
 
-export const PersonalRating = ({ poster, title, personalRating }) => {
+export const PersonalRating = ({
+  poster,
+  title,
+  personalRating,
+  handlePersonalRating,
+  filmId
+}) => {
   return (
     <section className="film-details__user-rating-wrap">
       <div className="film-details__user-rating-controls">
@@ -28,7 +34,13 @@ export const PersonalRating = ({ poster, title, personalRating }) => {
             {new Array(RATING_LENGTH).fill(0).map((_, id) => {
               const v = id + 1;
               return (
-                <PersonalRatingInput personalRating={personalRating} v={v} />
+                <PersonalRatingInput
+                  personalRating={personalRating}
+                  filmId={filmId}
+                  handlePersonalRating={handlePersonalRating}
+                  v={v}
+                  key={v}
+                />
               );
             })}
           </div>

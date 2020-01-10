@@ -34,6 +34,24 @@ export class App extends React.Component {
     });
   };
 
+  handlePersonalRating = (filmId, newPersonalRating) => {
+    this.setState(state => ({
+      ...state,
+      films: state.films.map(film => {
+        if (film.id === filmId) {
+          return {
+            ...film,
+            user_details: {
+              ...film.user_details,
+              personal_rating: newPersonalRating
+            }
+          };
+        }
+        return film;
+      })
+    }));
+  };
+
   handleCommentAdding = (filmId, newComment) => {
     this.setState(state => ({
       ...state,
@@ -257,6 +275,7 @@ export class App extends React.Component {
             handleClickFavorite={this.handleClickFavorite}
             handleCommentDeleting={this.handleCommentDeleting}
             handleCommentAdding={this.handleCommentAdding}
+            handlePersonalRating={this.handlePersonalRating}
           />
         )}
 

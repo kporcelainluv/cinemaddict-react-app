@@ -121,9 +121,11 @@ export class Popup extends React.Component {
             }`}
           >
             <PersonalRating
-              personalRating={film.film_info.personal_rating}
+              personalRating={film.user_details.personal_rating}
+              filmId={film.id}
               poster={film.film_info.poster}
               title={film.film_info.title}
+              handlePersonalRating={this.props.handlePersonalRating}
             />
           </div>
           <Comments
