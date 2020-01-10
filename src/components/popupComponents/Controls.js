@@ -5,8 +5,8 @@ export const Controls = ({
   name,
   updateState,
   handleClick,
-  classname,
-  checked
+  checked,
+  text
 }) => {
   return (
     <div>
@@ -25,7 +25,7 @@ export const Controls = ({
         htmlFor={name}
         className={`film-details__control-label film-details__control-label--${name}`}
       >
-        Add to watchlist
+        {text}
       </label>
     </div>
   );

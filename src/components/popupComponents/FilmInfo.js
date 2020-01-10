@@ -15,6 +15,7 @@ export const FilmInfo = ({ film }) => {
   const writers = getWriters(film);
   const releaseDate = getreleaseDate(film);
   const genres = getGenresTemplate(film);
+
   return (
     <div className="film-details__info-wrap">
       <div className="film-details__poster">
@@ -49,7 +50,7 @@ export const FilmInfo = ({ film }) => {
             <FilmDetails heading={`Writers`} text={writers} />
             <FilmDetails heading={`Actors`} text={actors} />
             <FilmDetails heading={`Release Date`} text={releaseDate} />
-            <FilmDetails heading={`Runtime`} text={`${hours}h ${minutes}m}`} />
+            <FilmDetails heading={`Runtime`} text={`${hours}h ${minutes}m`} />
             <FilmDetails
               heading={`Country`}
               text={film.film_info.release.release_country}

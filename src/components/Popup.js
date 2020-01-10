@@ -88,6 +88,7 @@ export class Popup extends React.Component {
                 updateState={this.updatePopupState}
                 handleClick={this.props.handleClickWatchlist}
                 checked={this.state.watchlist}
+                text={`Add to watchlist`}
               />
               <Controls
                 film={film}
@@ -95,6 +96,7 @@ export class Popup extends React.Component {
                 updateState={this.updatePopupState}
                 handleClick={this.props.handleClickWatched}
                 checked={this.state.watched}
+                text={`Already watched`}
               />
               <Controls
                 film={film}
@@ -102,6 +104,7 @@ export class Popup extends React.Component {
                 updateState={this.updatePopupState}
                 handleClick={this.props.handleClickFavorite}
                 checked={this.state.favorite}
+                text={`Add to favorites`}
               />
             </section>
           </div>

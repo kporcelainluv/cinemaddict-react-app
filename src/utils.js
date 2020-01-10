@@ -271,13 +271,13 @@ export const getGenreHeading = genres => {
 };
 
 export const getActors = film => {
-  film.film_info.actors.reduce((str, elm) => {
+  return film.film_info.actors.reduce((str, elm) => {
     str += `${elm}, `;
     return str;
   }, ``);
 };
 export const getWriters = film => {
-  film.film_info.writers.reduce((str, elm) => {
+  return film.film_info.writers.reduce((str, elm) => {
     str += `${elm}, `;
     return str;
   }, ``);
