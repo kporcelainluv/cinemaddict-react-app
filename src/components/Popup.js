@@ -13,12 +13,18 @@ export class Popup extends React.Component {
   };
 
   updatePopupState = stateName => {
-    if (stateName === `watchlist`) {
-      this.setState({ watchlist: !this.state.watchlist });
-    } else if (stateName === `watched`) {
-      this.setState({ watched: !this.state.watched });
-    } else if (stateName === `favorite`) {
-      this.setState({ favorite: !this.state.favorite });
+    switch (stateName) {
+      case `watchlist`:
+        this.setState({ watchlist: !this.state.watchlist });
+        break;
+      case `watched`:
+        this.setState({ watched: !this.state.watched });
+        break;
+      case `favorite`:
+        this.setState({ favorite: !this.state.favorite });
+        break;
+      default:
+        return ``;
     }
   };
   componentDidMount() {
