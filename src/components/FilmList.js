@@ -1,5 +1,6 @@
 import React from "react";
 import { FilmCard } from "./FilmCard";
+import { DEFAULT_AMOUNT_DISPLAYED } from "../consts";
 
 export const FilmList = ({
   type,
@@ -16,7 +17,7 @@ export const FilmList = ({
       <section className="films-list--extra">
         <h2 className="films-list__title">{text}</h2>
         <div className="films-list__container">
-          {films.slice(0, 2).map(film => {
+          {films.slice(0, DEFAULT_AMOUNT_DISPLAYED).map(film => {
             return (
               <FilmCard
                 props={film}

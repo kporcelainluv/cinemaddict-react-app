@@ -1,4 +1,5 @@
 import React from "react";
+import { SortType } from "../consts";
 
 export class Sorting extends React.Component {
   state = { type: "default" };
@@ -22,10 +23,10 @@ export class Sorting extends React.Component {
         <li>
           <a
             href="#"
-            className={this.getActiveButton("default")}
+            className={this.getActiveButton(SortType.DEFAULT)}
             onClick={event => {
               event.preventDefault();
-              this.onSortButtonClick("default");
+              this.onSortButtonClick(SortType.DEFAULT);
             }}
           >
             Sort by default
@@ -34,10 +35,10 @@ export class Sorting extends React.Component {
         <li>
           <a
             href="#"
-            className={this.getActiveButton("date")}
+            className={this.getActiveButton(SortType.DATE)}
             onClick={event => {
               event.preventDefault();
-              this.onSortButtonClick("date");
+              this.onSortButtonClick(SortType.DATE);
             }}
           >
             Sort by date
@@ -46,10 +47,10 @@ export class Sorting extends React.Component {
         <li>
           <a
             href="#"
-            className={this.getActiveButton("rating")}
+            className={this.getActiveButton(SortType.RATING)}
             onClick={event => {
               event.preventDefault();
-              this.onSortButtonClick("rating");
+              this.onSortButtonClick(SortType.RATING);
             }}
           >
             Sort by rating

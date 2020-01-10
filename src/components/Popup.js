@@ -4,6 +4,13 @@ import { Controls } from "./popupComponents/Controls";
 import { Comments } from "./popupComponents/Comments";
 import { FilmInfo } from "./popupComponents/FilmInfo";
 import { PersonalRating } from "./popupComponents/PersonalRating";
+import {
+  ControlTabs,
+  EVENT_KEY_ENTER,
+  EVENT_KEY_ESC,
+  EVENT_KEY_ESCAPE,
+  ControlsText
+} from "../consts";
 
 export class Popup extends React.Component {
   state = {
@@ -15,13 +22,13 @@ export class Popup extends React.Component {
 
   updatePopupState = stateName => {
     switch (stateName) {
-      case `watchlist`:
+      case ControlTabs.WATCHLIST:
         this.setState({ watchlist: !this.state.watchlist });
         break;
-      case `watched`:
+      case ControlTabs.HISTORY:
         this.setState({ watched: !this.state.watched });
         break;
-      case `favorite`:
+      case ControlTabs.FAVORITE:
         this.setState({ favorite: !this.state.favorite });
         break;
       default:
@@ -34,7 +41,7 @@ export class Popup extends React.Component {
   };
   componentDidMount() {
     window.addEventListener("keydown", evt => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
+      if (evt.key === EVENT_KEY_ESC || evt.key === EVENT_KEY_ESCAPE) {
         this.props.onPopupClose();
       }
     });
@@ -46,8 +53,7 @@ export class Popup extends React.Component {
   }
 
   handleSubmit = e => {
-    if (e.key === "Enter") {
-      console.log("submitting");
+    if (e.key === EVENT_KEY_ENTER) {
       e.preventDefault();
       this.props.handleCommentAdding(this.props.film.id, this.state.newComment);
       this.myFormRef.submit();
@@ -95,27 +101,27 @@ export class Popup extends React.Component {
             >
               <Controls
                 film={film}
-                name={`watchlist`}
+                name={ControlTabs.WATCHLIST}
                 updateState={this.updatePopupState}
                 handleClick={this.props.handleClickWatchlist}
                 checked={this.state.watchlist}
-                text={`Add to watchlist`}
+                text={ControlsText.WATCHLIST}
               />
               <Controls
                 film={film}
-                name={`watched`}
+                name={ControlTabs.HISTORY}
                 updateState={this.updatePopupState}
                 handleClick={this.props.handleClickWatched}
                 checked={this.state.watched}
-                text={`Already watched`}
+                text={ControlsText.HISTORY}
               />
               <Controls
                 film={film}
-                name={`favorite`}
+                name={ControlTabs.FAVORITE}
                 updateState={this.updatePopupState}
                 handleClick={this.props.handleClickFavorite}
                 checked={this.state.favorite}
-                text={`Add to favorites`}
+                text={ControlsText.FAVORITES}
               />
             </section>
           </div>

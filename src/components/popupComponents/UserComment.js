@@ -31,7 +31,6 @@ export const UserComment = ({
             className="film-details__comment-delete"
             type={"button"}
             onClick={() => {
-              console.log("deleting");
               handleCommentDeleting(film.id, id);
             }}
           >

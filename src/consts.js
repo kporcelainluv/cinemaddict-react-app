@@ -10,7 +10,25 @@ export const TIMEOUT = 600;
 export const DESCRIPTION_LENGTH = 140;
 export const RATING_LENGTH = 9;
 export const DEBOUNCE_TIMEOUT = 500;
+export const EVENT_KEY_ESCAPE = `Escape`;
+export const EVENT_KEY_ESC = `Esc`;
+export const EVENT_KEY_ENTER = `Enter`;
 
+export const Emoji = {
+  SMILE: `smile`,
+  SLEEPING: `sleeping`,
+  PUKE: `puke`
+};
+export const EmojiId = {
+  SMILE: `emoji-smile`,
+  SLEEPING: `emoji-sleeping`,
+  PUKE: `emoji-gpuke`
+};
+export const ControlsText = {
+  HISTORY: `Already watched`,
+  WATCHLIST: `Add to watchlist`,
+  FAVORITES: `Add to favorites`
+};
 export const NavTab = {
   ALL: `all`,
   HISTORY: `history`,
@@ -18,7 +36,11 @@ export const NavTab = {
   FAVORITES: `favorites`,
   STATS: `stats`
 };
-
+export const ControlTabs = {
+  HISTORY: `history`,
+  WATCHLIST: `watchlist`,
+  FAVORITE: `favorites`
+};
 export const SortType = {
   DEFAULT: `default`,
   DATE: `date`,
@@ -66,4 +88,9 @@ export const StatsRank = {
 export const DeleteButtonName = {
   DELETING: `deleting`,
   DELETE: `delete`
+};
+export const FilmListHeading = {
+  RATED: `Top rated`,
+  COMMENTED: `Most commented`,
+  ALL: `All movies. Upcoming`
 };

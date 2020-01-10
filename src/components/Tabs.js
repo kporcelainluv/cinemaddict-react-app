@@ -1,4 +1,5 @@
 import React from "react";
+import { NavTab } from "../consts";
 
 export class Tabs extends React.Component {
   state = { type: `all` };
@@ -26,20 +27,20 @@ export class Tabs extends React.Component {
       <nav className="main-navigation">
         <a
           href="#all"
-          className={this.getTabActive(`all`)}
+          className={this.getTabActive(NavTab.ALL)}
           onClick={event => {
             event.preventDefault();
-            this.onTabClick(`all`);
+            this.onTabClick(NavTab.ALL);
           }}
         >
           All movies
         </a>
         <a
           href="#watchlist"
-          className={this.getTabActive(`watchlist`)}
+          className={this.getTabActive(NavTab.WATCHLIST)}
           onClick={event => {
             event.preventDefault();
-            this.onTabClick(`watchlist`);
+            this.onTabClick(NavTab.WATCHLIST);
           }}
         >
           Watchlist
@@ -49,10 +50,10 @@ export class Tabs extends React.Component {
         </a>
         <a
           href="#history"
-          className={this.getTabActive(`history`)}
+          className={this.getTabActive(NavTab.HISTORY)}
           onClick={event => {
             event.preventDefault();
-            this.onTabClick(`history`);
+            this.onTabClick(NavTab.HISTORY);
           }}
         >
           History
@@ -62,10 +63,10 @@ export class Tabs extends React.Component {
         </a>
         <a
           href="#favorites"
-          className={this.getTabActive(`favorites`)}
+          className={this.getTabActive(NavTab.FAVORITES)}
           onClick={event => {
             event.preventDefault();
-            this.onTabClick(`favorites`);
+            this.onTabClick(NavTab.FAVORITES);
           }}
         >
           Favorites
@@ -75,10 +76,10 @@ export class Tabs extends React.Component {
         </a>
         <a
           href="#stats"
-          className={this.getTabActive(`stats`)}
+          className={this.getTabActive(NavTab.STATS)}
           onClick={event => {
             event.preventDefault();
-            this.onTabClick(`stats`);
+            this.onTabClick(NavTab.STATS);
           }}
         >
           Stats

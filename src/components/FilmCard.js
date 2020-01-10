@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { countHoursAndMins } from "../utils";
+import { DESCRIPTION_LENGTH } from "../consts";
 
 const getClassname = classname => {
   return `film-card__controls-item button film-card__controls-item--${classname}`;
@@ -70,8 +71,8 @@ export class FilmCard extends React.Component {
     const year = moment(film.film_info.release.date).format("YYYY");
     const [hours, minutes] = countHoursAndMins(film.film_info.runtime);
     const description =
-      film.film_info.description.length > 139
-        ? film.film_info.description.slice(0, 139) + `...`
+      film.film_info.description.length > DESCRIPTION_LENGTH
+        ? film.film_info.description.slice(0, DESCRIPTION_LENGTH) + `...`
         : film.film_info.description;
     return (
       <article className="film-card">

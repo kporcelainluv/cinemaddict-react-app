@@ -1,4 +1,5 @@
 import React from "react";
+import { StatsFilterType } from "../../consts";
 
 export class StatsFilters extends React.Component {
   state = {
@@ -17,8 +18,8 @@ export class StatsFilters extends React.Component {
         <input
           onChange={() =>
             this.setState(
-              { filterType: "all-time" },
-              this.props.onChangeFilter("all-time")
+              { filterType: StatsFilterType.ALL },
+              this.props.onChangeFilter(StatsFilterType.ALL)
             )
           }
           type="radio"
@@ -26,7 +27,7 @@ export class StatsFilters extends React.Component {
           name="statistic-filter"
           id="statistic-all-time"
           value="all-time"
-          checked={this.state.filterType === "all-time"}
+          checked={this.state.filterType === StatsFilterType.ALL}
         />
         <label
           htmlFor="statistic-all-time"
@@ -41,11 +42,11 @@ export class StatsFilters extends React.Component {
           name="statistic-filter"
           id="statistic-today"
           value="today"
-          checked={this.state.filterType === "today"}
+          checked={this.state.filterType === StatsFilterType.TODAY}
           onChange={() =>
             this.setState(
-              { filterType: "today" },
-              this.props.onChangeFilter("today")
+              { filterType: StatsFilterType.TODAY },
+              this.props.onChangeFilter(StatsFilterType.TODAY)
             )
           }
         />
@@ -59,11 +60,11 @@ export class StatsFilters extends React.Component {
           name="statistic-filter"
           id="statistic-week"
           value="week"
-          checked={this.state.filterType === "week"}
+          checked={this.state.filterType === StatsFilterType.WEEK}
           onChange={() =>
             this.setState(
-              { filterType: "week" },
-              this.props.onChangeFilter("week")
+              { filterType: StatsFilterType.WEEK },
+              this.props.onChangeFilter(StatsFilterType.WEEK)
             )
           }
         />
@@ -77,11 +78,11 @@ export class StatsFilters extends React.Component {
           name="statistic-filter"
           id="statistic-month"
           value="month"
-          checked={this.state.filterType === "month"}
+          checked={this.state.filterType === StatsFilterType.MONTH}
           onChange={() =>
             this.setState(
-              { filterType: "month" },
-              this.props.onChangeFilter("month")
+              { filterType: StatsFilterType.MONTH },
+              this.props.onChangeFilter(StatsFilterType.MONTH)
             )
           }
         />
@@ -95,11 +96,11 @@ export class StatsFilters extends React.Component {
           name="statistic-filter"
           id="statistic-year"
           value="year"
-          checked={this.state.filterType === "year"}
+          checked={this.state.filterType === StatsFilterType.YEAR}
           onChange={() =>
             this.setState(
-              { filterType: "year" },
-              this.props.onChangeFilter("year")
+              { filterType: StatsFilterType.YEAR },
+              this.props.onChangeFilter(StatsFilterType.YEAR)
             )
           }
         />

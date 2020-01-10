@@ -1,4 +1,5 @@
 import React from "react";
+import { Emoji, EmojiId } from "../../consts";
 
 export class CommentInput extends React.Component {
   state = { currentEmoji: `smile`, comment: `` };
@@ -22,13 +23,6 @@ export class CommentInput extends React.Component {
             onChange={event => {
               this.setState({ comment: event.target.value });
             }}
-            // onKeyDown={e => {
-            //   this.props.handleSubmit(e);
-            //   this.props.getCurrentComment(
-            //     this.state.comment,
-            //     this.state.emoji
-            //   );
-            // }}
           />
         </label>
 
@@ -37,15 +31,15 @@ export class CommentInput extends React.Component {
             className="film-details__emoji-item visually-hidden"
             name="comment-emoji"
             type="radio"
-            id="emoji-smile"
-            value="smile"
+            id={EmojiId.SMILE}
+            value={Emoji.SMILE}
             onClick={() => {
-              this.setState({ currentEmoji: `smile` });
+              this.setState({ currentEmoji: Emoji.SMILE });
             }}
           />
-          <label className="film-details__emoji-label" htmlFor="emoji-smile">
+          <label className="film-details__emoji-label" htmlFor={EmojiId.SMILE}>
             <img
-              src="./images/emoji/smile.png"
+              src={`./images/emoji/${Emoji.SMILE}.png`}
               width="30"
               height="30"
               alt="emoji"
@@ -56,15 +50,18 @@ export class CommentInput extends React.Component {
             className="film-details__emoji-item visually-hidden"
             name="comment-emoji"
             type="radio"
-            id="emoji-sleeping"
-            value="neutral-face"
+            id={EmojiId.SLEEPING}
+            value={Emoji.SLEEPING}
             onClick={() => {
-              this.setState({ currentEmoji: `sleeping` });
+              this.setState({ currentEmoji: Emoji.SLEEPING });
             }}
           />
-          <label className="film-details__emoji-label" htmlFor="emoji-sleeping">
+          <label
+            className="film-details__emoji-label"
+            htmlFor={EmojiId.SLEEPING}
+          >
             <img
-              src="./images/emoji/sleeping.png"
+              src={`./images/emoji/${Emoji.SLEEPING}.png`}
               width="30"
               height="30"
               alt="emoji"
@@ -75,15 +72,15 @@ export class CommentInput extends React.Component {
             className="film-details__emoji-item visually-hidden"
             name="comment-emoji"
             type="radio"
-            id="emoji-gpuke"
-            value="grinning"
+            id={EmojiId.PUKE}
+            value={EmojiId.PUKE}
             onClick={() => {
-              this.setState({ currentEmoji: `puke` });
+              this.setState({ currentEmoji: Emoji.PUKE });
             }}
           />
-          <label className="film-details__emoji-label" htmlFor="emoji-gpuke">
+          <label className="film-details__emoji-label" htmlFor={EmojiId.PUKE}>
             <img
-              src="./images/emoji/puke.png"
+              src={`./images/emoji/${Emoji.PUKE}.png`}
               width="30"
               height="30"
               alt="emoji"

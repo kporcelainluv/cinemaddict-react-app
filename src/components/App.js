@@ -16,10 +16,17 @@ import { Stats } from "./Stats";
 import { Header } from "./Header";
 import { SearchResultContainer } from "./SearchResultContainer";
 import { Footer } from "./statsComponents/Footer";
+import {
+  NavTab,
+  PER_PAGE,
+  SEARCH_QUERY_LENGTH,
+  SortType,
+  FilmListHeading
+} from "../consts";
 
 export class App extends React.Component {
   state = {
-    amountOfFilmsShown: 5,
+    amountOfFilmsShown: PER_PAGE,
     allFilms: mockFilms,
     films: mockFilms,
     openedFilmId: null,
@@ -135,49 +142,49 @@ export class App extends React.Component {
   };
 
   onSortingTypeChange = type => {
-    if (type === "default") {
-      this.setState({ sortingType: "default" });
-    } else if (type === "date") {
-      this.setState({ sortingType: "date" });
-    } else if (type === "rating") {
-      this.setState({ sortingType: "rating" });
+    if (type === SortType.DEFAULT) {
+      this.setState({ sortingType: SortType.DEFAULT });
+    } else if (type === SortType.DATE) {
+      this.setState({ sortingType: SortType.DATE });
+    } else if (type === SortType.RATING) {
+      this.setState({ sortingType: SortType.RATING });
     }
   };
 
   onTabChange = type => {
     // TODO: handle doble clicking before rerendering
-    if (type === "all") {
+    if (type === NavTab.ALL) {
       this.setState({
         ...this.state,
-        tabType: "all",
+        tabType: NavTab.ALL,
         amountOfFilmsShown: 5,
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
-    } else if (type === "watchlist") {
+    } else if (type === NavTab.WATCHLIST) {
       this.setState({
         ...this.state,
-        tabType: "watchlist",
+        tabType: NavTab.WATCHLIST,
         amountOfFilmsShown: 5,
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
-    } else if (type === "history") {
+    } else if (type === NavTab.HISTORY) {
       this.setState({
         ...this.state,
-        tabType: "history",
+        tabType: NavTab.HISTORY,
         amountOfFilmsShown: 5,
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
-    } else if (type === "favorites") {
+    } else if (type === NavTab.FAVORITES) {
       this.setState({
         ...this.state,
-        tabType: "favorites",
+        tabType: NavTab.FAVORITES,
         amountOfFilmsShown: 5,
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
-    } else if (type === "stats") {
+    } else if (type === NavTab.STATS) {
       this.setState({
         ...this.state,
-        tabType: "stats",
+        tabType: NavTab.STATS,
         amountOfFilmsShown: 5,
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
@@ -190,7 +197,7 @@ export class App extends React.Component {
 
   getSearchQuery = query => {
     // TODO: fix late coming of query by 1 letter
-    if (query.length > 2) {
+    if (query.length > SEARCH_QUERY_LENGTH) {
       this.setState({ query });
     } else {
       this.setState({ query: undefined });
@@ -206,7 +213,9 @@ export class App extends React.Component {
     // TODO: FIX DOUBLE PRESSING BTN BEFORE FIRST RENDER
 
     if (this.state.amountOfFilmsShown <= this.state.allFilms.length) {
-      this.setState({ amountOfFilmsShown: this.state.amountOfFilmsShown + 5 });
+      this.setState({
+        amountOfFilmsShown: this.state.amountOfFilmsShown + PER_PAGE
+      });
       this.setState({
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
@@ -247,7 +256,7 @@ export class App extends React.Component {
             <section className="films">
               <FilmList
                 type={"regular"}
-                text={"All movies. Upcoming"}
+                text={FilmListHeading.ALL}
                 films={films}
                 onFilmClick={this.onFilmClick}
                 handleClickWatchlist={this.handleClickWatchlist}
@@ -260,8 +269,8 @@ export class App extends React.Component {
                 ``
               )}
 
-              {/*<FilmList type={"extra"} text={"Top rated"} films={props.films} />*/}
-              {/*<FilmList type={"extra"} text={"Most commented"} films={props.films} />*/}
+              {/*<FilmList type={"extra"} text={FilmListHeading.RATED} films={props.films} />*/}
+              {/*<FilmList type={"extra"} text={FilmListHeading.COMMENTED} films={props.films} />*/}
             </section>
           </div>
         )}
