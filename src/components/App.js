@@ -217,6 +217,8 @@ export class App extends React.Component {
       this.state.films
     ).slice(0, this.state.amountOfFilmsShown);
 
+    const mostCommentedFilms = getMostCommentedFilms(this.state.films);
+    const topRatedFilms = getTopRatedFilms(this.state.films);
     return (
       <div>
         <Header
@@ -250,24 +252,27 @@ export class App extends React.Component {
               ) : (
                 ``
               )}
+              (topRatedFilms &&
               <FilmList
                 type={"extra"}
                 text={FilmListHeading.RATED}
-                films={getTopRatedFilms(this.state.films)}
+                films={topRatedFilms}
                 onFilmClick={this.onFilmClick}
                 handleClickWatchlist={this.handleClickWatchlist}
                 handleClickWatched={this.handleClickWatched}
                 handleClickFavorite={this.handleClickFavorite}
               />
+              ) (mostCommentedFilms &&
               <FilmList
                 type={"extra"}
                 text={FilmListHeading.COMMENTED}
-                films={getMostCommentedFilms(this.state.films)}
+                films={mostCommentedFilms}
                 onFilmClick={this.onFilmClick}
                 handleClickWatchlist={this.handleClickWatchlist}
                 handleClickWatched={this.handleClickWatched}
                 handleClickFavorite={this.handleClickFavorite}
               />
+              )
             </section>
           </div>
         )}
