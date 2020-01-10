@@ -26,7 +26,6 @@ export class App extends React.Component {
     sortingType: "default",
     tabType: `all`,
     query: undefined,
-    isStatsOpened: false,
     searchFilms: []
   };
 
@@ -135,7 +134,6 @@ export class App extends React.Component {
       this.setState({
         ...this.state,
         tabType: "all",
-        isStatsOpened: false,
         amountOfFilmsShown: 5,
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
@@ -143,7 +141,6 @@ export class App extends React.Component {
       this.setState({
         ...this.state,
         tabType: "watchlist",
-        isStatsOpened: false,
         amountOfFilmsShown: 5,
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
@@ -151,7 +148,6 @@ export class App extends React.Component {
       this.setState({
         ...this.state,
         tabType: "history",
-        isStatsOpened: false,
         amountOfFilmsShown: 5,
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
@@ -159,7 +155,6 @@ export class App extends React.Component {
       this.setState({
         ...this.state,
         tabType: "favorites",
-        isStatsOpened: false,
         amountOfFilmsShown: 5,
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
@@ -167,7 +162,6 @@ export class App extends React.Component {
       this.setState({
         ...this.state,
         tabType: "stats",
-        isStatsOpened: true,
         amountOfFilmsShown: 5,
         films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
       });
@@ -233,7 +227,7 @@ export class App extends React.Component {
             favorites={getTabsFilmsLength(`favorites`, this.state.allFilms)}
           />
         )}
-        {!this.state.isStatsOpened && !this.state.query && (
+        {this.state.tabType !== "stats" && !this.state.query && (
           <div>
             <Sorting onSortingTypeChange={this.onSortingTypeChange} />
             <section className="films">
@@ -279,7 +273,7 @@ export class App extends React.Component {
             handleClickFavorite={this.handleClickFavorite}
           />
         )}
-        {this.state.isStatsOpened && <Stats films={this.state.films} />}
+        {this.state.tabType === "stats" && <Stats films={this.state.films} />}
         <Footer amount={this.state.allFilms.length} />
       </div>
     );
