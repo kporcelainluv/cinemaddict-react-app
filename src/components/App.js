@@ -29,7 +29,6 @@ import {
 export class App extends React.Component {
   state = {
     amountOfFilmsShown: PER_PAGE,
-    allFilms: mockFilms,
     films: mockFilms,
     openedFilmId: null,
     sortingType: "default",
@@ -154,41 +153,35 @@ export class App extends React.Component {
   };
 
   onTabChange = type => {
-    // TODO: handle doble clicking before rerendering
     if (type === NavTab.ALL) {
       this.setState({
         ...this.state,
         tabType: NavTab.ALL,
-        amountOfFilmsShown: 5,
-        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
+        amountOfFilmsShown: 5
       });
     } else if (type === NavTab.WATCHLIST) {
       this.setState({
         ...this.state,
         tabType: NavTab.WATCHLIST,
-        amountOfFilmsShown: 5,
-        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
+        amountOfFilmsShown: 5
       });
     } else if (type === NavTab.HISTORY) {
       this.setState({
         ...this.state,
         tabType: NavTab.HISTORY,
-        amountOfFilmsShown: 5,
-        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
+        amountOfFilmsShown: 5
       });
     } else if (type === NavTab.FAVORITES) {
       this.setState({
         ...this.state,
         tabType: NavTab.FAVORITES,
-        amountOfFilmsShown: 5,
-        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
+        amountOfFilmsShown: 5
       });
     } else if (type === NavTab.STATS) {
       this.setState({
         ...this.state,
         tabType: NavTab.STATS,
-        amountOfFilmsShown: 5,
-        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
+        amountOfFilmsShown: 5
       });
     }
   };
@@ -214,42 +207,33 @@ export class App extends React.Component {
     console.log("amount", this.state.amountOfFilmsShown);
     // TODO: FIX DOUBLE PRESSING BTN BEFORE FIRST RENDER
 
-    if (this.state.amountOfFilmsShown <= this.state.allFilms.length) {
+    if (this.state.amountOfFilmsShown <= this.state.films.length) {
       this.setState({
         amountOfFilmsShown: this.state.amountOfFilmsShown + PER_PAGE
       });
-      this.setState({
-        films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
-      });
     }
   };
-
-  componentDidMount() {
-    this.setState({
-      films: this.state.allFilms.slice(0, this.state.amountOfFilmsShown)
-    });
-  }
 
   render() {
     const films = getSortedFilms(
       this.state.sortingType,
       this.state.tabType,
       this.state.films
-    );
+    ).slice(0, this.state.amountOfFilmsShown);
 
     return (
       <div>
         <Header
-          films={this.state.allFilms}
+          films={this.state.films}
           getSearchQuery={this.getSearchQuery}
           handleCancelSearchButton={this.handleCancelSearchButton}
         />
         {!this.state.query && (
           <Tabs
             onTabChange={this.onTabChange}
-            watchlist={getTabsFilmsLength(`watchlist`, this.state.allFilms)}
-            watched={getTabsFilmsLength(`history`, this.state.allFilms)}
-            favorites={getTabsFilmsLength(`favorites`, this.state.allFilms)}
+            watchlist={getTabsFilmsLength(`watchlist`, this.state.films)}
+            watched={getTabsFilmsLength(`history`, this.state.films)}
+            favorites={getTabsFilmsLength(`favorites`, this.state.films)}
           />
         )}
         {this.state.tabType !== "stats" && !this.state.query && (
@@ -265,7 +249,7 @@ export class App extends React.Component {
                 handleClickWatched={this.handleClickWatched}
                 handleClickFavorite={this.handleClickFavorite}
               />
-              {this.state.amountOfFilmsShown <= this.state.allFilms.length ? (
+              {this.state.amountOfFilmsShown <= this.state.films.length ? (
                 <ShowMoreButton onClickShowMore={this.onClickShowMore} />
               ) : (
                 ``
@@ -273,7 +257,7 @@ export class App extends React.Component {
               <FilmList
                 type={"extra"}
                 text={FilmListHeading.RATED}
-                films={getTopRatedFilms(this.state.allFilms)}
+                films={getTopRatedFilms(this.state.films)}
                 onFilmClick={this.onFilmClick}
                 handleClickWatchlist={this.handleClickWatchlist}
                 handleClickWatched={this.handleClickWatched}
@@ -282,7 +266,7 @@ export class App extends React.Component {
               <FilmList
                 type={"extra"}
                 text={FilmListHeading.COMMENTED}
-                films={getMostCommentedFilms(this.state.allFilms)}
+                films={getMostCommentedFilms(this.state.films)}
                 onFilmClick={this.onFilmClick}
                 handleClickWatchlist={this.handleClickWatchlist}
                 handleClickWatched={this.handleClickWatched}
@@ -307,7 +291,7 @@ export class App extends React.Component {
 
         {this.state.query && (
           <SearchResultContainer
-            films={filterFilms(this.state.allFilms, this.state.query)}
+            films={filterFilms(this.state.films, this.state.query)}
             onFilmClick={this.onFilmClick}
             handleClickWatchlist={this.handleClickWatchlist}
             handleClickWatched={this.handleClickWatched}
@@ -315,7 +299,7 @@ export class App extends React.Component {
           />
         )}
         {this.state.tabType === "stats" && <Stats films={this.state.films} />}
-        <Footer amount={this.state.allFilms.length} />
+        <Footer amount={this.state.films.length} />
       </div>
     );
   }
