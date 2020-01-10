@@ -14,9 +14,9 @@ import {
 
 export class Popup extends React.Component {
   state = {
-    watched: undefined,
-    favorite: undefined,
-    watchlist: undefined,
+    watched: false,
+    favorite: false,
+    watchlist: false,
     newComment: {}
   };
 

@@ -162,27 +162,28 @@ export class App extends React.Component {
               ) : (
                 ``
               )}
-              (topRatedFilms &&
-              <FilmList
-                type={"extra"}
-                text={FilmListHeading.RATED}
-                films={topRatedFilms}
-                onFilmClick={this.onFilmClick}
-                handleClickWatchlist={this.handleClickWatchlist}
-                handleClickWatched={this.handleClickWatched}
-                handleClickFavorite={this.handleClickFavorite}
-              />
-              ) (mostCommentedFilms &&
-              <FilmList
-                type={"extra"}
-                text={FilmListHeading.COMMENTED}
-                films={mostCommentedFilms}
-                onFilmClick={this.onFilmClick}
-                handleClickWatchlist={this.handleClickWatchlist}
-                handleClickWatched={this.handleClickWatched}
-                handleClickFavorite={this.handleClickFavorite}
-              />
-              )
+              {topRatedFilms && (
+                <FilmList
+                  type={"extra"}
+                  text={FilmListHeading.RATED}
+                  films={topRatedFilms}
+                  onFilmClick={this.onFilmClick}
+                  handleClickWatchlist={this.handleClickWatchlist}
+                  handleClickWatched={this.handleClickWatched}
+                  handleClickFavorite={this.handleClickFavorite}
+                />
+              )}{" "}
+              {mostCommentedFilms && (
+                <FilmList
+                  type={"extra"}
+                  text={FilmListHeading.COMMENTED}
+                  films={mostCommentedFilms}
+                  onFilmClick={this.onFilmClick}
+                  handleClickWatchlist={this.handleClickWatchlist}
+                  handleClickWatched={this.handleClickWatched}
+                  handleClickFavorite={this.handleClickFavorite}
+                />
+              )}
             </section>
           </div>
         )}
