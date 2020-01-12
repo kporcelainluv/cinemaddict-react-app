@@ -138,9 +138,10 @@ export const getTopRatedFilms = films => {
 
 export const getMostCommentedFilms = films => {
   if (films.every(film => film.comments.length === 0)) {
+    // TODO: get most commented films
     return false;
   }
-  return films.sort((a, b) => {
+  return films.slice(0).sort((a, b) => {
     if (a.comments.length > b.comments.length) {
       return -1;
     }
@@ -153,6 +154,7 @@ export const getMostCommentedFilms = films => {
 
 export const sortByDefault = films => {
   return films
+    .slice(0)
     .sort((a, b) => {
       if (parseInt(a.id) > parseInt(b.id)) {
         return 1;
@@ -160,38 +162,39 @@ export const sortByDefault = films => {
         return -1;
       }
       return 0;
-    })
-    .slice(0);
+    });
 };
 
 export const sortByDate = films => {
   return films
+    .slice(0)
     .sort((a, b) => {
       return (
         parseInt(b.film_info.release.date, 10) -
         parseInt(a.film_info.release.date, 10)
       );
-    })
-    .slice(0);
+    });
 };
 
 export const sortByRating = films => {
   return films
+    .slice(0)
     .sort((a, b) => {
       return (
         parseInt(b.film_info.total_rating, 10) -
         parseInt(a.film_info.total_rating, 10)
       );
-    })
-    .slice(0);
+    });
 };
 
+// getFilmsByQuery
 export const filterFilms = (films, query) => {
   const formattedQuery = query.toLowerCase().replace(/[^A-Z0-9]+/gi, ``);
   return films.filter(film =>
     film.film_info.title.toLowerCase().includes(formattedQuery)
   );
 };
+
 export const filterFilmsbyTab = (navTab, allFilms) => {
   const f = (() => {
     if (navTab === NavTab.WATCHLIST) {
@@ -309,6 +312,8 @@ export const tabFilms = (tabType, films) => {
     return films;
   }
 };
+
+// TODO: getAmountOfFilmsIn
 export const getTabsFilmsLength = (tabType, films) => {
   const tabbedFilms = tabFilms(tabType, films);
   return tabbedFilms.length;
@@ -346,6 +351,27 @@ export const getSortedFilmsByType = (type, films) => {
 //     })
 //   };
 // };
+
+export const toggleFilmProperty = (state, filmId, prop) => {
+  return {
+    ...state,
+    films: state.films.map(film => {
+      if (film.id === filmId) {
+        return {
+          ...film,
+          user_details: {
+            ...film.user_details,
+            [prop]: !film.user_details[prop]
+          }
+        };
+      }
+      return film;
+    })
+  };
+};
+
+// toggleFilmProperty(state, filmId, "watchlist")
+
 export const handleWatchlistState = (state, filmId) => {
   return {
     ...state,

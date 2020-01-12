@@ -48,15 +48,19 @@ export class App extends React.Component {
     });
   };
 
+  // handleRateFilm
   handlePersonalRating = (filmId, newPersonalRating) => {
     this.setState(state =>
       handlePersonalRatingState(state, filmId, newPersonalRating)
     );
   };
 
+  // handleAddComment
   handleCommentAdding = (filmId, newComment) => {
     this.setState(state => handleCommentAddingState(state, filmId, newComment));
   };
+
+
   handleCommentDeleting = (filmId, commentId) => {
     this.setState(state => this.handleCommentAdding(state, filmId, commentId));
   };
@@ -68,32 +72,18 @@ export class App extends React.Component {
   handleClickWatched = filmId => {
     this.setState(state => handleWatchedState(state, filmId));
   };
+
+  // handleAddToFavourite
   handleClickFavorite = filmId => {
     this.setState(state => handleFavoriteState(state, filmId));
   };
 
-  onSortingTypeChange = type => {
-    if (type === SortType.DEFAULT) {
-      this.setState({ sortingType: SortType.DEFAULT });
-    } else if (type === SortType.DATE) {
-      this.setState({ sortingType: SortType.DATE });
-    } else if (type === SortType.RATING) {
-      this.setState({ sortingType: SortType.RATING });
-    }
+  onSortingTypeChange = sortType => {
+    this.setState({ sortingType: sortType });
   };
 
-  onTabChange = type => {
-    if (type === NavTab.ALL) {
-      this.setState(state => onTabChangeState(state, NavTab.ALL));
-    } else if (type === NavTab.WATCHLIST) {
-      this.setState(state => onTabChangeState(state, NavTab.WATCHLIST));
-    } else if (type === NavTab.HISTORY) {
-      this.setState(state => onTabChangeState(state, NavTab.HISTORY));
-    } else if (type === NavTab.FAVORITES) {
-      this.setState(state => onTabChangeState(state, NavTab.FAVORITES));
-    } else if (type === NavTab.STATS) {
-      this.setState(state => onTabChangeState(state, NavTab.STATS));
-    }
+  onTabChange = tabType => {
+    this.setState(state => onTabChangeState(state, tabType));
   };
 
   onPopupClose = () => {
@@ -121,6 +111,8 @@ export class App extends React.Component {
   };
 
   render() {
+    // const { sortingType, tabType, films } = this.state;
+
     const films = getSortedFilms(
       this.state.sortingType,
       this.state.tabType,
@@ -157,10 +149,8 @@ export class App extends React.Component {
                 handleClickWatched={this.handleClickWatched}
                 handleClickFavorite={this.handleClickFavorite}
               />
-              {this.state.amountOfFilmsShown < this.state.films.length ? (
+              {this.state.amountOfFilmsShown < this.state.films.length && (
                 <ShowMoreButton onClickShowMore={this.onClickShowMore} />
-              ) : (
-                ``
               )}
               {topRatedFilms && (
                 <FilmList
@@ -187,7 +177,6 @@ export class App extends React.Component {
             </section>
           </div>
         )}
-
         {this.state.openedFilmId && (
           <Popup
             film={getFilmById(this.state.openedFilmId, films)}

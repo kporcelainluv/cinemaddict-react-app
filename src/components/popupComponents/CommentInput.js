@@ -16,10 +16,11 @@ export class CommentInput extends React.Component {
         </div>
 
         <label className="film-details__comment-label">
-          <textarea
+          <input
             className="film-details__comment-input"
             placeholder="Select reaction below and write comment here"
             name="comment"
+            form={"hello"}
             onChange={event => {
               this.setState({ comment: event.target.value });
             }}

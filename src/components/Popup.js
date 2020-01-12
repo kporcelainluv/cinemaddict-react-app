@@ -17,7 +17,9 @@ export class Popup extends React.Component {
     watched: false,
     favorite: false,
     watchlist: false,
-    newComment: {}
+    newComment: {},
+    emoji: undefined,
+    comment: undefined
   };
 
   updatePopupState = stateName => {
@@ -79,8 +81,21 @@ export class Popup extends React.Component {
           className="film-details__inner"
           action=""
           method="get"
+          id={"hello"}
           ref={el => {
             this.myFormRef = el;
+          }}
+          onSubmit={e => {
+            e.preventDefault();
+            // console.log("HERE");
+            // console.log(this.state.comment);
+            // const newComment = {
+            //   emotion: emoji,
+            //   comment: comment,
+            //   author: `X`,
+            //   date: new Date()
+            // };
+            // handleAddComment(newComment)
           }}
         >
           <div className="form-details__top-container">
