@@ -7,37 +7,29 @@ import { mockFilms } from "../mockData";
 import { ShowMoreButton } from "./ShowMoreButton";
 import { Popup } from "./Popup";
 import {
-  getTabsFilmsLength,
+  getAmountOfFilmsIn,
   getSortedFilms,
   getFilmById,
-  filterFilms,
-  getTopRatedFilms,
-  getMostCommentedFilms,
-  handleWatchlistState,
-  handleWatchedState,
-  handleFavoriteState,
-  handlePersonalRatingState,
+  getFilmsByQuery,
+  sortFilmsBySection,
   handleCommentAddingState,
-  onTabChangeState
+  onTabChangeState,
+  toggleFilmProperty,
+  onCommentDelete,
+  handlePersonalRate
 } from "../utils";
 import { Stats } from "./Stats";
 import { Header } from "./Header";
 import { SearchResultContainer } from "./SearchResultContainer";
 import { Footer } from "./statsComponents/Footer";
-import {
-  NavTab,
-  PER_PAGE,
-  SEARCH_QUERY_LENGTH,
-  SortType,
-  FilmListHeading
-} from "../consts";
+import { PER_PAGE, SEARCH_QUERY_LENGTH, FilmListHeading } from "../consts";
 
 export class App extends React.Component {
   state = {
     amountOfFilmsShown: PER_PAGE,
     films: mockFilms,
     openedFilmId: null,
-    sortingType: "default",
+    sortType: "default",
     tabType: `all`,
     query: undefined
   };
@@ -48,38 +40,36 @@ export class App extends React.Component {
     });
   };
 
-  // handleRateFilm
-  handlePersonalRating = (filmId, newPersonalRating) => {
+  handleRateFilm = (filmId, newPersonalRating) => {
     this.setState(state =>
-      handlePersonalRatingState(state, filmId, newPersonalRating)
+      handlePersonalRate(state, filmId, newPersonalRating)
     );
   };
 
-  // handleAddComment
-  handleCommentAdding = (filmId, newComment) => {
+  handleAddComment = (filmId, newComment) => {
     this.setState(state => handleCommentAddingState(state, filmId, newComment));
   };
 
-
-  handleCommentDeleting = (filmId, commentId) => {
-    this.setState(state => this.handleCommentAdding(state, filmId, commentId));
+  handleDeleteComment = (filmId, commentId) => {
+    this.setState(state => onCommentDelete(state, filmId, commentId));
   };
 
-  handleClickWatchlist = filmId => {
-    this.setState(state => handleWatchlistState(state, filmId));
+  handleAddToWatchlist = filmId => {
+    this.setState(state => toggleFilmProperty(state, filmId, "watchlist"));
   };
 
-  handleClickWatched = filmId => {
-    this.setState(state => handleWatchedState(state, filmId));
+  handleAddToHistory = filmId => {
+    this.setState(state =>
+      toggleFilmProperty(state, filmId, `already_watched`)
+    );
   };
 
-  // handleAddToFavourite
-  handleClickFavorite = filmId => {
-    this.setState(state => handleFavoriteState(state, filmId));
+  handleAddToFavourite = filmId => {
+    this.setState(state => toggleFilmProperty(state, filmId, `favorite`));
   };
 
-  onSortingTypeChange = sortType => {
-    this.setState({ sortingType: sortType });
+  onSortTypeChange = sortType => {
+    this.setState({ sortType });
   };
 
   onTabChange = tabType => {
@@ -98,7 +88,7 @@ export class App extends React.Component {
     }
   };
 
-  handleCancelSearchButton = () => {
+  handleCancelSearch = () => {
     this.setState({ query: undefined });
   };
 
@@ -111,96 +101,100 @@ export class App extends React.Component {
   };
 
   render() {
-    // const { sortingType, tabType, films } = this.state;
+    const { query, tabType, films, openedFilmId } = this.state;
 
-    const films = getSortedFilms(
-      this.state.sortingType,
+    const filmsToDisplay = getSortedFilms(
+      this.state.sortType,
       this.state.tabType,
       this.state.films
     ).slice(0, this.state.amountOfFilmsShown);
 
-    const mostCommentedFilms = getMostCommentedFilms(this.state.films);
-    const topRatedFilms = getTopRatedFilms(this.state.films);
+    const mostCommentedFilms = sortFilmsBySection(films, `comments`, `length`);
+    const topRatedFilms = sortFilmsBySection(
+      films,
+      `film_info`,
+      `total_rating`
+    );
     return (
       <div>
         <Header
-          films={this.state.films}
+          films={films}
           getSearchQuery={this.getSearchQuery}
-          handleCancelSearchButton={this.handleCancelSearchButton}
+          handleCancelSearchButton={this.handleCancelSearch}
         />
-        {!this.state.query && (
+        {!query && (
           <Tabs
             onTabChange={this.onTabChange}
-            watchlist={getTabsFilmsLength(`watchlist`, this.state.films)}
-            watched={getTabsFilmsLength(`history`, this.state.films)}
-            favorites={getTabsFilmsLength(`favorites`, this.state.films)}
+            watchlist={getAmountOfFilmsIn(`watchlist`, films)}
+            watched={getAmountOfFilmsIn(`history`, films)}
+            favorites={getAmountOfFilmsIn(`favorites`, films)}
           />
         )}
-        {this.state.tabType !== "stats" && !this.state.query && (
+        {tabType !== "stats" && !query && (
           <div>
-            <Sorting onSortingTypeChange={this.onSortingTypeChange} />
+            <Sorting onSortTypeChange={this.onSortTypeChange} />
             <section className="films">
               <FilmList
                 type={"regular"}
                 text={FilmListHeading.ALL}
-                films={films}
+                films={filmsToDisplay}
                 onFilmClick={this.onFilmClick}
-                handleClickWatchlist={this.handleClickWatchlist}
-                handleClickWatched={this.handleClickWatched}
-                handleClickFavorite={this.handleClickFavorite}
+                handleClickWatchlist={this.handleAddToWatchlist}
+                handleClickWatched={this.handleAddToHistory}
+                handleClickFavorite={this.handleAddToFavourite}
               />
-              {this.state.amountOfFilmsShown < this.state.films.length && (
+              {this.state.amountOfFilmsShown < films.length && (
                 <ShowMoreButton onClickShowMore={this.onClickShowMore} />
               )}
-              {topRatedFilms && (
+              {topRatedFilms.length > 0 && (
                 <FilmList
                   type={"extra"}
                   text={FilmListHeading.RATED}
                   films={topRatedFilms}
                   onFilmClick={this.onFilmClick}
-                  handleClickWatchlist={this.handleClickWatchlist}
-                  handleClickWatched={this.handleClickWatched}
-                  handleClickFavorite={this.handleClickFavorite}
+                  handleClickWatchlist={this.handleAddToWatchlist}
+                  handleClickWatched={this.handleAddToHistory}
+                  handleClickFavorite={this.handleAddToFavourite}
                 />
-              )}{" "}
-              {mostCommentedFilms && (
+              )}
+              {mostCommentedFilms.length > 0 && (
                 <FilmList
                   type={"extra"}
                   text={FilmListHeading.COMMENTED}
                   films={mostCommentedFilms}
                   onFilmClick={this.onFilmClick}
-                  handleClickWatchlist={this.handleClickWatchlist}
-                  handleClickWatched={this.handleClickWatched}
-                  handleClickFavorite={this.handleClickFavorite}
+                  handleClickWatchlist={this.handleAddToWatchlist}
+                  handleClickWatched={this.handleAddToHistory}
+                  handleClickFavorite={this.handleAddToFavourite}
                 />
               )}
             </section>
           </div>
         )}
-        {this.state.openedFilmId && (
+        {openedFilmId && (
           <Popup
-            film={getFilmById(this.state.openedFilmId, films)}
+            film={getFilmById(openedFilmId, films)}
             onPopupClose={this.onPopupClose}
-            handleClickWatchlist={this.handleClickWatchlist}
-            handleClickWatched={this.handleClickWatched}
-            handleClickFavorite={this.handleClickFavorite}
-            handleCommentDeleting={this.handleCommentDeleting}
-            handleCommentAdding={this.handleCommentAdding}
-            handlePersonalRating={this.handlePersonalRating}
+            handleClickWatchlist={this.handleAddToWatchlist}
+            handleClickWatched={this.handleAddToHistory}
+            handleClickFavorite={this.handleAddToFavourite}
+            handleCommentDeleting={this.handleDeleteComment}
+            handleCommentAdding={this.handleAddComment}
+            handlePersonalRating={this.handleRateFilm}
           />
         )}
 
-        {this.state.query && (
+        {query && (
           <SearchResultContainer
-            films={filterFilms(this.state.films, this.state.query)}
+            films={getFilmsByQuery(films, query)}
             onFilmClick={this.onFilmClick}
-            handleClickWatchlist={this.handleClickWatchlist}
-            handleClickWatched={this.handleClickWatched}
-            handleClickFavorite={this.handleClickFavorite}
+            handleClickWatchlist={this.handleAddToWatchlist}
+            handleClickWatched={this.handleAddToHistory}
+            handleClickFavorite={this.handleAddToFavourite}
           />
         )}
-        {this.state.tabType === "stats" && <Stats films={this.state.films} />}
-        <Footer amount={this.state.films.length} />
+        {tabType === "stats" && <Stats films={films} />}
+        <Footer amount={films.length} />
       </div>
     );
   }

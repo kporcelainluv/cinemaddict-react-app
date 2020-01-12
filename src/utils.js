@@ -1,4 +1,3 @@
-import { sort } from "ramda";
 import { NavTab, Position, StatsFilterType, StatsRank } from "./consts";
 import { addMonths, addWeeks, addYears, isAfter, startOfToday } from "date-fns";
 import {
@@ -9,33 +8,6 @@ import {
 } from "date-fns";
 import moment from "moment";
 import React from "react";
-const Movie = undefined;
-
-export const createElement = template => {
-  const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
-  return newElement.firstChild;
-};
-
-export const render = (container, element, place) => {
-  switch (place) {
-    case Position.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case Position.BEFOREEND:
-      container.append(element);
-      break;
-    default:
-      container.append(element);
-      break;
-  }
-};
-
-export const unrender = element => {
-  if (element) {
-    element.remove();
-  }
-};
 
 export const countHoursAndMins = initialMinutes => {
   const hours = Math.floor(initialMinutes / 60);
@@ -62,7 +34,7 @@ export const getDateByFilterType = filterType => {
 
 export const getFilmsByFilter = (films, filterType) => {
   const date = getDateByFilterType(filterType);
-  return films.filter(film => {
+  return films.slice(0).filter(film => {
     const watchDate = film.user_details.watching_date;
     return isAfter(watchDate, date);
   });
@@ -73,7 +45,7 @@ export const getWatchedFilms = films => {
 };
 
 export const getHoursAndMins = films => {
-  const duration = films.reduce((acc, elm) => {
+  const duration = films.slice(0).reduce((acc, elm) => {
     return acc + elm.film_info.runtime;
   }, 0);
   const [hours, minutes] = countHoursAndMins(duration);
@@ -81,7 +53,7 @@ export const getHoursAndMins = films => {
 };
 
 const getSortedGenres = films => {
-  const genres = films.reduce((acc, elm) => {
+  const genres = films.slice(0).reduce((acc, elm) => {
     const genresList = elm.film_info.genre;
     genresList.forEach(genre => {
       if (genre in acc) {
@@ -114,38 +86,21 @@ export const getGenresByKeysVals = films => {
 
 export const getTopGenre = films => {
   const genres = getSortedGenres(films);
-  // TODO: ADD ON CURRENT PROPJECT
   if (genres.length === 0) {
     return " ";
   }
   return genres[0][0];
 };
 
-export const getTopRatedFilms = films => {
-  if (films.every(film => film.film_info.total_rating === 0)) {
-    return false;
-  }
-  return films.sort((a, b) => {
-    if (a.film_info.total_rating > b.film_info.total_rating) {
-      return -1;
-    }
-    if (a.film_info.total_rating < b.film_info.total_rating) {
-      return 1;
-    }
-    return 0;
-  });
-};
-
-export const getMostCommentedFilms = films => {
-  if (films.every(film => film.comments.length === 0)) {
-    // TODO: get most commented films
-    return false;
+export const sortFilmsBySection = (films, section, prop) => {
+  if (films.slice(0).every(film => film[section][prop] === 0)) {
+    return [];
   }
   return films.slice(0).sort((a, b) => {
-    if (a.comments.length > b.comments.length) {
+    if (a[section][prop] > b[section][prop]) {
       return -1;
     }
-    if (a.comments.length < b.comments.length) {
+    if (a[section][prop] < b[section][prop]) {
       return 1;
     }
     return 0;
@@ -153,71 +108,39 @@ export const getMostCommentedFilms = films => {
 };
 
 export const sortByDefault = films => {
-  return films
-    .slice(0)
-    .sort((a, b) => {
-      if (parseInt(a.id) > parseInt(b.id)) {
-        return 1;
-      } else if (parseInt(a.id) < parseInt(b.id)) {
-        return -1;
-      }
-      return 0;
-    });
+  return films.slice(0).sort((a, b) => {
+    if (parseInt(a.id) > parseInt(b.id)) {
+      return 1;
+    } else if (parseInt(a.id) < parseInt(b.id)) {
+      return -1;
+    }
+    return 0;
+  });
 };
 
 export const sortByDate = films => {
-  return films
-    .slice(0)
-    .sort((a, b) => {
-      return (
-        parseInt(b.film_info.release.date, 10) -
-        parseInt(a.film_info.release.date, 10)
-      );
-    });
+  return films.slice(0).sort((a, b) => {
+    return (
+      parseInt(b.film_info.release.date, 10) -
+      parseInt(a.film_info.release.date, 10)
+    );
+  });
 };
 
 export const sortByRating = films => {
-  return films
-    .slice(0)
-    .sort((a, b) => {
-      return (
-        parseInt(b.film_info.total_rating, 10) -
-        parseInt(a.film_info.total_rating, 10)
-      );
-    });
+  return films.slice(0).sort((a, b) => {
+    return (
+      parseInt(b.film_info.total_rating, 10) -
+      parseInt(a.film_info.total_rating, 10)
+    );
+  });
 };
 
-// getFilmsByQuery
-export const filterFilms = (films, query) => {
+export const getFilmsByQuery = (films, query) => {
   const formattedQuery = query.toLowerCase().replace(/[^A-Z0-9]+/gi, ``);
   return films.filter(film =>
     film.film_info.title.toLowerCase().includes(formattedQuery)
   );
-};
-
-export const filterFilmsbyTab = (navTab, allFilms) => {
-  const f = (() => {
-    if (navTab === NavTab.WATCHLIST) {
-      return getWatchlist;
-    } else if (navTab === NavTab.HISTORY) {
-      return getWatched;
-    } else if (navTab === NavTab.FAVORITES) {
-      return getFavorite;
-    } else {
-      return x => x;
-    }
-  })();
-
-  return f(allFilms);
-};
-
-export const updateFilms = (films, updatedFilm) => {
-  return films.reduce((newFilms, film) => {
-    if (film.id === updatedFilm.id) {
-      return [...newFilms, updatedFilm];
-    }
-    return [...newFilms, film];
-  }, []);
 };
 
 export const getStatsRank = watchedAmount => {
@@ -230,18 +153,19 @@ export const getStatsRank = watchedAmount => {
   }
 };
 export const countWatchedFilms = films => {
-  return films.filter(film => film.user_details.already_watched === true)
-    .length;
+  return films
+    .slice(0)
+    .filter(film => film.user_details.already_watched === true).length;
 };
 
 export const getWatched = films => {
-  return films.filter(film => film.user_details.already_watched).slice(0);
+  return films.slice(0).filter(film => film.user_details.already_watched);
 };
 export const getWatchlist = films => {
-  return films.filter(film => film.user_details.watchlist).slice(0);
+  return films.slice(0).filter(film => film.user_details.watchlist);
 };
 export const getFavorite = films => {
-  return films.filter(film => film.user_details.favorite).slice(0);
+  return films.slice(0).filter(film => film.user_details.favorite);
 };
 
 export const getDistanceInWords = (dateLeft, dateRight) => {
@@ -313,8 +237,7 @@ export const tabFilms = (tabType, films) => {
   }
 };
 
-// TODO: getAmountOfFilmsIn
-export const getTabsFilmsLength = (tabType, films) => {
+export const getAmountOfFilmsIn = (tabType, films) => {
   const tabbedFilms = tabFilms(tabType, films);
   return tabbedFilms.length;
 };
@@ -322,7 +245,7 @@ export const getSortedFilms = (sortType, tabType, films) => {
   return tabFilms(tabType, getSortedFilmsByType(sortType, films));
 };
 export const getFilmById = (id, films) => {
-  return films.filter(elm => elm.id === id)[0];
+  return films.slice(0).filter(elm => elm.id === id)[0];
 };
 export const getSortedFilmsByType = (type, films) => {
   if (type === "default") {
@@ -333,24 +256,6 @@ export const getSortedFilmsByType = (type, films) => {
     return sortByRating(films);
   }
 };
-
-// export const handlePersonalRatingState = (state, filmId, newPersonalRating) => {
-//   return {
-//     ...state,
-//     films: state.films.map(film => {
-//       if (film.id === filmId) {
-//         return {
-//           ...film,
-//           user_details: {
-//             ...film.user_details,
-//             personal_rating: newPersonalRating
-//           }
-//         };
-//       }
-//       return film;
-//     })
-//   };
-// };
 
 export const toggleFilmProperty = (state, filmId, prop) => {
   return {
@@ -370,62 +275,7 @@ export const toggleFilmProperty = (state, filmId, prop) => {
   };
 };
 
-// toggleFilmProperty(state, filmId, "watchlist")
-
-export const handleWatchlistState = (state, filmId) => {
-  return {
-    ...state,
-    films: state.films.map(film => {
-      if (film.id === filmId) {
-        return {
-          ...film,
-          user_details: {
-            ...film.user_details,
-            watchlist: !film.user_details.watchlist
-          }
-        };
-      }
-      return film;
-    })
-  };
-};
-export const handleWatchedState = (state, filmId) => {
-  return {
-    ...state,
-    films: state.films.map(film => {
-      if (film.id === filmId) {
-        return {
-          ...film,
-          user_details: {
-            ...film.user_details,
-            already_watched: !film.user_details.already_watched
-          }
-        };
-      }
-      return film;
-    })
-  };
-};
-
-export const handleFavoriteState = (state, filmId) => {
-  return {
-    ...state,
-    films: state.films.map(film => {
-      if (film.id === filmId) {
-        return {
-          ...film,
-          user_details: {
-            ...film.user_details,
-            favorite: !film.user_details.favorite
-          }
-        };
-      }
-      return film;
-    })
-  };
-};
-
-export const handleCommentDeletingState = (state, filmId, commentId) => {
+export const onCommentDelete = (state, filmId, commentId) => {
   return {
     ...state,
     films: state.films.map(film => {
@@ -433,24 +283,6 @@ export const handleCommentDeletingState = (state, filmId, commentId) => {
         return {
           ...film,
           comments: film.comments.filter(comment => comment.id !== commentId)
-        };
-      }
-      return film;
-    })
-  };
-};
-
-export const handlePersonalRatingState = (state, filmId, personalRating) => {
-  return {
-    ...state,
-    films: state.films.map(film => {
-      if (film.id === filmId) {
-        return {
-          ...film,
-          user_details: {
-            ...film.user_details,
-            personal_rating: personalRating
-          }
         };
       }
       return film;
@@ -477,5 +309,23 @@ export const onTabChangeState = (state, tabType) => {
     ...state,
     tabType: tabType,
     amountOfFilmsShown: 5
+  };
+};
+
+export const handlePersonalRate = (state, filmId, personalRating) => {
+  return {
+    ...state,
+    films: state.films.map(film => {
+      if (film.id === filmId) {
+        return {
+          ...film,
+          user_details: {
+            ...film.user_details,
+            personal_rating: personalRating
+          }
+        };
+      }
+      return film;
+    })
   };
 };

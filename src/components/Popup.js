@@ -75,6 +75,9 @@ export class Popup extends React.Component {
 
   render() {
     const film = this.props.film;
+
+    console.log({ film });
+
     return (
       <section className="film-details">
         <form
