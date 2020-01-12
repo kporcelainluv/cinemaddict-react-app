@@ -179,7 +179,7 @@ export class App extends React.Component {
             handleClickWatched={this.handleAddToHistory}
             handleClickFavorite={this.handleAddToFavourite}
             handleCommentDeleting={this.handleDeleteComment}
-            handleCommentAdding={this.handleAddComment}
+            handleAddComment={this.handleAddComment}
             handlePersonalRating={this.handleRateFilm}
           />
         )}

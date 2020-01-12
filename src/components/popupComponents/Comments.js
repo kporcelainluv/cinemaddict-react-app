@@ -6,7 +6,9 @@ export const Comments = ({
   film,
   handleCommentDeleting,
   getCurrentComment,
-  handleSubmit
+  getCurrentEmoji,
+  emoji,
+  comment
 }) => {
   return (
     <div className="form-details__bottom-container">
@@ -21,8 +23,10 @@ export const Comments = ({
           handleCommentDeleting={handleCommentDeleting}
         />
         <CommentInput
+          comment={comment}
+          emoji={emoji}
           getCurrentComment={getCurrentComment}
-          onEnterPress={handleSubmit}
+          getCurrentEmoji={getCurrentEmoji}
         />
       </section>
     </div>

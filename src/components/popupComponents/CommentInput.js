@@ -2,13 +2,12 @@ import React from "react";
 import { Emoji, EmojiId } from "../../consts";
 
 export class CommentInput extends React.Component {
-  state = { currentEmoji: `smile`, comment: `` };
   render() {
     return (
       <div className="film-details__new-comment">
         <div htmlFor="add-emoji" className="film-details__add-emoji-label">
           <img
-            src={`images/emoji/${this.state.currentEmoji}.png`}
+            src={`images/emoji/${this.props.emoji}.png`}
             width="55"
             height="55"
             alt="emoji"
@@ -21,8 +20,9 @@ export class CommentInput extends React.Component {
             placeholder="Select reaction below and write comment here"
             name="comment"
             form={"hello"}
+            value={this.props.comment}
             onChange={event => {
-              this.setState({ comment: event.target.value });
+              this.props.getCurrentComment(event.target.value);
             }}
           />
         </label>
@@ -35,7 +35,7 @@ export class CommentInput extends React.Component {
             id={EmojiId.SMILE}
             value={Emoji.SMILE}
             onClick={() => {
-              this.setState({ currentEmoji: Emoji.SMILE });
+              this.props.getCurrentEmoji(Emoji.SMILE);
             }}
           />
           <label className="film-details__emoji-label" htmlFor={EmojiId.SMILE}>
@@ -54,7 +54,7 @@ export class CommentInput extends React.Component {
             id={EmojiId.SLEEPING}
             value={Emoji.SLEEPING}
             onClick={() => {
-              this.setState({ currentEmoji: Emoji.SLEEPING });
+              this.props.getCurrentEmoji(Emoji.SLEEPING);
             }}
           />
           <label
@@ -76,7 +76,7 @@ export class CommentInput extends React.Component {
             id={EmojiId.PUKE}
             value={EmojiId.PUKE}
             onClick={() => {
-              this.setState({ currentEmoji: Emoji.PUKE });
+              this.props.getCurrentEmoji(Emoji.PUKE);
             }}
           />
           <label className="film-details__emoji-label" htmlFor={EmojiId.PUKE}>

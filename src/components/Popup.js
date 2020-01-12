@@ -6,7 +6,6 @@ import { FilmInfo } from "./popupComponents/FilmInfo";
 import { PersonalRating } from "./popupComponents/PersonalRating";
 import {
   ControlTabs,
-  EVENT_KEY_ENTER,
   EVENT_KEY_ESC,
   EVENT_KEY_ESCAPE,
   ControlsText
@@ -18,8 +17,16 @@ export class Popup extends React.Component {
     favorite: false,
     watchlist: false,
     newComment: {},
-    emoji: undefined,
-    comment: undefined
+    emoji: `smile`,
+    comment: ""
+  };
+
+  getCurrentEmoji = emoji => {
+    this.setState({ emoji });
+  };
+
+  getCurrentComment = comment => {
+    this.setState({ comment });
   };
 
   updatePopupState = stateName => {
@@ -54,29 +61,8 @@ export class Popup extends React.Component {
     });
   }
 
-  handleSubmit = e => {
-    if (e.key === EVENT_KEY_ENTER) {
-      e.preventDefault();
-      this.props.handleCommentAdding(this.props.film.id, this.state.newComment);
-      this.myFormRef.submit();
-    }
-  };
-
-  getCurrentComment = (comment, emoji) => {
-    const newComment = {
-      emotion: emoji,
-      comment: comment,
-      author: `X`,
-      date: new Date()
-    };
-    console.log(newComment);
-    this.setState({ newComment });
-  };
-
   render() {
     const film = this.props.film;
-
-    console.log({ film });
 
     return (
       <section className="film-details">
@@ -85,20 +71,19 @@ export class Popup extends React.Component {
           action=""
           method="get"
           id={"hello"}
-          ref={el => {
-            this.myFormRef = el;
-          }}
           onSubmit={e => {
             e.preventDefault();
-            // console.log("HERE");
-            // console.log(this.state.comment);
-            // const newComment = {
-            //   emotion: emoji,
-            //   comment: comment,
-            //   author: `X`,
-            //   date: new Date()
-            // };
-            // handleAddComment(newComment)
+            const newComment = {
+              id: Math.random()
+                .toString(36)
+                .substr(2, 9),
+              emotion: this.state.emoji,
+              comment: this.state.comment,
+              author: `X`,
+              date: new Date()
+            };
+            this.props.handleAddComment(film.id, newComment);
+            this.setState({ comment: "" });
           }}
         >
           <div className="form-details__top-container">
@@ -159,9 +144,11 @@ export class Popup extends React.Component {
           </div>
           <Comments
             film={film}
+            comment={this.state.comment}
+            emoji={this.state.emoji}
             handleCommentDeleting={this.props.handleCommentDeleting}
             getCurrentComment={this.getCurrentComment}
-            handleSubmit={this.handleSubmit}
+            getCurrentEmoji={this.getCurrentEmoji}
           />
         </form>
       </section>
