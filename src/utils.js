@@ -304,13 +304,6 @@ export const handleCommentAddingState = (state, filmId, newComment) => {
     })
   };
 };
-export const onTabChangeState = (state, tabType) => {
-  return {
-    ...state,
-    tabType: tabType,
-    amountOfFilmsShown: 5
-  };
-};
 
 export const handlePersonalRate = (state, filmId, personalRating) => {
   return {

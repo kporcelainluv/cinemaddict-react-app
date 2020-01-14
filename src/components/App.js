@@ -13,7 +13,6 @@ import {
   getFilmsByQuery,
   sortFilmsBySection,
   handleCommentAddingState,
-  onTabChangeState,
   toggleFilmProperty,
   onCommentDelete,
   handlePersonalRate
@@ -46,6 +45,10 @@ export class App extends React.Component {
     );
   };
 
+  handleTabSwitching = type => {
+    this.setState({ tabType: type });
+  };
+
   handleAddComment = (filmId, newComment) => {
     this.setState(state => handleCommentAddingState(state, filmId, newComment));
   };
@@ -72,10 +75,6 @@ export class App extends React.Component {
     this.setState({ sortType });
   };
 
-  onTabChange = tabType => {
-    this.setState(state => onTabChangeState(state, tabType));
-  };
-
   onPopupClose = () => {
     this.setState({ openedFilmId: null });
   };
@@ -99,7 +98,7 @@ export class App extends React.Component {
       });
     }
   };
-
+  // TODO: after query is empty active tab is stats.tabType
   render() {
     const { query, tabType, films, openedFilmId } = this.state;
 
@@ -124,7 +123,8 @@ export class App extends React.Component {
         />
         {!query && (
           <Tabs
-            onTabChange={this.onTabChange}
+            handleTabSwitching={this.handleTabSwitching}
+            activeTab={tabType}
             watchlist={getAmountOfFilmsIn(`watchlist`, films)}
             watched={getAmountOfFilmsIn(`history`, films)}
             favorites={getAmountOfFilmsIn(`favorites`, films)}
@@ -193,7 +193,7 @@ export class App extends React.Component {
             handleClickFavorite={this.handleAddToFavourite}
           />
         )}
-        {tabType === "stats" && <Stats films={films} />}
+        {!query && tabType === "stats" && <Stats films={films} />}
         <Footer amount={films.length} />
       </div>
     );
