@@ -30,8 +30,32 @@ export class App extends React.Component {
     openedFilmId: null,
     sortType: "default",
     tabType: `all`,
-    query: undefined
+    query: undefined,
+    error: false
   };
+
+  checkStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+      return response;
+    } else {
+      throw new Error(`${response.status}: ${response.statusText}`);
+    }
+  }
+  componentDidMount() {
+    fetch(`https://htmlacademy-es-10.appspot.com/cinemaddict/movies`, {
+      method: "GET",
+      headers: new Headers({
+        Authorization: `Basic eo0w590ik29889a=${Math.random()}`,
+        "Content-Type": "application/json"
+      }),
+      body: null
+    })
+      .then(this.checkStatus)
+      .then(res => res.json())
+      .then(films => {
+        this.setState({ films });
+      });
+  }
 
   onFilmClick = id => {
     this.setState({
