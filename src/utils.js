@@ -1,10 +1,11 @@
-import { NavTab, Position, StatsFilterType, StatsRank } from "./consts";
+import { NavTab, StatsFilterType, StatsRank } from "./consts";
 import { addMonths, addWeeks, addYears, isAfter, startOfToday } from "date-fns";
 import {
   differenceInSeconds,
   differenceInMinutes,
   differenceInHours,
-  differenceInDays
+  differenceInDays,
+  parseISO
 } from "date-fns";
 import moment from "moment";
 import React from "react";
@@ -36,7 +37,7 @@ export const getFilmsByFilter = (films, filterType) => {
   const date = getDateByFilterType(filterType);
   return films.slice(0).filter(film => {
     const watchDate = film.user_details.watching_date;
-    return isAfter(watchDate, date);
+    return isAfter(parseISO(watchDate), date);
   });
 };
 
@@ -76,13 +77,13 @@ const getSortedGenres = films => {
   });
 };
 
-export const getGenresByKeysVals = films => {
-  const genres = getSortedGenres(films);
-
-  const keys = genres.map(elm => elm[0]);
-  const values = genres.map(elm => elm[1]);
-  return [keys, values];
-};
+// export const getGenresByKeysVals = films => {
+//   const genres = getSortedGenres(films);
+//
+//   const keys = genres.map(elm => elm[0]);
+//   const values = genres.map(elm => elm[1]);
+//   return [keys, values];
+// };
 
 export const getTopGenre = films => {
   const genres = getSortedGenres(films);
