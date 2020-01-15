@@ -75,7 +75,6 @@ export class App extends React.Component {
   };
 
   handleRateFilm = (filmId, film, newPersonalRating) => {
-    console.log({ filmId, film, newPersonalRating });
     updateFilmRating(filmId, film, newPersonalRating)
       .then(checkStatus)
       .then(res => res.json())
@@ -112,8 +111,6 @@ export class App extends React.Component {
   };
 
   handleAddToHistory = (filmId, film) => {
-    console.log("here");
-    console.log({ film });
     updateFilms(filmId, film, "already_watched")
       .then(checkStatus)
       .then(res => res.json())

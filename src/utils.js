@@ -348,7 +348,8 @@ export const toggleFilmControls = (film, type) => {
     ...film,
     user_details: {
       ...film.user_details,
-      [type]: !film.user_details[type]
+      [type]: !film.user_details[type],
+      watching_date: new Date().toISOString()
     },
     comments: film.comments.map(elm => elm.id)
   };
@@ -360,7 +361,7 @@ export const updateRating = (film, rating) => {
     user_details: {
       ...film.user_details,
       personal_rating: rating,
-      watching_date: new Date()
+      watching_date: new Date().toISOString()
     },
     comments: film.comments.map(elm => elm.id)
   };
