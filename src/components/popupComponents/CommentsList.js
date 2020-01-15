@@ -1,7 +1,7 @@
 import React from "react";
 import { UserComment } from "./UserComment";
 
-export const CommentsList = ({ film, handleCommentDeleting }) => {
+export const CommentsList = ({ film, handleDeleteComment }) => {
   const comments = film.comments;
 
   return (
@@ -16,7 +16,7 @@ export const CommentsList = ({ film, handleCommentDeleting }) => {
             date={comment.date}
             key={comment.id}
             id={comment.id}
-            handleCommentDeleting={handleCommentDeleting}
+            handleDeleteComment={handleDeleteComment}
           />
         );
       })}

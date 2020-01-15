@@ -4,7 +4,7 @@ import { CommentInput } from "./CommentInput";
 
 export const Comments = ({
   film,
-  handleCommentDeleting,
+  handleDeleteComment,
   getCurrentComment,
   getCurrentEmoji,
   emoji,
@@ -18,10 +18,7 @@ export const Comments = ({
           <span className="film-details__comments-count">{` ${film.comments.length}`}</span>
         </h3>
 
-        <CommentsList
-          film={film}
-          handleCommentDeleting={handleCommentDeleting}
-        />
+        <CommentsList film={film} handleDeleteComment={handleDeleteComment} />
         <CommentInput
           comment={comment}
           emoji={emoji}

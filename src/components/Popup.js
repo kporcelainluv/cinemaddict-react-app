@@ -146,7 +146,7 @@ export class Popup extends React.Component {
             film={film}
             comment={this.state.comment}
             emoji={this.state.emoji}
-            handleCommentDeleting={this.props.handleCommentDeleting}
+            handleDeleteComment={this.props.handleDeleteComment}
             getCurrentComment={this.getCurrentComment}
             getCurrentEmoji={this.getCurrentEmoji}
           />

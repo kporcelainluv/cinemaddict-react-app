@@ -7,7 +7,7 @@ export const UserComment = ({
   text,
   author,
   date,
-  handleCommentDeleting,
+  handleDeleteComment,
   id
 }) => {
   return (
@@ -31,7 +31,7 @@ export const UserComment = ({
             className="film-details__comment-delete"
             type={"button"}
             onClick={() => {
-              handleCommentDeleting(film.id, id);
+              handleDeleteComment(film.id, id);
             }}
           >
             Delete
