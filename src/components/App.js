@@ -3,7 +3,6 @@ import React from "react";
 import { Tabs } from "./Tabs";
 import { Sorting } from "./Sorting";
 import { FilmList } from "./FilmList";
-import { mockFilms } from "../mockData";
 import { ShowMoreButton } from "./ShowMoreButton";
 import { Popup } from "./Popup";
 import {
@@ -13,23 +12,23 @@ import {
   getFilmsByQuery,
   sortFilmsBySection,
   handleCommentAddingState,
-  toggleFilmProperty,
   onCommentDelete,
   handlePersonalRate,
-  checkStatus
+  checkStatus,
+  updateFilm
 } from "../utils";
 import { Stats } from "./Stats";
 import { Header } from "./Header";
 import { SearchResultContainer } from "./SearchResultContainer";
 import { Footer } from "./statsComponents/Footer";
+import { PER_PAGE, SEARCH_QUERY_LENGTH, FilmListHeading } from "../consts";
 import {
-  PER_PAGE,
-  SEARCH_QUERY_LENGTH,
-  FilmListHeading,
-  END_POINT,
-  AUTHORIZATION
-} from "../consts";
-import { deleteComment, getComment, getComments, getFilms } from "../api";
+  deleteComment,
+  getComment,
+  getComments,
+  getFilms,
+  updateFilms
+} from "../api";
 
 const mergeFilmsAndComments = (films, comments) => {
   return films.map((film, index) => {
@@ -99,18 +98,31 @@ export class App extends React.Component {
     this.setState(state => onCommentDelete(state, filmId, commentId));
   };
 
-  handleAddToWatchlist = filmId => {
-    this.setState(state => toggleFilmProperty(state, filmId, "watchlist"));
+  handleAddToWatchlist = (filmId, film) => {
+    updateFilms(filmId, film, "watchlist")
+      .then(checkStatus)
+      .then(res => res.json())
+      .then(film =>
+        this.setState({ films: updateFilm(this.state.films, film) })
+      );
   };
 
-  handleAddToHistory = filmId => {
-    this.setState(state =>
-      toggleFilmProperty(state, filmId, `already_watched`)
-    );
+  handleAddToHistory = (filmId, film) => {
+    updateFilms(filmId, film, "already_watched")
+      .then(checkStatus)
+      .then(res => res.json())
+      .then(film =>
+        this.setState({ films: updateFilm(this.state.films, film) })
+      );
   };
 
-  handleAddToFavourite = filmId => {
-    this.setState(state => toggleFilmProperty(state, filmId, `favorite`));
+  handleAddToFavourite = (filmId, film) => {
+    updateFilms(filmId, film, "favorite")
+      .then(checkStatus)
+      .then(res => res.json())
+      .then(film =>
+        this.setState({ films: updateFilm(this.state.films, film) })
+      );
   };
 
   onSortTypeChange = sortType => {
@@ -141,11 +153,8 @@ export class App extends React.Component {
     }
   };
   render() {
-    {
-      console.log(this.state.films);
-    }
     const { query, tabType, films, openedFilmId } = this.state;
-    // console.log({ films });
+
     const filmsToDisplay = getSortedFilms(
       this.state.sortType,
       this.state.tabType,
@@ -215,6 +224,16 @@ export class App extends React.Component {
             </section>
           </div>
         )}
+
+        {query && (
+          <SearchResultContainer
+            films={getFilmsByQuery(films, query)}
+            onFilmClick={this.onFilmClick}
+            handleClickWatchlist={this.handleAddToWatchlist}
+            handleClickWatched={this.handleAddToHistory}
+            handleClickFavorite={this.handleAddToFavourite}
+          />
+        )}
         {openedFilmId && (
           <Popup
             film={getFilmById(openedFilmId, films)}
@@ -225,16 +244,6 @@ export class App extends React.Component {
             handleDeleteComment={this.handleDeleteComment}
             handleAddComment={this.handleAddComment}
             handlePersonalRating={this.handleRateFilm}
-          />
-        )}
-
-        {query && (
-          <SearchResultContainer
-            films={getFilmsByQuery(films, query)}
-            onFilmClick={this.onFilmClick}
-            handleClickWatchlist={this.handleAddToWatchlist}
-            handleClickWatched={this.handleAddToHistory}
-            handleClickFavorite={this.handleAddToFavourite}
           />
         )}
         {!query && tabType === "stats" && <Stats films={films} />}
