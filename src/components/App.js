@@ -21,12 +21,27 @@ import { Stats } from "./Stats";
 import { Header } from "./Header";
 import { SearchResultContainer } from "./SearchResultContainer";
 import { Footer } from "./statsComponents/Footer";
-import { PER_PAGE, SEARCH_QUERY_LENGTH, FilmListHeading } from "../consts";
+import {
+  PER_PAGE,
+  SEARCH_QUERY_LENGTH,
+  FilmListHeading,
+  END_POINT,
+  AUTHORIZATION
+} from "../consts";
+
+const mergeFilmsAndComments = (films, comments) => {
+  return films.map((film, index) => {
+    return {
+      ...film,
+      comments: comments[index]
+    };
+  });
+};
 
 export class App extends React.Component {
   state = {
     amountOfFilmsShown: PER_PAGE,
-    films: mockFilms,
+    films: [],
     openedFilmId: null,
     sortType: "default",
     tabType: `all`,
@@ -42,19 +57,35 @@ export class App extends React.Component {
     }
   }
   componentDidMount() {
-    fetch(`https://htmlacademy-es-10.appspot.com/cinemaddict/movies`, {
+    fetch(`${END_POINT}movies`, {
       method: "GET",
       headers: new Headers({
-        Authorization: `Basic eo0w590ik29889a=${Math.random()}`,
+        Authorization: AUTHORIZATION,
         "Content-Type": "application/json"
       }),
       body: null
     })
       .then(this.checkStatus)
       .then(res => res.json())
-      .then(films => {
-        this.setState({ films });
-      });
+      .then(films =>
+        Promise.all(
+          films.map(film => {
+            return fetch(`${END_POINT}comments/${film.id}`, {
+              method: "GET",
+              headers: new Headers({
+                Authorization: AUTHORIZATION,
+                "Content-Type": "application/json"
+              }),
+              body: null
+            })
+              .then(this.checkStatus)
+              .then(res => res.json());
+          })
+        ).then(comments => {
+          return mergeFilmsAndComments(films, comments);
+        })
+      )
+      .then(films => this.setState({ films }));
   }
 
   onFilmClick = id => {
@@ -125,7 +156,7 @@ export class App extends React.Component {
   // TODO: after query is empty active tab is stats.tabType
   render() {
     const { query, tabType, films, openedFilmId } = this.state;
-
+    // console.log({ films });
     const filmsToDisplay = getSortedFilms(
       this.state.sortType,
       this.state.tabType,
