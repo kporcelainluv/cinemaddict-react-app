@@ -291,14 +291,14 @@ export const onCommentDelete = (state, filmId, commentId) => {
   };
 };
 
-export const handleCommentAddingState = (state, filmId, newComment) => {
+export const handleCommentAddingState = (state, filmId, newFilm) => {
   return {
     ...state,
     films: state.films.map(film => {
       if (film.id === filmId) {
         return {
-          ...film,
-          comments: [...film.comments, newComment]
+          ...newFilm.movie,
+          comments: newFilm.comments
         };
       }
       return film;
@@ -322,4 +322,11 @@ export const handlePersonalRate = (state, filmId, personalRating) => {
       return film;
     })
   };
+};
+export const checkStatus = response => {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  } else {
+    throw new Error(`${response.status}: ${response.statusText}`);
+  }
 };
