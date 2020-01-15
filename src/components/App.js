@@ -15,7 +15,8 @@ import {
   handleCommentAddingState,
   toggleFilmProperty,
   onCommentDelete,
-  handlePersonalRate
+  handlePersonalRate,
+  checkStatus
 } from "../utils";
 import { Stats } from "./Stats";
 import { Header } from "./Header";
@@ -28,6 +29,7 @@ import {
   END_POINT,
   AUTHORIZATION
 } from "../consts";
+import { deleteComment, getComment, getComments, getFilms } from "../api";
 
 const mergeFilmsAndComments = (films, comments) => {
   return films.map((film, index) => {
@@ -49,36 +51,15 @@ export class App extends React.Component {
     error: false
   };
 
-  checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-      return response;
-    } else {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-  }
   componentDidMount() {
-    fetch(`${END_POINT}movies`, {
-      method: "GET",
-      headers: new Headers({
-        Authorization: AUTHORIZATION,
-        "Content-Type": "application/json"
-      }),
-      body: null
-    })
-      .then(this.checkStatus)
+    getFilms()
+      .then(checkStatus)
       .then(res => res.json())
       .then(films =>
         Promise.all(
           films.map(film => {
-            return fetch(`${END_POINT}comments/${film.id}`, {
-              method: "GET",
-              headers: new Headers({
-                Authorization: AUTHORIZATION,
-                "Content-Type": "application/json"
-              }),
-              body: null
-            })
-              .then(this.checkStatus)
+            return getComments(film.id)
+              .then(checkStatus)
               .then(res => res.json());
           })
         ).then(comments => {
@@ -105,10 +86,16 @@ export class App extends React.Component {
   };
 
   handleAddComment = (filmId, newComment) => {
-    this.setState(state => handleCommentAddingState(state, filmId, newComment));
+    getComment(filmId, newComment)
+      .then(checkStatus)
+      .then(res => res.json())
+      .then(newFilm =>
+        this.setState(state => handleCommentAddingState(state, filmId, newFilm))
+      );
   };
 
   handleDeleteComment = (filmId, commentId) => {
+    deleteComment(commentId).then(checkStatus);
     this.setState(state => onCommentDelete(state, filmId, commentId));
   };
 
@@ -153,8 +140,10 @@ export class App extends React.Component {
       });
     }
   };
-  // TODO: after query is empty active tab is stats.tabType
   render() {
+    {
+      console.log(this.state.films);
+    }
     const { query, tabType, films, openedFilmId } = this.state;
     // console.log({ films });
     const filmsToDisplay = getSortedFilms(
@@ -233,7 +222,7 @@ export class App extends React.Component {
             handleClickWatchlist={this.handleAddToWatchlist}
             handleClickWatched={this.handleAddToHistory}
             handleClickFavorite={this.handleAddToFavourite}
-            handleCommentDeleting={this.handleDeleteComment}
+            handleDeleteComment={this.handleDeleteComment}
             handleAddComment={this.handleAddComment}
             handlePersonalRating={this.handleRateFilm}
           />
