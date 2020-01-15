@@ -13,7 +13,6 @@ import {
   sortFilmsBySection,
   handleCommentAddingState,
   onCommentDelete,
-  handlePersonalRate,
   checkStatus,
   updateFilm
 } from "../utils";
@@ -27,6 +26,7 @@ import {
   getComment,
   getComments,
   getFilms,
+  updateFilmRating,
   updateFilms
 } from "../api";
 
@@ -74,10 +74,14 @@ export class App extends React.Component {
     });
   };
 
-  handleRateFilm = (filmId, newPersonalRating) => {
-    this.setState(state =>
-      handlePersonalRate(state, filmId, newPersonalRating)
-    );
+  handleRateFilm = (filmId, film, newPersonalRating) => {
+    console.log({ filmId, film, newPersonalRating });
+    updateFilmRating(filmId, film, newPersonalRating)
+      .then(checkStatus)
+      .then(res => res.json())
+      .then(film =>
+        this.setState({ films: updateFilm(this.state.films, film) })
+      );
   };
 
   handleTabSwitching = type => {
@@ -108,6 +112,8 @@ export class App extends React.Component {
   };
 
   handleAddToHistory = (filmId, film) => {
+    console.log("here");
+    console.log({ film });
     updateFilms(filmId, film, "already_watched")
       .then(checkStatus)
       .then(res => res.json())
@@ -116,7 +122,7 @@ export class App extends React.Component {
       );
   };
 
-  handleAddToFavourite = (filmId, film) => {
+  handleAddToFavorite = (filmId, film) => {
     updateFilms(filmId, film, "favorite")
       .then(checkStatus)
       .then(res => res.json())
@@ -194,7 +200,7 @@ export class App extends React.Component {
                 onFilmClick={this.onFilmClick}
                 handleClickWatchlist={this.handleAddToWatchlist}
                 handleClickWatched={this.handleAddToHistory}
-                handleClickFavorite={this.handleAddToFavourite}
+                handleClickFavorite={this.handleAddToFavorite}
               />
               {this.state.amountOfFilmsShown < films.length && (
                 <ShowMoreButton onClickShowMore={this.onClickShowMore} />
@@ -207,7 +213,7 @@ export class App extends React.Component {
                   onFilmClick={this.onFilmClick}
                   handleClickWatchlist={this.handleAddToWatchlist}
                   handleClickWatched={this.handleAddToHistory}
-                  handleClickFavorite={this.handleAddToFavourite}
+                  handleClickFavorite={this.handleAddToFavorite}
                 />
               )}
               {mostCommentedFilms.length > 0 && (
@@ -218,7 +224,7 @@ export class App extends React.Component {
                   onFilmClick={this.onFilmClick}
                   handleClickWatchlist={this.handleAddToWatchlist}
                   handleClickWatched={this.handleAddToHistory}
-                  handleClickFavorite={this.handleAddToFavourite}
+                  handleClickFavorite={this.handleAddToFavorite}
                 />
               )}
             </section>
@@ -231,7 +237,7 @@ export class App extends React.Component {
             onFilmClick={this.onFilmClick}
             handleClickWatchlist={this.handleAddToWatchlist}
             handleClickWatched={this.handleAddToHistory}
-            handleClickFavorite={this.handleAddToFavourite}
+            handleClickFavorite={this.handleAddToFavorite}
           />
         )}
         {openedFilmId && (
@@ -240,7 +246,7 @@ export class App extends React.Component {
             onPopupClose={this.onPopupClose}
             handleClickWatchlist={this.handleAddToWatchlist}
             handleClickWatched={this.handleAddToHistory}
-            handleClickFavorite={this.handleAddToFavourite}
+            handleClickFavorite={this.handleAddToFavorite}
             handleDeleteComment={this.handleDeleteComment}
             handleAddComment={this.handleAddComment}
             handlePersonalRating={this.handleRateFilm}
