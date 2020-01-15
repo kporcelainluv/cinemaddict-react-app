@@ -17,7 +17,7 @@ export const Controls = ({
         name={name}
         checked={checked}
         onChange={() => {
-          handleClick(film.id);
+          handleClick(film.id, film);
           updateState(name);
         }}
       />

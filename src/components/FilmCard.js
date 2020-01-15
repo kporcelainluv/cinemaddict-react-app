@@ -28,7 +28,7 @@ const FilmCardForm = ({
             : getClassname("add-to-watchlist")
         }
         type={"button"}
-        onClick={() => handleClickWatchlist(film.id)}
+        onClick={() => handleClickWatchlist(film.id, film)}
       >
         Add to watchlist
       </button>
@@ -39,7 +39,7 @@ const FilmCardForm = ({
             : getClassname("mark-as-watched")
         }
         type={"button"}
-        onClick={() => handleClickWatched(film.id)}
+        onClick={() => handleClickWatched(film.id, film)}
       >
         Mark as watched
       </button>
@@ -50,7 +50,7 @@ const FilmCardForm = ({
             : getClassname("favorite")
         }
         type={"button"}
-        onClick={() => handleClickFavorite(film.id)}
+        onClick={() => handleClickFavorite(film.id, film)}
       >
         Mark as favorite
       </button>
