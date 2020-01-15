@@ -343,12 +343,24 @@ export const updateFilm = (films, newFilm) => {
   });
 };
 
-export const toggleFilmWatchlist = (film, type) => {
+export const toggleFilmControls = (film, type) => {
   return {
     ...film,
     user_details: {
       ...film.user_details,
       [type]: !film.user_details[type]
+    },
+    comments: film.comments.map(elm => elm.id)
+  };
+};
+
+export const updateRating = (film, rating) => {
+  return {
+    ...film,
+    user_details: {
+      ...film.user_details,
+      personal_rating: rating,
+      watching_date: new Date()
     },
     comments: film.comments.map(elm => elm.id)
   };
