@@ -330,3 +330,26 @@ export const checkStatus = response => {
     throw new Error(`${response.status}: ${response.statusText}`);
   }
 };
+
+export const updateFilm = (films, newFilm) => {
+  return films.map(film => {
+    if (film.id === newFilm.id) {
+      return {
+        ...newFilm,
+        comments: film.comments
+      };
+    }
+    return film;
+  });
+};
+
+export const toggleFilmWatchlist = (film, type) => {
+  return {
+    ...film,
+    user_details: {
+      ...film.user_details,
+      [type]: !film.user_details[type]
+    },
+    comments: film.comments.map(elm => elm.id)
+  };
+};
