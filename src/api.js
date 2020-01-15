@@ -1,6 +1,6 @@
 import React from "react";
 import { AUTHORIZATION, END_POINT } from "./consts";
-import { toggleFilmWatchlist } from "./utils";
+import { toggleFilmControls, updateRating } from "./utils";
 
 export const getComment = (filmId, newComment) => {
   return fetch(`${END_POINT}comments/${filmId}`, {
@@ -51,6 +51,16 @@ export const updateFilms = (filmId, film, type) => {
       Authorization: AUTHORIZATION,
       "Content-Type": "application/json"
     }),
-    body: JSON.stringify(toggleFilmWatchlist(film, type))
+    body: JSON.stringify(toggleFilmControls(film, type))
+  });
+};
+export const updateFilmRating = (filmId, film, rating) => {
+  return fetch(`${END_POINT}movies/${filmId}`, {
+    method: "PUT",
+    headers: new Headers({
+      Authorization: AUTHORIZATION,
+      "Content-Type": "application/json"
+    }),
+    body: JSON.stringify(updateRating(film, rating))
   });
 };
