@@ -3,6 +3,7 @@ import { RATING_LENGTH } from "../../consts";
 import { PersonalRatingInput } from "./PersonalRatingInput";
 
 export const PersonalRating = ({
+  film,
   poster,
   title,
   personalRating,
@@ -43,6 +44,7 @@ export const PersonalRating = ({
               const v = id + 1;
               return (
                 <PersonalRatingInput
+                  film={film}
                   personalRating={personalRating}
                   filmId={filmId}
                   handlePersonalRating={handlePersonalRating}

@@ -1,6 +1,7 @@
 import React from "react";
 
 export const PersonalRatingInput = ({
+  film,
   v,
   personalRating,
   handlePersonalRating,
@@ -16,7 +17,7 @@ export const PersonalRatingInput = ({
         value={v}
         id={`rating-${v}`}
         onChange={() => {
-          handlePersonalRating(filmId, v);
+          handlePersonalRating(filmId, film, v);
         }}
       />
       <label

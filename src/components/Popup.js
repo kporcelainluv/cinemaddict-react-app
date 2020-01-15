@@ -134,6 +134,7 @@ export class Popup extends React.Component {
             }`}
           >
             <PersonalRating
+              film={film}
               personalRating={film.user_details.personal_rating}
               filmId={film.id}
               poster={film.film_info.poster}
