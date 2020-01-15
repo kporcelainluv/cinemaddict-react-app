@@ -55,10 +55,12 @@ export const FilmInfo = ({ film }) => {
               heading={`Country`}
               text={film.film_info.release.release_country}
             />
-            <FilmDetails
-              heading={getGenreHeading(film.film_info.genre)}
-              text={genres}
-            />
+            {genres.length > 0 && (
+              <FilmDetails
+                heading={getGenreHeading(film.film_info.genre)}
+                text={genres}
+              />
+            )}
           </tbody>
         </table>
 
