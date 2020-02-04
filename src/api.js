@@ -1,4 +1,3 @@
-import React from "react";
 import { AUTHORIZATION, END_POINT } from "./consts";
 import { toggleFilmControls, updateRating } from "./utils";
 

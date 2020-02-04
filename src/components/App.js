@@ -255,3 +255,7 @@ export class App extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return { song: state.selectedTab };
+};
