@@ -158,6 +158,11 @@ export class App extends React.Component {
   render() {
     const { query, tabType, films, openedFilmId } = this.state;
 
+    const { modalOpened, dispatch } = this.props;
+
+    const openModal = () => dispatch({ type: "OPEN" });
+    const closeModal = () => dispatch({ type: "CLOSE" });
+
     const filmsToDisplay = getSortedFilms(
       this.state.sortType,
       this.state.tabType,
@@ -194,7 +199,10 @@ export class App extends React.Component {
                 type={"regular"}
                 text={FilmListHeading.ALL}
                 films={filmsToDisplay}
-                onFilmClick={this.onFilmClick}
+                onFilmClick={id => {
+                  this.onFilmClick(id);
+                  openModal();
+                }}
                 handleClickWatchlist={this.handleAddToWatchlist}
                 handleClickWatched={this.handleAddToHistory}
                 handleClickFavorite={this.handleAddToFavorite}
@@ -207,7 +215,10 @@ export class App extends React.Component {
                   type={"extra"}
                   text={FilmListHeading.RATED}
                   films={topRatedFilms}
-                  onFilmClick={this.onFilmClick}
+                  onFilmClick={id => {
+                    this.onFilmClick(id);
+                    openModal();
+                  }}
                   handleClickWatchlist={this.handleAddToWatchlist}
                   handleClickWatched={this.handleAddToHistory}
                   handleClickFavorite={this.handleAddToFavorite}
@@ -218,7 +229,10 @@ export class App extends React.Component {
                   type={"extra"}
                   text={FilmListHeading.COMMENTED}
                   films={mostCommentedFilms}
-                  onFilmClick={this.onFilmClick}
+                  onFilmClick={id => {
+                    this.onFilmClick(id);
+                    openModal();
+                  }}
                   handleClickWatchlist={this.handleAddToWatchlist}
                   handleClickWatched={this.handleAddToHistory}
                   handleClickFavorite={this.handleAddToFavorite}
@@ -231,16 +245,22 @@ export class App extends React.Component {
         {query && (
           <SearchResultContainer
             films={getFilmsByQuery(films, query)}
-            onFilmClick={this.onFilmClick}
+            onFilmClick={id => {
+              this.onFilmClick(id);
+              openModal();
+            }}
             handleClickWatchlist={this.handleAddToWatchlist}
             handleClickWatched={this.handleAddToHistory}
             handleClickFavorite={this.handleAddToFavorite}
           />
         )}
-        {openedFilmId && (
+        {modalOpened && (
           <Popup
             film={getFilmById(openedFilmId, films)}
-            onPopupClose={this.onPopupClose}
+            onPopupClose={() => {
+              this.onPopupClose();
+              closeModal();
+            }}
             handleClickWatchlist={this.handleAddToWatchlist}
             handleClickWatched={this.handleAddToHistory}
             handleClickFavorite={this.handleAddToFavorite}
@@ -255,7 +275,3 @@ export class App extends React.Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return { song: state.selectedTab };
-};

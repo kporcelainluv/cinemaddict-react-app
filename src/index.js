@@ -1,14 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import { Provider, connect } from "react-redux";
 import { createStore } from "redux";
 
 import { App } from "./components/App";
-import reducers from "./reducers";
+
+const ConnectedApp = connect(x => x)(App);
+
+const reducer = (state = { modalOpened: false }, action) => {
+  switch (action.type) {
+    case "OPEN":
+      return { ...state, modalOpened: true };
+    case "CLOSE":
+      return { ...state, modalOpened: false };
+    default:
+      return state;
+  }
+};
 
 ReactDOM.render(
-  <Provider store={createStore(reducers)}>
-    <App />
+  <Provider store={createStore(reducer)}>
+    <ConnectedApp />
   </Provider>,
   document.querySelector(".container")
 );
