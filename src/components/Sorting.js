@@ -1,11 +1,13 @@
 import React from "react";
 import { SortType } from "../consts";
+import { SortingButton } from "./SortingButton";
 
 export class Sorting extends React.Component {
+  // TODO: should not store state here, move it higher
   state = { type: "default" };
 
   onSortButtonClick = type => {
-    this.props.onSortingTypeChange(type);
+    this.props.onSortTypeChange(type);
     this.setState({ type });
   };
 
@@ -16,46 +18,30 @@ export class Sorting extends React.Component {
       return `sort__button`;
     }
   }
+  // TODO: should be function outside component
 
   render() {
     return (
       <ul className="sort">
-        <li>
-          <a
-            href="#"
-            className={this.getActiveButton(SortType.DEFAULT)}
-            onClick={event => {
-              event.preventDefault();
-              this.onSortButtonClick(SortType.DEFAULT);
-            }}
-          >
-            Sort by default
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className={this.getActiveButton(SortType.DATE)}
-            onClick={event => {
-              event.preventDefault();
-              this.onSortButtonClick(SortType.DATE);
-            }}
-          >
-            Sort by date
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className={this.getActiveButton(SortType.RATING)}
-            onClick={event => {
-              event.preventDefault();
-              this.onSortButtonClick(SortType.RATING);
-            }}
-          >
-            Sort by rating
-          </a>
-        </li>
+        <SortingButton
+          name={SortType.DEFAULT}
+          onSortButtonClick={this.onSortButtonClick}
+          heading={"Sort by default"}
+          state={this.state.type}
+        />
+
+        <SortingButton
+          name={SortType.DATE}
+          onSortButtonClick={this.onSortButtonClick}
+          heading={"Sort by date"}
+          state={this.state.type}
+        />
+        <SortingButton
+          name={SortType.RATING}
+          onSortButtonClick={this.onSortButtonClick}
+          heading={"Sort by rating"}
+          state={this.state.type}
+        />
       </ul>
     );
   }
