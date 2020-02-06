@@ -2,30 +2,29 @@ import React from "react";
 import { SortType } from "../consts";
 import { SortingButton } from "./SortingButton";
 
-// TODO: Rename currentState
 // TODO: add sorting button component here (sorting or sort?)
 // TODO: rename component
-export const Sorting = ({ onSortTypeChange, currentState }) => {
+export const Sort = ({ onSortTypeChange, activeSort }) => {
   return (
     <ul className="sort">
       {/* TODO: Add array of objects*/}
       <SortingButton
-        type={SortType.DEFAULT}
+        sortType={SortType.DEFAULT}
         onSortTypeChange={onSortTypeChange}
         heading={"Sort by default"}
-        currentType={currentState}
+        activeSort={activeSort}
       />
       <SortingButton
-        type={SortType.DATE}
+        sortType={SortType.DATE}
         onSortTypeChange={onSortTypeChange}
         heading={"Sort by date"}
-        currentType={currentState}
+        activeSort={activeSort}
       />
       <SortingButton
-        type={SortType.RATING}
+        sortType={SortType.RATING}
         onSortTypeChange={onSortTypeChange}
         heading={"Sort by rating"}
-        currentType={currentState}
+        activeSort={activeSort}
       />
     </ul>
   );
