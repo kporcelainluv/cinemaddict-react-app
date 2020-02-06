@@ -189,7 +189,7 @@ export class App extends React.Component {
           <div>
             <Sorting
               onSortTypeChange={this.onSortTypeChange}
-              currentState={this.state.sortType}
+              activeSortType={this.state.sortType}
             />
             <section className="films">
               <FilmList
