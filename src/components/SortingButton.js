@@ -1,6 +1,6 @@
 import React from "react";
 
-export const SortingButton = ({ name, onSortButtonClick, heading, state }) => {
+export const SortingButton = ({ name, onSortTypeChange, heading, state }) => {
   const getActiveButton = (state, type) => {
     if (state === type) {
       return `sort__button sort__button--active`;
@@ -16,7 +16,7 @@ export const SortingButton = ({ name, onSortButtonClick, heading, state }) => {
         className={getActiveButton(state, name)}
         onClick={event => {
           event.preventDefault();
-          onSortButtonClick(name);
+          onSortTypeChange(name);
         }}
       >
         {heading}

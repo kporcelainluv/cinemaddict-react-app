@@ -157,7 +157,6 @@ export class App extends React.Component {
   };
   render() {
     const { query, tabType, films, openedFilmId } = this.state;
-
     const filmsToDisplay = getSortedFilms(
       this.state.sortType,
       this.state.tabType,
@@ -188,7 +187,10 @@ export class App extends React.Component {
         )}
         {tabType !== "stats" && !query && (
           <div>
-            <Sorting onSortTypeChange={this.onSortTypeChange} />
+            <Sorting
+              onSortTypeChange={this.onSortTypeChange}
+              currentState={this.state.sortType}
+            />
             <section className="films">
               <FilmList
                 type={"regular"}
