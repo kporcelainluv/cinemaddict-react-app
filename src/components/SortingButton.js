@@ -1,6 +1,11 @@
 import React from "react";
 
-export const SortingButton = ({ name, onSortTypeChange, heading, state }) => {
+export const SortingButton = ({
+  type,
+  onSortTypeChange,
+  heading,
+  currentType
+}) => {
   const getActiveButton = (state, type) => {
     if (state === type) {
       return `sort__button sort__button--active`;
@@ -13,10 +18,10 @@ export const SortingButton = ({ name, onSortTypeChange, heading, state }) => {
     <li>
       <a
         href="#"
-        className={getActiveButton(state, name)}
+        className={getActiveButton(currentType, type)}
         onClick={event => {
           event.preventDefault();
-          onSortTypeChange(name);
+          onSortTypeChange(type);
         }}
       >
         {heading}
