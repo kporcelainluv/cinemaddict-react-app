@@ -110,9 +110,9 @@ export const sortFilmsBySection = (films, section, prop) => {
 
 export const sortByDefault = films => {
   return films.slice(0).sort((a, b) => {
-    if (parseInt(a.id) > parseInt(b.id)) {
+    if (parseFloat(a.id) > parseFloat(b.id)) {
       return 1;
-    } else if (parseInt(a.id) < parseInt(b.id)) {
+    } else if (parseFloat(a.id) < parseFloat(b.id)) {
       return -1;
     }
     return 0;
@@ -122,8 +122,8 @@ export const sortByDefault = films => {
 export const sortByDate = films => {
   return films.slice(0).sort((a, b) => {
     return (
-      parseInt(b.film_info.release.date, 10) -
-      parseInt(a.film_info.release.date, 10)
+      parseFloat(b.film_info.release.date, 10) -
+      parseFloat(a.film_info.release.date, 10)
     );
   });
 };
@@ -131,8 +131,8 @@ export const sortByDate = films => {
 export const sortByRating = films => {
   return films.slice(0).sort((a, b) => {
     return (
-      parseInt(b.film_info.total_rating, 10) -
-      parseInt(a.film_info.total_rating, 10)
+      parseFloat(b.film_info.total_rating, 10) -
+      parseFloat(a.film_info.total_rating, 10)
     );
   });
 };
