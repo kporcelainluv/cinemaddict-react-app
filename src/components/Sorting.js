@@ -5,7 +5,7 @@ export class Sorting extends React.Component {
   state = { type: "default" };
 
   onSortButtonClick = type => {
-    this.props.onSortingTypeChange(type);
+    this.props.onSortTypeChange(type);
     this.setState({ type });
   };
 
